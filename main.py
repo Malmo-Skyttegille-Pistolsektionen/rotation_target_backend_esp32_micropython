@@ -1,7 +1,7 @@
 import machine, sys
 from src import backend
 try:
-    backend.main()
+    res = backend.main()
 except Exception as e:
     print("Fatal error in main:")
     sys.print_exception(e)

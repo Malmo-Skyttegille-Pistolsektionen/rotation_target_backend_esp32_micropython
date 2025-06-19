@@ -3,10 +3,10 @@ from microdot.sse import with_sse
 import time
 import asyncio
 
-sse_md = Microdot
+sse_md = Microdot()
 
 # SSE Handler
-@sse_md.route("/events", methods=["GET"])
+@sse_md.route(url_pattern="/events", methods=["GET"])
 @with_sse
 async def handle_sse(request, sse):
     print("Client connected")

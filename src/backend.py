@@ -4,10 +4,11 @@
 
 
 import sys
-sys.path.append('/libs', 'src')
-from microdot.microdot import Microdot, Response
+sys.path.append('/libs')
+sys.path.append('/src')
+from microdot import Microdot, Response
 import asyncio
-from web.api import api_md
+from web.api import api_part
 from web.sse import sse_md
 from web.static import static_part
 
@@ -16,7 +17,7 @@ from web.static import static_part
 def create_app():
     app = Microdot()
     Response.default_content_type = "application/json"
-    app.mount(api_md, url_prefix='/api/v1')
+    app.mount(api_part, url_prefix='/api/v1')
     app.mount(sse_md, url_prefix='/sse/v1')
     app.mount(static_part, url_prefix='/')
 

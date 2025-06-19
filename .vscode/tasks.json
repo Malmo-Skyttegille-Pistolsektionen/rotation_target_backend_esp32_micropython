@@ -11,7 +11,7 @@
                 "fs",
                 "rm",
                 "-r",
-                ""
+                "."
             ],
             "problemMatcher": [],
             "presentation": {
