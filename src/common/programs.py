@@ -13,6 +13,7 @@ class Programs:
                 with open(directory + "/" + fname) as f:
                     data = json.load(f)
                     program = Program.from_dict(data)
+                    program.id = fname.split( ".")[0] 
                     self._programs[program.id] = program
 
     def list(self):

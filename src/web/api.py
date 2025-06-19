@@ -1,6 +1,7 @@
 from microdot import Microdot, Response
 from common.common import program_state
-from common.programs import   # Assuming you have an instance: programs = Programs()
+from common.programs import programs  # Import the singleton instance
+
 print("[API] Importing API routes...")
 
 api_part = Microdot()
@@ -49,24 +50,23 @@ def handle_targets_toggle(request):
 @api_part.route("/programs", methods=["GET"])
 def programs_list(request):
     print("[API] GET /programs called")
-    # List all programs
-    return [p.to_dict() for p in list_programs()]
+    result = [p.to_dict() for p in programs.list()]
+    print("[API] Returning:", result)
+    return result
 
 
 @api_part.route("/programs", methods=["POST"])
 def programs_upload(request):
     print("[API] POST /programs called")
-    # Upload a new program
     data = request.json
-    program = add_program(data)
+    program = programs.add(data)
     return program.to_dict(), 201
 
 
 @api_part.route("/programs/<int:program_id>", methods=["GET"])
 def programs_get(request, program_id):
     print(f"[API] GET /programs/{program_id} called")
-    # Get a program by id
-    program = get_program(program_id)
+    program = programs.get(program_id)
     if program:
         return program.to_dict()
     print(f"[API] Program {program_id} not found")
@@ -76,8 +76,7 @@ def programs_get(request, program_id):
 @api_part.route("/programs/<int:program_id>/load", methods=["POST"])
 def programs_load(request, program_id):
     print(f"[API] POST /programs/{program_id}/load called")
-    # Load a program by id
-    if load_program(program_id):
+    if programs.load(program_id):
         print(f"[API] Program {program_id} loaded")
         return {"message": "Program loaded", "program_id": program_id}
     print(f"[API] Program {program_id} not found for loading")
