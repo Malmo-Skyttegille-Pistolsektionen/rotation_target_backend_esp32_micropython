@@ -1,5 +1,9 @@
 import machine, sys
 from src import backend
+
+sys.path.append('/libs')
+sys.path.append('/src')
+
 try:
     res = backend.main()
 except Exception as e:

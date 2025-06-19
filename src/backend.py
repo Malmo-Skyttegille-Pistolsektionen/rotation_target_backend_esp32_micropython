@@ -4,8 +4,6 @@
 
 
 import sys
-sys.path.append('/libs')
-sys.path.append('/src')
 from microdot import Microdot, Response
 import asyncio
 from web.api import api_part

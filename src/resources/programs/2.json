@@ -1,0 +1,38 @@
+{
+    "id": 2,
+    "title": "DUMMY",
+    "description": "DUMMY",
+    "series": [
+        {
+            "name": "Example series that shows all combos",
+            "optional": false,
+            "events": [
+                {
+                    "duration": 10
+                },
+                {
+                    "duration": 10,
+                    "command": "show"
+                },
+                {
+                    "duration": 10,
+                    "command": "hide"
+                },
+                {
+                    "duration": 10,
+                    "audio_ids": [
+                        1
+                    ],
+                    "command": "show"
+                },
+                {
+                    "duration": 10,
+                    "audio_ids": [
+                        1
+                    ],
+                    "command": "hide"
+                }
+            ]
+        }
+    ]
+}

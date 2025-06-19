@@ -1,21 +1,29 @@
-import json
 from common.program import Program
+import json
+import os
 
 class Programs:
     def __init__(self):
-        self._programs = {}  # id -> Program
-        self._current_program_id = None
+        self._programs = {}
 
     def load_all_from_dir(self, directory="src/resources/programs"):
-        import os
+        print(f"[Programs] Loading all programs from directory: {directory}")
+        count = 0
         for fname in os.listdir(directory):
             if fname.endswith(".json"):
-                with open(directory + "/" + fname) as f:
-                    data = json.load(f)
-                    program = Program.from_dict(data)
-                    program.id = fname.split( ".")[0] 
-                    self._programs[program.id] = program
-
+                path = os.path.join(directory, fname)
+                print(f"[Programs] Loading file: {path}")
+                try:
+                    with open(path) as f:
+                        data = json.load(f)
+                        program = Program.from_dict(data)
+                        self._programs[program.id] = program
+                        print(f"[Programs] Loaded program id={program.id}, title={program.title}")
+                        count += 1
+                except Exception as e:
+                    print(f"[Programs] Failed to load {path}: {e}")
+        print(f"[Programs] Total programs loaded: {count}")           
+    
     def list(self):
         return list(self._programs.values())
 
@@ -33,11 +41,6 @@ class Programs:
             return True
         return False
 
-    def get_loaded(self):
-        if self._current_program_id is not None:
-            return self._programs.get(self._current_program_id)
-        return None
-
     def list_json(self):
         return json.dumps([p.to_dict() for p in self.list()])
 
@@ -47,14 +50,6 @@ class Programs:
             return program.to_json()
         return None
 
-    def get_loaded_json(self):
-        program = self.get_loaded()
-        if program:
-            return program.to_json()
-        return None
 
 # Create a single, shared instance
 programs = Programs()
-
-# Usage example (in backend or startup):
-# programs.load_all_from_dir()
