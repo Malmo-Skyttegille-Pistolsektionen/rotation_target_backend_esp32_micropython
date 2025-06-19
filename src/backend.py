@@ -9,8 +9,9 @@ sys.path.append('/src')
 from microdot import Microdot, Response
 import asyncio
 from web.api import api_part
-from web.sse import sse_md
+from web.sse import sse_part
 from web.static import static_part
+from common.programs import programs
 
 
 # Initialize Microdot app
@@ -18,13 +19,19 @@ def create_app():
     app = Microdot()
     Response.default_content_type = "application/json"
     app.mount(api_part, url_prefix='/api/v1')
-    app.mount(sse_md, url_prefix='/sse/v1')
+    app.mount(sse_part, url_prefix='/sse/v1')
     app.mount(static_part, url_prefix='/')
 
     return app
 
 
 async def main():
+    programs.load_all_from_dir()  # Load all programs at startup
+
+    print("[Backend] Loaded programs:")
+    for program in programs.list():
+        print(f"  id={program.id}, title={program.title}")
+
     app = create_app()
     # start the server in a background task
     server = asyncio.create_task(app.start_server(port=80, debug=True))
