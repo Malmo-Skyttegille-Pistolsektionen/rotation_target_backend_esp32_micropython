@@ -4,6 +4,9 @@
 
 
 import sys
+
+print("backend sys.path:", sys.path)
+
 from microdot import Microdot, Response
 import asyncio
 from web.api import api_part
@@ -16,9 +19,9 @@ from common.programs import programs
 def create_app():
     app = Microdot()
     Response.default_content_type = "application/json"
-    app.mount(api_part, url_prefix='/api/v1')
-    app.mount(sse_part, url_prefix='/sse/v1')
-    app.mount(static_part, url_prefix='/')
+    app.mount(api_part, url_prefix="/api/v1")
+    app.mount(sse_part, url_prefix="/sse/v1")
+    app.mount(static_part, url_prefix="/")
 
     return app
 
@@ -39,5 +42,6 @@ async def main():
 
     # cleanup before ending the application
     await server
+
 
 asyncio.run(main())

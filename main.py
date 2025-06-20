@@ -1,8 +1,15 @@
-import machine, sys
+import machine
+import sys
+import os
+
+sys.path.insert(0, "/libs")
+sys.path.insert(0, "/src")
+
+print("main.py sys.path:", sys.path)
+
+
 from src import backend
 
-sys.path.append('/libs')
-sys.path.append('/src')
 
 try:
     res = backend.main()
