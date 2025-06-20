@@ -8,7 +8,7 @@ import sys
 print("backend sys.path:", sys.path)
 
 from microdot import Microdot, Response
-import asyncio
+from microdot.microdot import MUTED_SOCKET_ERRORS
 from web.api import api_part
 from web.sse import sse_part
 from web.static import static_part
@@ -18,6 +18,7 @@ from common.programs import programs
 # Initialize Microdot app
 def create_app():
     app = Microdot()
+    MUTED_SOCKET_ERRORS.append(113)  # ECONNABORTED errorimport asyncio
     Response.default_content_type = "application/json"
     app.mount(api_part, url_prefix="/api/v1")
     app.mount(sse_part, url_prefix="/sse/v1")
