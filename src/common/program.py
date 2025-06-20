@@ -1,5 +1,6 @@
 import json
 
+
 class Event:
     def __init__(self, duration, command=None, audio_ids=None):
         self.duration = duration
@@ -19,8 +20,9 @@ class Event:
         return cls(
             duration=d.get("duration"),
             command=d.get("command"),
-            audio_ids=d.get("audio_ids", [])
+            audio_ids=d.get("audio_ids", []),
         )
+
 
 class Series:
     def __init__(self, name, optional, events):
@@ -32,17 +34,14 @@ class Series:
         return {
             "name": self.name,
             "optional": self.optional,
-            "events": [e.to_dict() for e in self.events]
+            "events": [e.to_dict() for e in self.events],
         }
 
     @classmethod
     def from_dict(cls, d):
         events = [Event.from_dict(e) for e in d.get("events", [])]
-        return cls(
-            name=d.get("name"),
-            optional=d.get("optional", False),
-            events=events
-        )
+        return cls(name=d.get("name"), optional=d.get("optional", False), events=events)
+
 
 class Program:
     def __init__(self, id, title, description, series):
@@ -56,7 +55,7 @@ class Program:
             "id": self.id,
             "title": self.title,
             "description": self.description,
-            "series": [s.to_dict() for s in self.series]
+            "series": [s.to_dict() for s in self.series],
         }
 
     def __str__(self):
@@ -64,7 +63,6 @@ class Program:
 
     def detailed_info(self):
         info = []
-        total_events = 0
         for s in self.series:
             num_events = len(s.events)
             total_duration = sum(e.duration for e in s.events if e.duration is not None)
@@ -75,7 +73,7 @@ class Program:
             f"Program '{self.title}' (ID: {self.id})",
             f"Description: {self.description}",
             f"Total series: {len(self.series)}",
-            "Series details:"
+            "Series details:",
         ] + info
         return "\n".join(result)
 
@@ -86,7 +84,7 @@ class Program:
             id=d.get("id"),
             title=d.get("title"),
             description=d.get("description"),
-            series=series
+            series=series,
         )
 
     def to_json(self):

@@ -9,7 +9,6 @@ class Programs:
 
     def load_all_from_dir(self, directory="src/resources/programs"):
         print(f"[Programs] Loading all programs from directory: {directory}")
-        count = 0
         for fname in os.listdir(directory):
             if fname.endswith(".json"):
                 path = directory + "/" + fname  # join paths manually
@@ -22,17 +21,22 @@ class Programs:
                         print(
                             f"[Programs] Loaded program id={program.id}, title={program.title}"
                         )
-                        count += 1
                 except Exception as e:
                     print(f"[Programs] Failed to load {path}: {e}")
-        print(f"[Programs] Total programs loaded: {count}")
-
-        for program in self._programs.values():
-            print(program)
-            print(program.detailed_info())
+        print(f"[Programs] Total programs loaded: {len(self._programs)}")
+        # for program in self._programs.values():
+        #     print(program)
+        #     print(program.detailed_info())
 
     def list(self):
-        return list(self._programs.values())
+        return [
+            {
+                "id": program.id,
+                "title": program.title,
+                "description": program.description,
+            }
+            for program in self._programs.values()
+        ]
 
     def add(self, program_data):
         program = Program.from_dict(program_data)

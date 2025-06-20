@@ -31,7 +31,7 @@ async def main():
 
     print("[Backend] Loaded programs:")
     for program in programs.list():
-        print(f"  id={program.id}, title={program.title}")
+        print(f"  id={program['id']}, title={program['title']}")
 
     app = create_app()
     # start the server in a background task
