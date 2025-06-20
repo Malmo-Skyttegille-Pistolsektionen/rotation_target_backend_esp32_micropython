@@ -59,6 +59,26 @@ class Program:
             "series": [s.to_dict() for s in self.series]
         }
 
+    def __str__(self):
+        return f"Program(id={self.id}, title={self.title}, description={self.description}, series_count={len(self.series)})"
+
+    def detailed_info(self):
+        info = []
+        total_events = 0
+        for s in self.series:
+            num_events = len(s.events)
+            total_duration = sum(e.duration for e in s.events if e.duration is not None)
+            info.append(
+                f"Series '{s.name}' (optional={s.optional}): {num_events} events, total duration={total_duration}s"
+            )
+        result = [
+            f"Program '{self.title}' (ID: {self.id})",
+            f"Description: {self.description}",
+            f"Total series: {len(self.series)}",
+            "Series details:"
+        ] + info
+        return "\n".join(result)
+
     @classmethod
     def from_dict(cls, d):
         series = [Series.from_dict(s) for s in d.get("series", [])]

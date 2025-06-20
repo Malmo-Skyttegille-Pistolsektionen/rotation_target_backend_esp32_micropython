@@ -23,6 +23,10 @@ class Programs:
                 except Exception as e:
                     print(f"[Programs] Failed to load {path}: {e}")
         print(f"[Programs] Total programs loaded: {count}")           
+
+        for program in self._programs.values():
+            print(program)
+            print(program.detailed_info())
     
     def list(self):
         return list(self._programs.values())
