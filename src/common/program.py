@@ -1,14 +1,20 @@
 import json
+from typing import List, Optional, Dict, Any
 
 
 class Event:
-    def __init__(self, duration, command=None, audio_ids=None):
-        self.duration = duration
-        self.command = command
-        self.audio_ids = audio_ids or []
+    def __init__(
+        self,
+        duration: int,
+        command: Optional[str] = None,
+        audio_ids: Optional[List[int]] = None,
+    ) -> None:
+        self.duration: int = duration
+        self.command: Optional[str] = command
+        self.audio_ids: List[int] = audio_ids or []
 
-    def to_dict(self):
-        d = {"duration": self.duration}
+    def to_dict(self) -> Dict[str, Any]:
+        d: Dict[str, Any] = {"duration": self.duration}
         if self.command is not None:
             d["command"] = self.command
         if self.audio_ids:
@@ -16,7 +22,7 @@ class Event:
         return d
 
     @classmethod
-    def from_dict(cls, d):
+    def from_dict(cls, d: Dict[str, Any]) -> "Event":
         return cls(
             duration=d.get("duration"),
             command=d.get("command"),
@@ -25,12 +31,12 @@ class Event:
 
 
 class Series:
-    def __init__(self, name, optional, events):
-        self.name = name
-        self.optional = optional
-        self.events = events  # List of Event objects
+    def __init__(self, name: str, optional: bool, events: List[Event]) -> None:
+        self.name: str = name
+        self.optional: bool = optional
+        self.events: List[Event] = events
 
-    def to_dict(self):
+    def to_dict(self) -> Dict[str, Any]:
         return {
             "name": self.name,
             "optional": self.optional,
@@ -38,19 +44,25 @@ class Series:
         }
 
     @classmethod
-    def from_dict(cls, d):
+    def from_dict(cls, d: Dict[str, Any]) -> "Series":
         events = [Event.from_dict(e) for e in d.get("events", [])]
-        return cls(name=d.get("name"), optional=d.get("optional", False), events=events)
+        return cls(
+            name=d.get("name"),
+            optional=d.get("optional", False),
+            events=events,
+        )
 
 
 class Program:
-    def __init__(self, id, title, description, series):
-        self.id = id
-        self.title = title
-        self.description = description
-        self.series = series  # List of Series objects
+    def __init__(
+        self, id: str, title: str, description: str, series: List[Series]
+    ) -> None:
+        self.id: str = id
+        self.title: str = title
+        self.description: str = description
+        self.series: List[Series] = series
 
-    def to_dict(self):
+    def to_dict(self) -> Dict[str, Any]:
         return {
             "id": self.id,
             "title": self.title,
@@ -78,7 +90,7 @@ class Program:
         return "\n".join(result)
 
     @classmethod
-    def from_dict(cls, d):
+    def from_dict(cls, d: Dict[str, Any]) -> "Program":
         series = [Series.from_dict(s) for s in d.get("series", [])]
         return cls(
             id=d.get("id"),

@@ -42,9 +42,6 @@ async def main():
     ip_address = network.WLAN(network.STA_IF).ifconfig()[0]
     print(f"Server started on {ip_address}:8080")
 
-    # ... do other asynchronous work here ...
-
-    # cleanup before ending the application
     await server
 
 

@@ -1,7 +1,11 @@
+from common.common import program_state
+
+
 def show():
-    print("show")
+    program_state.target_status_shown = True
     pass
 
+
 def hide():
-    print("hide")
+    program_state.target_status_shown = False
     pass

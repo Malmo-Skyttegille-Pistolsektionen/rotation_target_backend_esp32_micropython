@@ -1,6 +1,8 @@
 from microdot import Microdot, Response
+from common.programs import programs
+from program_executor import program_executor
+from target import hide, show  # Import the singleton instance
 from common.common import program_state
-from common.programs import programs  # Import the singleton instance
 
 print("[API] Importing API routes...")
 
@@ -11,19 +13,20 @@ Response.default_content_type = "application/json"
 @api_part.route(url_pattern="/status", methods=["GET"])
 def handle_status(request):
     response = {
-        "running": program_state["running_series_start"] is not None,
+        "running": program_state.running_series_start is not None,
         "next_event": (
             {
-                "program_id": program_state["program_id"],
-                "series_index": program_state["current_series_index"],
-                "event_index": program_state["current_event_index"] + 1,
+                "program_id": program_state.program_id,
+                "series_index": program_state.current_series_index,
+                "event_index": program_state.current_event_index
+                + 1,  # might not be correct if current_event_index is 0
             }
-            if program_state["running_series_start"]
-            and program_state["current_series_index"] is not None
-            and program_state["current_event_index"] is not None
+            if program_state.running_series_start
+            and program_state.current_series_index is not None
+            and program_state.current_event_index is not None
             else None
         ),
-        "target_status": "shown" if program_state["target_status_shown"] else "hidden",
+        "target_status": "shown" if program_state.target_status_shown else "hidden",
     }
     return response
 
@@ -31,23 +34,30 @@ def handle_status(request):
 @api_part.route(url_pattern="/targets/show", methods=["POST"])
 def handle_targets_show(request):
     print(f"[API] {request.method} {request.path} called")
-    program_state["target_status_shown"] = True
+
+    show()
+
     return {"message": "Target is now shown"}
 
 
 @api_part.route(url_pattern="/targets/hide", methods=["POST"])
 def handle_targets_hide(request):
     print(f"[API] {request.method} {request.path} called")
-    program_state["target_status_shown"] = False
+
+    hide()
+
     return {"message": "Target is now hidden"}
 
 
 @api_part.route(url_pattern="/targets/toggle", methods=["POST"])
 def handle_targets_toggle(request):
     print(f"[API] {request.method} {request.path} called")
-    program_state["target_status_shown"] = not program_state["target_status_shown"]
+    if program_state.target_status_shown:
+        hide()
+    else:
+        show()
     return {
-        "message": f"Target is now {'shown' if program_state['target_status_shown'] else 'hidden'}"
+        "message": f"Target is now {'shown' if program_state.target_status_shown else 'hidden'}"
     }
 
 
@@ -81,11 +91,12 @@ def programs_get(request, program_id):
 @api_part.route("/programs/<int:program_id>/load", methods=["POST"])
 def programs_load(request, program_id):
     print(f"[API] {request.method} {request.path} called")
-    if programs.load(program_id):
-        print(f"[API] Program {program_id} loaded")
+
+    if program_executor.load(program_id):
         return {"message": "Program loaded", "program_id": program_id}
+
     print(f"[API] Program {program_id} not found for loading")
-    return {"error": "Not found"}, 404
+    return {"error": "Program ID not found"}, 404
 
 
 @api_part.route(url_pattern="/programs/start", methods=["POST"])
