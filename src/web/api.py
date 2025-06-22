@@ -7,6 +7,7 @@ print("[API] Importing API routes...")
 api_part = Microdot()
 Response.default_content_type = "application/json"
 
+
 @api_part.route(url_pattern="/status", methods=["GET"])
 def handle_status(request):
     response = {
@@ -29,18 +30,21 @@ def handle_status(request):
 
 @api_part.route(url_pattern="/targets/show", methods=["POST"])
 def handle_targets_show(request):
+    print(f"[API] {request.method} {request.path} called")
     program_state["target_status_shown"] = True
     return {"message": "Target is now shown"}
 
 
 @api_part.route(url_pattern="/targets/hide", methods=["POST"])
 def handle_targets_hide(request):
+    print(f"[API] {request.method} {request.path} called")
     program_state["target_status_shown"] = False
     return {"message": "Target is now hidden"}
 
 
 @api_part.route(url_pattern="/targets/toggle", methods=["POST"])
 def handle_targets_toggle(request):
+    print(f"[API] {request.method} {request.path} called")
     program_state["target_status_shown"] = not program_state["target_status_shown"]
     return {
         "message": f"Target is now {'shown' if program_state['target_status_shown'] else 'hidden'}"
@@ -49,15 +53,16 @@ def handle_targets_toggle(request):
 
 @api_part.route("/programs", methods=["GET"])
 def programs_list(request):
-    print("[API] GET /programs called")
-    result = [p.to_dict() for p in programs.list()]
+    print(f"[API] {request.method} {request.path} called")
+    result = programs.list()
+    print("programs.list() called: ", result)
     print("[API] Returning:", result)
     return result
 
 
 @api_part.route("/programs", methods=["POST"])
 def programs_upload(request):
-    print("[API] POST /programs called")
+    print(f"[API] {request.method} {request.path} called")
     data = request.json
     program = programs.add(data)
     return program.to_dict(), 201
@@ -65,7 +70,7 @@ def programs_upload(request):
 
 @api_part.route("/programs/<int:program_id>", methods=["GET"])
 def programs_get(request, program_id):
-    print(f"[API] GET /programs/{program_id} called")
+    print(f"[API] {request.method} {request.path} called")
     program = programs.get(program_id)
     if program:
         return program.to_dict()
@@ -75,7 +80,7 @@ def programs_get(request, program_id):
 
 @api_part.route("/programs/<int:program_id>/load", methods=["POST"])
 def programs_load(request, program_id):
-    print(f"[API] POST /programs/{program_id}/load called")
+    print(f"[API] {request.method} {request.path} called")
     if programs.load(program_id):
         print(f"[API] Program {program_id} loaded")
         return {"message": "Program loaded", "program_id": program_id}
@@ -85,20 +90,20 @@ def programs_load(request, program_id):
 
 @api_part.route(url_pattern="/programs/start", methods=["POST"])
 def handle_program_start(request):
+    print(f"[API] {request.method} {request.path} called")
     if program_state["program_id"] is None:
         return {"error": "No program loaded"}, 400
 
     program_state["running_series_start"] = "started"
-    return {"message": "Program started"}
+    return {"message": "Series started"}
 
 
 @api_part.route(url_pattern="/programs/stop", methods=["POST"])
 def handle_program_stop(request):
+    print(f"[API] {request.method} {request.path} called")
     if program_state["running_series_start"] is None:
         return {"error": "No program running"}, 400
 
     program_state["running_series_start"] = None
     program_state["current_event_index"] = 0
     return {"message": "Program stopped and reset to the first event"}
-
-

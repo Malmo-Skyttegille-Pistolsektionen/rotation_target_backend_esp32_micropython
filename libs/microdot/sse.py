@@ -45,7 +45,7 @@ class SSE:
 
 
 def sse_response(request, event_function, *args, **kwargs):
-    """Return a response object that initiates an event stream.
+    """Return a response object that initiates an event stream.fw
 
     :param request: the request object.
     :param event_function: an asynchronous function that will send events to

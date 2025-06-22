@@ -7,7 +7,7 @@
             "command": "mpremote",
             "args": [
                 "connect",
-                "/dev/ttyUSB0",
+                "/dev/ttyACM1",
                 "fs",
                 "rm",
                 "-r",
@@ -25,7 +25,7 @@
             "command": "mpremote",
             "args": [
                 "connect",
-                "/dev/ttyUSB0",
+                "/dev/ttyACM1",
                 "fs",
                 "cp",
                 "*.py",
@@ -42,7 +42,7 @@
             "command": "mpremote",
             "args": [
                 "connect",
-                "/dev/ttyUSB0",
+                "/dev/ttyACM1",
                 "fs",
                 "cp",
                 "-r",
@@ -64,7 +64,7 @@
             "command": "mpremote",
             "args": [
                 "connect",
-                "/dev/ttyUSB0",
+                "/dev/ttyACM1",
                 "fs",
                 "cp",
                 "-r",
@@ -82,7 +82,7 @@
             "command": "mpremote",
             "args": [
                 "connect",
-                "/dev/ttyUSB0",
+                "/dev/ttyACM1",
                 "fs",
                 "cp",
                 "-r",

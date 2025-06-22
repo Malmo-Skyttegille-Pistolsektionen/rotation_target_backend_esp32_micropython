@@ -3,8 +3,11 @@ from microdot.sse import with_sse
 import time
 import asyncio
 
+print("[SSE] Importing SSE routes...")
+
 sse_part = Microdot()
 connected_clients = set()
+
 
 async def emit_sse_event(event, data):
     print(f"[SSE] Emitting event '{event}' to {len(connected_clients)} clients: {data}")
@@ -15,7 +18,8 @@ async def emit_sse_event(event, data):
             print(f"[SSE] Removing disconnected client: {e}")
             connected_clients.discard(sse)
 
-@sse_part.route(url_pattern="/events", methods=["GET"])
+
+@sse_part.route(url_pattern="/v1", methods=["GET"])
 @with_sse
 async def handle_sse(request, sse):
     print("[SSE] Client connected")

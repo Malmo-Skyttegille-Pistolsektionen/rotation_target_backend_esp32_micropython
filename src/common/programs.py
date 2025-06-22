@@ -46,21 +46,6 @@ class Programs:
     def get(self, program_id):
         return self._programs.get(program_id)
 
-    def load(self, program_id):
-        if program_id in self._programs:
-            self._current_program_id = program_id
-            return True
-        return False
-
-    def list_json(self):
-        return json.dumps([p.to_dict() for p in self.list()])
-
-    def get_json(self, program_id):
-        program = self.get(program_id)
-        if program:
-            return program.to_json()
-        return None
-
 
 # Create a single, shared instance
 programs = Programs()
