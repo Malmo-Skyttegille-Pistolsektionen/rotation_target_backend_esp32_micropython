@@ -1,6 +1,5 @@
 from typing import Optional
-import time
-import ticks_ms, ticks_diff, ticks_add
+from time import ticks_ms, ticks_diff, ticks_add
 from common import program
 from common.common import EventType, program_state
 from common.programs import programs
