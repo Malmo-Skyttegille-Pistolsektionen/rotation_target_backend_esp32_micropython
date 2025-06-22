@@ -14,7 +14,7 @@ MIME_TYPES = {
 async def index(request):
     print("[Static] Serving index.html")
 
-    return send_file("static/webapp/index.html")
+    return send_file("static/webapp/index.html", max_age=3600)
 
 
 @static_part.get(url_pattern="/<path:path>")
@@ -28,9 +28,11 @@ async def static_files(request, path):
 
         if ext in MIME_TYPES:
             print(f"[Static] Serving file (content_type={MIME_TYPES[ext]}): {path}")
-            return send_file("static/webapp/" + path, content_type=MIME_TYPES[ext])
+            return send_file(
+                "static/webapp/" + path, content_type=MIME_TYPES[ext], max_age=3600
+            )
 
         print(f"[Static] Serving file: {path}")
-        return send_file(f"static/webapp/{path}")
+        return send_file(f"static/webapp/{path}", max_age=3600)
     except OSError:
         return {"error": "resource not found"}, 404

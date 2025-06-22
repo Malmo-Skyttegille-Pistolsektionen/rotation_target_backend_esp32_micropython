@@ -1,10 +1,11 @@
 from typing import Optional
-from time import ticks_ms, ticks_diff, ticks_add
-from common import program
+from time import ticks_ms, ticks_diff
+from common.program import Program, Event, Series
 from common.common import EventType, program_state
 from common.programs import programs
 import target
 from web.sse import emit_sse_event
+import asyncio
 
 
 class ProgramExecutor:
@@ -13,50 +14,162 @@ class ProgramExecutor:
 
     async def start(self) -> bool:
         print("[ProgramExecutor] Entered start()")
-        if not program_state.program:
+        if program_state.program is None:
             print("[ProgramExecutor] No program loaded.")
             return False
 
-        program_state.running_series_start = ticks_ms()
-        program_state.current_series_index = 0
-        program_state.current_event_index = 0
+        if program_state.running_series_start:
+            print("[ProgramExecutor] Series is already running.")
+            return False
 
-        print(f"[ProgramExecutor] Started program {program_state.program.id}")
+        asyncio.create_task(self.run_series())
+        return True
 
-        # Emit event: program started
-        await emit_sse_event(
-            EventType.PROGRAM_STARTED, {"program_id": program_state.program.id}
+    async def run_series(self) -> None:
+        print("[ProgramExecutor] Entered run_series()")
+        program = program_state.program
+        series_index = program_state.current_series_index
+        event_index = program_state.current_event_index
+
+        if program is None:
+            print("[ProgramExecutor] No program loaded in run_series.")
+            return
+
+        if not (0 <= series_index < len(program.series)):
+            print("[ProgramExecutor] Invalid series index in run_series.")
+            return
+
+        series = program.series[series_index]
+        # All durations in ms
+        event_durations_ms = [e.duration * 1000 for e in series.events]
+        total_time_ms = sum(event_durations_ms)
+        print(
+            f"[ProgramExecutor] Running series {series_index} with total time {total_time_ms} ms"
         )
-
-        # Emit event: series started
         await emit_sse_event(
             EventType.SERIES_STARTED,
             {
-                "program_id": program_state.program.id,
-                "series_index": program_state.current_series_index,
+                "program_id": program.id,
+                "series_index": series_index,
             },
         )
 
-        # Emit event: event started
+        program_state.running_series_start = ticks_ms()
+        chrono_task = asyncio.create_task(
+            self._emit_series_chrono(program_state.running_series_start, total_time_ms)
+        )
+
+        for idx in range(event_index, len(series.events)):
+            event = series.events[idx]
+            program_state.current_event_index = idx
+            await emit_sse_event(
+                EventType.EVENT_STARTED,
+                {
+                    "program_id": program.id,
+                    "series_index": series_index,
+                    "event_index": idx,
+                },
+            )
+
+            if event.command:
+                await emit_sse_event(
+                    "target_status",
+                    {"status": "shown" if event.command == "show" else "hidden"},
+                )
+                if event.command == "show":
+                    target.show()
+                elif event.command == "hide":
+                    target.hide()
+
+            # Wait for this event's duration (in ms), but check for external stop frequently
+            event_start = ticks_ms()
+            event_duration_ms = event.duration * 1000
+            while True:
+                elapsed_ms = ticks_diff(ticks_ms(), event_start)
+                if elapsed_ms >= event_duration_ms:
+                    break
+                # Check for external stop every 200ms
+                for _ in range(5):
+                    if program_state.running_series_start is None:
+                        print(
+                            "[ProgramExecutor] Series stopped externally during event."
+                        )
+                        chrono_task.cancel()
+                        return
+                    await asyncio.sleep(0.2)
+
+            if program_state.running_series_start is None:
+                print("[ProgramExecutor] Series stopped externally.")
+                chrono_task.cancel()
+                return
+
+            await emit_sse_event(
+                "event_completed",
+                {
+                    "program_id": program.id,
+                    "series_index": series_index,
+                    "event_index": idx,
+                },
+            )
+
+        chrono_task.cancel()
         await emit_sse_event(
-            EventType.EVENT_STARTED,
+            EventType.SERIES_COMPLETED,
             {
-                "program_id": program_state.program.id,
-                "series_index": program_state.current_series_index,
-                "event_index": program_state.current_event_index,
+                "program_id": program.id,
+                "series_index": series_index,
             },
         )
+        print("[ProgramExecutor] Series finished.")
 
-        return True
+        if series_index + 1 < len(program.series):
+            program_state.current_series_index = series_index + 1
+            program_state.current_event_index = 0
+            program_state.running_series_start = None
+            await emit_sse_event(
+                "series_next",
+                {
+                    "program_id": program.id,
+                    "series_index": program_state.current_series_index,
+                },
+            )
+        else:
+            await emit_sse_event(
+                "program_completed",
+                {
+                    "program_id": program.id,
+                },
+            )
+            program_state.running_series_start = None
+            program_state.current_series_index = 0
+            program_state.current_event_index = 0
+
+    async def _emit_series_chrono(self, start_time_ms, total_time_ms):
+        while True:
+            if program_state.running_series_start is None:
+                print("[ProgramExecutor] _emit_series_chrono detected external stop.")
+                break
+            elapsed_ms = ticks_diff(ticks_ms(), start_time_ms)
+            remaining_ms = max(0, total_time_ms - elapsed_ms)
+            await emit_sse_event(
+                "chrono",
+                {
+                    "elapsed": elapsed_ms,
+                    "remaining": remaining_ms,
+                    "total": total_time_ms,
+                },
+            )
+            if elapsed_ms >= total_time_ms:
+                break
+            await asyncio.sleep(1)
 
     async def stop(self) -> bool:
         print("[ProgramExecutor] Entered stop()")
-
-        if not program_state.program:
+        if program_state.program is None:
             print("[ProgramExecutor] No program loaded.")
             return False
 
-        if getattr(program_state, "running_series_start", None) is None:
+        if program_state.running_series_start is None:
             print("[ProgramExecutor] No program running.")
             return False
 
@@ -64,7 +177,6 @@ class ProgramExecutor:
         program_state.current_event_index = 0
         print("[ProgramExecutor] Program stopped and reset to the first event")
 
-        # Emit event: series stopped
         await emit_sse_event(
             EventType.SERIES_STOPPED,
             {
@@ -78,7 +190,7 @@ class ProgramExecutor:
     async def skip_to_series(self, series_index: int) -> bool:
         print(f"[ProgramExecutor] Entered skip_to_series(series_index={series_index})")
 
-        if not program_state.program:
+        if program_state.program is None:
             print("[ProgramExecutor] No program loaded.")
             return False
 
@@ -94,11 +206,12 @@ class ProgramExecutor:
 
     async def load(self, program_id: int) -> bool:
         print(f"[ProgramExecutor] Entered load(program_id={program_id})")
-        if not programs.get(program_id):
+        program = programs.get(program_id)
+        if not program:
             print(f"[ProgramExecutor] Program {program_id} not found for loading.")
             return False
 
-        program_state.program = programs.get(program_id)
+        program_state.program = program
         program_state.current_series_index = 0
         program_state.current_event_index = 0
         print(f"[ProgramExecutor] Loaded program {program_id}")

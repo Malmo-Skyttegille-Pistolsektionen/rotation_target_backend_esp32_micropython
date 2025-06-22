@@ -16,18 +16,18 @@ class ProgramState:
 
 
 class EventType:
-    PROGRAM_UPLOADED: str = "program_uploaded"
     PROGRAM_STARTED: str = "program_started"  #
-    PROGRAM_COMPLETED: str = "program_completed"
+    PROGRAM_COMPLETED: str = "program_completed"  #
     SERIES_STARTED: str = "series_started"  #
     SERIES_COMPLETED: str = "series_completed"
     SERIES_STOPPED: str = "series_stopped"  #
-    SERIES_NEXT: str = "series_next"
+    SERIES_NEXT: str = "series_next"  #
     EVENT_STARTED: str = "event_started"  #
-    TARGET_STATUS: str = "target_status"
+    TARGET_STATUS: str = "target_status"  #
+    CHRONO: str = "chrono"  #
+    PROGRAM_UPLOADED: str = "program_uploaded"
     AUDIO_ADDED: str = "audio_added"
     AUDIO_DELETED: str = "audio_deleted"
-    CHRONO: str = "chrono"
 
 
 # Create a single, shared instance

@@ -113,17 +113,17 @@ async def programs_load(request, program_id):
 async def handle_program_start(request):
     print(f"[API] {request.method} {request.path} called")
 
-    if not program_executor.start():
+    if not await program_executor.start():
         return {"error": "No program loaded"}, 400
 
     return {"message": "Series started"}
 
 
 @api_part.route(url_pattern="/programs/stop", methods=["POST"])
-def handle_program_stop(request):
+async def handle_program_stop(request):
     print(f"[API] {request.method} {request.path} called")
 
-    if not program_executor.stop():
+    if not await program_executor.stop():
         return {"error": "No program running"}, 400
 
     return {"message": "Series stopped and reset to the first event"}
