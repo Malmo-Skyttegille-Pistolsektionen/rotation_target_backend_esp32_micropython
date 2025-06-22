@@ -4,6 +4,7 @@
 
 
 import asyncio
+from common.audio import is_supported_wav
 import network
 
 from microdot import Microdot, Response
@@ -30,7 +31,7 @@ def create_app():
 
 
 async def main():
-    programs.load_all_from_dir()  # Load all programs at startup
+    programs.load_all()  # Load all programs at startup
 
     print("[Backend] Loaded programs:")
     for program in programs.get_all().values():
@@ -43,6 +44,12 @@ async def main():
     print(f"Server started on {ip_address}:8080")
 
     await server
+
+
+print(
+    "8bit_8khz_mono.wav is supported: ",
+    is_supported_wav("Playing test audio: src/resources/audio/8bit_8khz_mono.wav"),
+)
 
 
 asyncio.run(main())

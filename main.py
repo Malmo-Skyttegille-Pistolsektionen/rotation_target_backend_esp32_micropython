@@ -1,11 +1,16 @@
 import machine
 import sys
 import asyncio
+import os
 
 sys.path.insert(0, "/libs")
 sys.path.insert(0, "/src")
 
 print("main.py sys.path:", sys.path)
+
+
+print("platform: ", sys.platform)
+print("os.uname: ", os.uname())
 
 from src import backend
 

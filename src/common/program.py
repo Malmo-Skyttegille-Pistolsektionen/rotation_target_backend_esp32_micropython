@@ -55,20 +55,18 @@ class Series:
 
 class Program:
     def __init__(
-        self, id: str, title: str, description: str, series: List[Series]
+        self,
+        id: str,
+        title: str,
+        description: str,
+        series: List[Series],
+        readonly: bool = False,
     ) -> None:
         self.id: str = id
         self.title: str = title
         self.description: str = description
         self.series: List[Series] = series
-
-    def to_dict(self) -> Dict[str, Any]:
-        return {
-            "id": self.id,
-            "title": self.title,
-            "description": self.description,
-            "series": [s.to_dict() for s in self.series],
-        }
+        self.readonly = readonly
 
     def __str__(self):
         return f"Program(id={self.id}, title={self.title}, description={self.description}, series_count={len(self.series)})"
@@ -89,6 +87,14 @@ class Program:
         ] + info
         return "\n".join(result)
 
+    def to_dict(self) -> Dict[str, Any]:
+        return {
+            "id": self.id,
+            "title": self.title,
+            "description": self.description,
+            "series": [s.to_dict() for s in self.series],
+        }
+
     @classmethod
     def from_dict(cls, d: Dict[str, Any]) -> "Program":
         series = [Series.from_dict(s) for s in d.get("series", [])]
@@ -97,11 +103,5 @@ class Program:
             title=d.get("title"),
             description=d.get("description"),
             series=series,
+            readonly=d.get("readonly", False),
         )
-
-    def to_json(self):
-        return json.dumps(self.to_dict())
-
-    @classmethod
-    def from_json(cls, json_str):
-        return cls.from_dict(json.loads(json_str))

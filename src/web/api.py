@@ -32,25 +32,21 @@ async def status(request):
     return response
 
 
-@api_part.route(url_pattern="/targets/show", methods=["POST"])
+@api_part.post("/targets/show")
 async def handle_targets_show(request):
     print(f"[API] {request.method} {request.path} called")
-
     show()
-
     return {"message": "Target is now shown"}
 
 
-@api_part.route(url_pattern="/targets/hide", methods=["POST"])
+@api_part.post("/targets/hide")
 async def handle_targets_hide(request):
     print(f"[API] {request.method} {request.path} called")
-
     hide()
-
     return {"message": "Target is now hidden"}
 
 
-@api_part.route(url_pattern="/targets/toggle", methods=["POST"])
+@api_part.post("/targets/toggle")
 async def handle_targets_toggle(request):
     print(f"[API] {request.method} {request.path} called")
     if program_state.target_status_shown:
@@ -83,8 +79,13 @@ async def programs_list(request):
 async def programs_upload(request):
     print(f"[API] {request.method} {request.path} called")
     data = request.json
-    program = programs.add(data)
-    return program.to_dict(), 201
+
+    try:
+        program = programs.upload(program_data=data)
+        return program.to_dict(), 201
+    except Exception as e:
+        print(f"[API] Program upload failed: {e}")
+        return {"error": "Invalid program structure"}, 400
 
 
 @api_part.get("/programs/<int:program_id>")
@@ -109,7 +110,7 @@ async def programs_load(request, program_id):
     return {"error": "Program ID not found"}, 404
 
 
-@api_part.route(url_pattern="/programs/start", methods=["POST"])
+@api_part.post("/programs/start")
 async def handle_program_start(request):
     print(f"[API] {request.method} {request.path} called")
 
@@ -119,7 +120,7 @@ async def handle_program_start(request):
     return {"message": "Series started"}
 
 
-@api_part.route(url_pattern="/programs/stop", methods=["POST"])
+@api_part.post("/programs/stop")
 async def handle_program_stop(request):
     print(f"[API] {request.method} {request.path} called")
 
@@ -127,3 +128,17 @@ async def handle_program_stop(request):
         return {"error": "No program running"}, 400
 
     return {"message": "Series stopped and reset to the first event"}
+
+
+@api_part.delete("/programs/<int:program_id>/delete")
+async def programs_delete(request, program_id):
+    print(f"[API] {request.method} {request.path} called")
+
+    if not isinstance(program_id, int) or program_id < 0:
+        return {"error": "Invalid ID"}, 400
+
+    deleted = programs.delete(program_id)
+    if deleted:
+        return {"message": "Program deleted successfully"}
+    else:
+        return {"error": "Program not found"}, 404
