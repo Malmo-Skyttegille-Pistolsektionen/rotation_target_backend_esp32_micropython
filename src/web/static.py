@@ -17,7 +17,7 @@ async def index(request):
     return send_file("static/webapp/index.html")
 
 
-@static_part.route(url_pattern="/<path:path>")
+@static_part.get(url_pattern="/<path:path>")
 async def static_files(request, path):
     try:
         print(f"[Static] Request ({request.path} ): {request.path} ")

@@ -10,8 +10,8 @@ api_part = Microdot()
 Response.default_content_type = "application/json"
 
 
-@api_part.route(url_pattern="/status", methods=["GET"])
-def handle_status(request):
+@api_part.get("/status")
+def status(request):
     response = {
         "running": program_state.running_series_start is not None,
         "next_event": (
@@ -61,7 +61,7 @@ def handle_targets_toggle(request):
     }
 
 
-@api_part.route("/programs", methods=["GET"])
+@api_part.get("/programs")
 def programs_list(request):
     print(f"[API] {request.method} {request.path} called")
     result = programs.list()
@@ -70,7 +70,7 @@ def programs_list(request):
     return result
 
 
-@api_part.route("/programs", methods=["POST"])
+@api_part.post("/programs")
 def programs_upload(request):
     print(f"[API] {request.method} {request.path} called")
     data = request.json
@@ -78,7 +78,7 @@ def programs_upload(request):
     return program.to_dict(), 201
 
 
-@api_part.route("/programs/<int:program_id>", methods=["GET"])
+@api_part.get("/programs/<int:program_id>")
 def programs_get(request, program_id):
     print(f"[API] {request.method} {request.path} called")
     program = programs.get(program_id)
@@ -88,7 +88,7 @@ def programs_get(request, program_id):
     return {"error": "Not found"}, 404
 
 
-@api_part.route("/programs/<int:program_id>/load", methods=["POST"])
+@api_part.post("/programs/<int:program_id>/load")
 def programs_load(request, program_id):
     print(f"[API] {request.method} {request.path} called")
 
@@ -102,19 +102,18 @@ def programs_load(request, program_id):
 @api_part.route(url_pattern="/programs/start", methods=["POST"])
 def handle_program_start(request):
     print(f"[API] {request.method} {request.path} called")
-    if program_state["program_id"] is None:
+
+    if not program_executor.start():
         return {"error": "No program loaded"}, 400
 
-    program_state["running_series_start"] = "started"
     return {"message": "Series started"}
 
 
 @api_part.route(url_pattern="/programs/stop", methods=["POST"])
 def handle_program_stop(request):
     print(f"[API] {request.method} {request.path} called")
-    if program_state["running_series_start"] is None:
+
+    if not program_executor.stop():
         return {"error": "No program running"}, 400
 
-    program_state["running_series_start"] = None
-    program_state["current_event_index"] = 0
-    return {"message": "Program stopped and reset to the first event"}
+    return {"message": "Series stopped and reset to the first event"}

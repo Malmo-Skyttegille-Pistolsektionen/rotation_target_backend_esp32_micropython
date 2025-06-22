@@ -23,7 +23,7 @@ def create_app():
     MUTED_SOCKET_ERRORS.append(113)  # ECONNABORTED errorimport asyncio
     Response.default_content_type = "application/json"
     app.mount(api_part, url_prefix="/api/v1")
-    app.mount(sse_part, url_prefix="/sse")
+    app.mount(sse_part, url_prefix="/sse/v1")
     app.mount(static_part, url_prefix="/")
 
     return app
