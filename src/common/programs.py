@@ -119,9 +119,11 @@ class Programs:
                 print(f"[Programs] No user programs found in {user_dir}")
 
             print(f"[Programs] Total programs loaded: {len(self._programs)}")
+
     def upload(self, program_data: Dict[str, Any]) -> Program:
         directory = "src/resources/programs"
-        os.makedirs(directory, exist_ok=True)
+        
+
         # Find all used ids in the directory
         used_ids = set()
         for fname in os.listdir(directory):
