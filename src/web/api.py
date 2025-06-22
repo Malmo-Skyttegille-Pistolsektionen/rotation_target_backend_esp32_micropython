@@ -1,3 +1,4 @@
+import asyncio
 from microdot import Microdot, Response
 from common.programs import programs
 from program_executor import program_executor
@@ -11,7 +12,7 @@ Response.default_content_type = "application/json"
 
 
 @api_part.get("/status")
-def status(request):
+async def status(request):
     response = {
         "running": program_state.running_series_start is not None,
         "next_event": (
@@ -32,7 +33,7 @@ def status(request):
 
 
 @api_part.route(url_pattern="/targets/show", methods=["POST"])
-def handle_targets_show(request):
+async def handle_targets_show(request):
     print(f"[API] {request.method} {request.path} called")
 
     show()
@@ -41,7 +42,7 @@ def handle_targets_show(request):
 
 
 @api_part.route(url_pattern="/targets/hide", methods=["POST"])
-def handle_targets_hide(request):
+async def handle_targets_hide(request):
     print(f"[API] {request.method} {request.path} called")
 
     hide()
@@ -50,7 +51,7 @@ def handle_targets_hide(request):
 
 
 @api_part.route(url_pattern="/targets/toggle", methods=["POST"])
-def handle_targets_toggle(request):
+async def handle_targets_toggle(request):
     print(f"[API] {request.method} {request.path} called")
     if program_state.target_status_shown:
         hide()
@@ -62,16 +63,24 @@ def handle_targets_toggle(request):
 
 
 @api_part.get("/programs")
-def programs_list(request):
+async def programs_list(request):
     print(f"[API] {request.method} {request.path} called")
-    result = programs.list()
+    result = [
+        {
+            "id": program.id,
+            "title": program.title,
+            "description": program.description,
+        }
+        for program in programs.get_all().values()
+    ]
+
     print("programs.list() called: ", result)
     print("[API] Returning:", result)
     return result
 
 
 @api_part.post("/programs")
-def programs_upload(request):
+async def programs_upload(request):
     print(f"[API] {request.method} {request.path} called")
     data = request.json
     program = programs.add(data)
@@ -79,8 +88,9 @@ def programs_upload(request):
 
 
 @api_part.get("/programs/<int:program_id>")
-def programs_get(request, program_id):
+async def programs_get(request, program_id):
     print(f"[API] {request.method} {request.path} called")
+
     program = programs.get(program_id)
     if program:
         return program.to_dict()
@@ -89,10 +99,10 @@ def programs_get(request, program_id):
 
 
 @api_part.post("/programs/<int:program_id>/load")
-def programs_load(request, program_id):
+async def programs_load(request, program_id):
     print(f"[API] {request.method} {request.path} called")
 
-    if program_executor.load(program_id):
+    if await program_executor.load(program_id):
         return {"message": "Program loaded", "program_id": program_id}
 
     print(f"[API] Program {program_id} not found for loading")
@@ -100,7 +110,7 @@ def programs_load(request, program_id):
 
 
 @api_part.route(url_pattern="/programs/start", methods=["POST"])
-def handle_program_start(request):
+async def handle_program_start(request):
     print(f"[API] {request.method} {request.path} called")
 
     if not program_executor.start():

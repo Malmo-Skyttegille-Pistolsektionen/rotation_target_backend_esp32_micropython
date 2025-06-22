@@ -20,7 +20,7 @@ def create_app():
     app = Microdot()
     CORS(app, allowed_origins="*")  # Allow all origins
 
-    MUTED_SOCKET_ERRORS.append(113)  # ECONNABORTED errorimport asyncio
+    MUTED_SOCKET_ERRORS.append(113)  # ECONNABORTED error
     Response.default_content_type = "application/json"
     app.mount(api_part, url_prefix="/api/v1")
     app.mount(sse_part, url_prefix="/sse/v1")
@@ -33,8 +33,8 @@ async def main():
     programs.load_all_from_dir()  # Load all programs at startup
 
     print("[Backend] Loaded programs:")
-    for program in programs.list():
-        print(f"  id={program['id']}, title={program['title']}")
+    for program in programs.get_all().values():
+        print(f"  id={program.id}, title={program.title}")
 
     app = create_app()
     # start the server in a background task
