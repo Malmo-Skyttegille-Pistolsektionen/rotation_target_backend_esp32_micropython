@@ -58,7 +58,7 @@ class Programs:
 
         print(f"[Programs] Total programs loaded: {len(self._programs)}")
 
-    def upload(self, program_data: Dict[str, Any]) -> Program:
+    def add_uploaded(self, program_data: Dict[str, Any]) -> Program:
         directory = "src/resources/programs"
 
         if not dir_exists(directory):

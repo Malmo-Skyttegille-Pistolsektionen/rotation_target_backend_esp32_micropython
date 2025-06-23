@@ -82,8 +82,14 @@ async def programs_upload(request):
     data = request.json
 
     try:
-        program = programs.upload(program_data=data)
-        return program.to_dict(), 201
+        program = programs.add_uploaded(program_data=data)
+        result = [
+            {
+                "id": program.id,
+            }
+        ]
+
+        return result, 201
     except Exception as e:
         print(f"[API] Program upload failed: {e}")
         return {"error": "Invalid program structure"}, 400
@@ -155,7 +161,7 @@ async def audios_list(request):
     return {"builtin": builtin, "uploaded": uploaded}
 
 
-@api_part.post("/audios/upload")
+@api_part.post("/audios")
 async def audios_upload(request):
     print(f"[API] {request.method} {request.path} called")
     # Expecting multipart/form-data with file, title, codec
@@ -175,7 +181,13 @@ async def audios_upload(request):
         f.write(file.read())
 
     audio = audios.add_uploaded(title=title, filename=filename, codec=codec)
-    return audio.to_dict(), 201
+    result = [
+        {
+            "id": audio.id,
+        }
+    ]
+
+    return result, 201
 
 
 @api_part.delete("/audios/<int:audio_id>/delete")
