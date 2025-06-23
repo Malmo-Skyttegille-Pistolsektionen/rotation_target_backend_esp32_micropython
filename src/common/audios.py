@@ -2,6 +2,7 @@ import json
 import os
 from typing import Any, Dict, List, Optional
 from common.utils import dir_exists, make_dirs
+import logging
 
 
 class Audio:
@@ -30,7 +31,7 @@ class Audios:
         # Load built-in audios
         index_file = "src/resources/audio/index.json"
         with open(index_file) as f:
-            print(f"[Audios] Loading shipped audio files from: {index_file}")
+            logging.debug(f"[Audios] Loading shipped audio files from: {index_file}")
 
             for entry in json.load(f):
                 audio = Audio(
@@ -43,7 +44,9 @@ class Audios:
         if dir_exists(uploaded_path):
             index_file = uploaded_path + "/" + "index.json"
             with open(index_file) as f:
-                print(f"[Audios] Loading uploaded audio files from: {index_file}")
+                logging.debug(
+                    f"[Audios] Loading uploaded audio files from: {index_file}"
+                )
 
                 for entry in json.load(f):
                     audio = Audio(
@@ -52,7 +55,7 @@ class Audios:
                     self._add(audio)
 
     def _add(self, audio: Audio) -> None:
-        print(
+        logging.debug(
             f"Adding audio: id={audio.id}, title={audio.title}, filename={audio.filename}, readonly={audio.readonly}"
         )
         self._audios[audio.id] = audio

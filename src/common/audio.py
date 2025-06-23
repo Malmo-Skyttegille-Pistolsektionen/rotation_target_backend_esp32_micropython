@@ -1,6 +1,7 @@
 # from machine import DAC, Pin
 import os
 from typing import List
+import logging
 
 
 DEFAULT_DAC_PIN: int = 25
@@ -9,11 +10,11 @@ DEFAULT_DAC_PIN: int = 25
 def is_supported_wav(filename: str) -> bool:
     """Check if WAV file is 8-bit, 8kHz, mono, PCM."""
     try:
-        print(f"Checking WAV file: {filename}")
+        logging.debug(f"Checking WAV file: {filename}")
         with open(filename, "rb") as f:
             header = f.read(44)
             if header[0:4] != b"RIFF" or header[8:12] != b"WAVE":
-                print("Not a valid WAV file:" + filename)
+                logging.debug("Not a valid WAV file:" + filename)
                 return False
 
             # https://docs.fileformat.com/audio/wav/
@@ -28,21 +29,21 @@ def is_supported_wav(filename: str) -> bool:
                 and bits_per_sample == 8
             ):
                 return True
-            print(
+            logging.debug(
                 "Unsupported WAV format: "
                 f"format={audio_format}, channels={num_channels}, "
                 f"rate={sample_rate}, bits={bits_per_sample}"
             )
             return False
     except Exception as e:
-        print("Error reading WAV file:", e)
+        logging.debug("Error reading WAV file:", e)
         return False
 
 
 # def play_wav(filename: str, pin: int = DEFAULT_DAC_PIN) -> None:
 #     """Play an 8-bit, 8kHz, mono PCM WAV file using the ESP32 DAC."""
 #     if not is_supported_wav(filename):
-#         print("WAV file format not supported. Must be 8-bit, 8kHz, mono, PCM.")
+#         logging.debug("WAV file format not supported. Must be 8-bit, 8kHz, mono, PCM.")
 #         return
 #     dac = DAC(Pin(pin))
 #     with open(filename, "rb") as f:

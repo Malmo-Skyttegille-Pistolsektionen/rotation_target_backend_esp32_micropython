@@ -1,20 +1,23 @@
 from microdot import Microdot
 from microdot.sse import with_sse
 import asyncio
+import logging
 
-print("[SSE] Importing SSE routes...")
+logging.debug("[SSE] Importing SSE routes...")
 
 sse_part = Microdot()
 connected_clients = set()
 
 
 async def emit_sse_event(event, data):
-    print(f"[SSE] Emitting event '{event}' to {len(connected_clients)} clients: {data}")
+    logging.debug(
+        f"[SSE] Emitting event '{event}' to {len(connected_clients)} clients: {data}"
+    )
     for sse in list(connected_clients):
         try:
             await sse.send(data, event=event)
         except Exception as e:
-            print(f"[SSE] Removing disconnected client: {e}")
+            logging.debug(f"[SSE] Removing disconnected client: {e}")
             connected_clients.discard(sse)
 
 
@@ -22,16 +25,16 @@ async def emit_sse_event(event, data):
 @with_sse
 async def handle_sse(request, sse):
     host, port = request.client_addr
-    print(f"[SSE] Client connected from {host}:{port}")
+    logging.debug(f"[SSE] Client connected from {host}:{port}")
     connected_clients.add(sse)
     try:
         while True:
             await asyncio.sleep(60)  # Keep connection alive
     except asyncio.CancelledError:
-        print("[SSE] Client disconnected (CancelledError)")
+        logging.debug("[SSE] Client disconnected (CancelledError)")
     finally:
         connected_clients.discard(sse)
-        print("[SSE] Client removed from connected_clients")
+        logging.debug("[SSE] Client removed from connected_clients")
 
 
 # event: program_added

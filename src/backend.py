@@ -1,6 +1,6 @@
 # https://awesome-micropython.com/
 # import os
-# print(os.listdir(''))
+# logging.debug(os.listdir(''))
 
 
 import asyncio
@@ -16,6 +16,7 @@ from web.api import api_part
 from web.sse import sse_part
 from web.static import static_part
 from common.programs import programs
+import logging
 
 
 # Initialize Microdot app
@@ -35,25 +36,25 @@ def create_app():
 async def main():
     programs.load_all()  # Load all programs at startup
 
-    print("[Backend] Loaded programs:")
+    logging.debug("[Backend] Loaded programs:")
     for program in programs.get_all().values():
-        print(f"  id={program.id}, title={program.title}")
+        logging.debug(f"  id={program.id}, title={program.title}")
 
     audios.load_all()
-    print("[Backend] Loaded audios:")
+    logging.debug("[Backend] Loaded audios:")
     for audio in audios.get_all().values():
-        print(f"  id={audio.id}, title={audio.title}")
+        logging.debug(f"  id={audio.id}, title={audio.title}")
 
     app = create_app()
     # start the server in a background task
     server = asyncio.create_task(app.start_server(port=8080, debug=True))
     ip_address = network.WLAN(network.STA_IF).ifconfig()[0]
-    print(f"Server started on {ip_address}:8080")
+    logging.debug(f"Server started on {ip_address}:8080")
 
     await server
 
 
-print(
+logging.debug(
     "8bit_8khz_mono.wav is supported wav: ",
     is_supported_wav("src/resources/audio/8bit_8khz_mono.wav"),
 )

@@ -3,33 +3,12 @@ import network
 import sys
 from time import sleep
 
-# print(os.listdir(''))
-
-# sys_mpy = sys.implementation._mpy
-# arch = [
-#     None,
-#     "x86",
-#     "x64",
-#     "armv6",
-#     "armv6m",
-#     "armv7m",
-#     "armv7em",
-#     "armv7emsp",
-#     "armv7emdp",
-#     "xtensa",
-#     "xtensawin",
-#     "rv32imc",
-# ][sys_mpy >> 10]
-# print("mpy version:", sys_mpy & 0xFF)
-# print("mpy sub-version:", sys_mpy >> 8 & 3)
-# print("mpy flags:", end="")
-# if arch:
-#     print(" -march=" + arch, end="")
-# print()
+# from wifi import PASSWORD, SSID
 
 # Wi-Fi credentials
 SSID = "geniuses"
 PASSWORD = "#1!#2.4Ever-"
+
 
 # Connect to Wi-Fi
 def connect_to_wifi(ssid, password):

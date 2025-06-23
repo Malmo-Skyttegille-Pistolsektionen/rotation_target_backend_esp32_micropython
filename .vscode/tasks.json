@@ -7,7 +7,7 @@
             "command": "mpremote",
             "args": [
                 "connect",
-                "/dev/ttyACM1",
+                "${input:esp32Port}",
                 "fs",
                 "rm",
                 "-r",
@@ -18,14 +18,13 @@
                 "reveal": "always"
             }
         },
-        ,
         {
             "label": "Upload /*.py to ESP32",
             "type": "shell",
             "command": "mpremote",
             "args": [
                 "connect",
-                "/dev/ttyACM1",
+                "${input:esp32Port}",
                 "fs",
                 "cp",
                 "*.py",
@@ -42,7 +41,7 @@
             "command": "mpremote",
             "args": [
                 "connect",
-                "/dev/ttyACM1",
+                "${input:esp32Port}",
                 "fs",
                 "cp",
                 "-r",
@@ -64,7 +63,7 @@
             "command": "mpremote",
             "args": [
                 "connect",
-                "/dev/ttyACM1",
+                "${input:esp32Port}",
                 "fs",
                 "cp",
                 "-r",
@@ -82,7 +81,7 @@
             "command": "mpremote",
             "args": [
                 "connect",
-                "/dev/ttyACM1",
+                "${input:esp32Port}",
                 "fs",
                 "cp",
                 "-r",
@@ -111,6 +110,14 @@
                 "Upload all project folders to ESP32"
             ],
             "dependsOrder": "sequence"
+        }
+    ],
+    "inputs": [
+        {
+            "id": "esp32Port",
+            "type": "promptString",
+            "description": "Enter ESP32 device path",
+            "default": "/dev/ttyUSB0"
         }
     ]
 }

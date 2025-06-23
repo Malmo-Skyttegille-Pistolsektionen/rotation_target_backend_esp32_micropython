@@ -3,11 +3,16 @@ import sys
 import asyncio
 import os
 
+
 sys.path.insert(0, "/libs")
 sys.path.insert(0, "/src")
 
-print("main.py sys.path:", sys.path)
+import logging
 
+logging.basicConfig(level=logging.DEBUG)
+
+print("main.py sys.path:", sys.path)
+logging.debug("main.py sys.path: %s", sys.path)
 
 print("platform: ", sys.platform)
 print("os.uname: ", os.uname())
