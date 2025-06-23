@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import Optional, Awaitable
 from time import ticks_ms, ticks_diff
 from common.program import Program, Event, Series
 from common.common import EventType, program_state
@@ -28,9 +28,9 @@ class ProgramExecutor:
 
     async def run_series(self) -> None:
         logging.debug("[ProgramExecutor] Entered run_series()")
-        program = program_state.program
-        series_index = program_state.current_series_index
-        event_index = program_state.current_event_index
+        program: Optional[Program] = program_state.program
+        series_index: int = program_state.current_series_index
+        event_index: int = program_state.current_event_index
 
         if program is None:
             logging.debug("[ProgramExecutor] No program loaded in run_series.")
@@ -40,10 +40,9 @@ class ProgramExecutor:
             logging.debug("[ProgramExecutor] Invalid series index in run_series.")
             return
 
-        series = program.series[series_index]
-        # All durations in ms
-        event_durations_ms = [e.duration * 1000 for e in series.events]
-        total_time_ms = sum(event_durations_ms)
+        series: Series = program.series[series_index]
+        event_durations_ms: list[int] = [e.duration * 1000 for e in series.events]
+        total_time_ms: int = sum(event_durations_ms)
         logging.debug(
             f"[ProgramExecutor] Running series {series_index} with total time {total_time_ms} ms"
         )
@@ -56,12 +55,12 @@ class ProgramExecutor:
         )
 
         program_state.running_series_start = ticks_ms()
-        chrono_task = asyncio.create_task(
+        chrono_task: asyncio.Task = asyncio.create_task(
             self._emit_series_chrono(program_state.running_series_start, total_time_ms)
         )
 
         for idx in range(event_index, len(series.events)):
-            event = series.events[idx]
+            event: Event = series.events[idx]
             program_state.current_event_index = idx
             await emit_sse_event(
                 EventType.EVENT_STARTED,
@@ -83,10 +82,10 @@ class ProgramExecutor:
                     target.hide()
 
             # Wait for this event's duration (in ms), but check for external stop frequently
-            event_start = ticks_ms()
-            event_duration_ms = event.duration * 1000
+            event_start: int = ticks_ms()
+            event_duration_ms: int = event.duration * 1000
             while True:
-                elapsed_ms = ticks_diff(ticks_ms(), event_start)
+                elapsed_ms: int = ticks_diff(ticks_ms(), event_start)
                 if elapsed_ms >= event_duration_ms:
                     break
                 # Check for external stop every 200ms
@@ -136,15 +135,15 @@ class ProgramExecutor:
             program_state.current_series_index = 0
             program_state.current_event_index = 0
 
-    async def _emit_series_chrono(self, start_time_ms, total_time_ms):
+    async def _emit_series_chrono(self, start_time_ms: int, total_time_ms: int) -> None:
         while True:
             if program_state.running_series_start is None:
                 logging.debug(
                     "[ProgramExecutor] _emit_series_chrono detected external stop."
                 )
                 break
-            elapsed_ms = ticks_diff(ticks_ms(), start_time_ms)
-            remaining_ms = max(0, total_time_ms - elapsed_ms)
+            elapsed_ms: int = ticks_diff(ticks_ms(), start_time_ms)
+            remaining_ms: int = max(0, total_time_ms - elapsed_ms)
             await emit_sse_event(
                 EventType.CHRONO,
                 {
@@ -202,7 +201,7 @@ class ProgramExecutor:
 
     async def load(self, program_id: int) -> bool:
         logging.debug(f"[ProgramExecutor] Entered load(program_id={program_id})")
-        program = programs.get(program_id)
+        program: Optional[Program] = programs.get(program_id)
         if not program:
             logging.debug(
                 f"[ProgramExecutor] Program {program_id} not found for loading."
@@ -216,4 +215,4 @@ class ProgramExecutor:
         return True
 
 
-program_executor = ProgramExecutor()
+program_executor: ProgramExecutor = ProgramExecutor()

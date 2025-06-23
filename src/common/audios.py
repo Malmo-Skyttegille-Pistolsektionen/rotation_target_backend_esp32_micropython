@@ -66,7 +66,7 @@ class Audios:
     def get_all(self) -> Dict[int, Audio]:
         return self._audios
 
-    async def add_uploaded(self, title: str, filename: str) -> Audio:
+    async def add_uploaded(self, title: str, filename: str, codec: str) -> Audio:
         # Find next available id (start at 100 for uploads)
         next_id = 100
         while next_id in self._audios:

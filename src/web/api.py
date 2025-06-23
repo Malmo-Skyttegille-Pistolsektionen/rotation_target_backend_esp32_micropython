@@ -1,10 +1,12 @@
 import os
+from common.utils import dir_exists, make_dirs
 from microdot import Microdot, Response
 from common.programs import programs
 from common.program_executor import program_executor
 from common.target import hide, show  # Import the singleton instance
 from common.common import program_state
 from common.audios import audios  # Singleton instance of Audios
+from libs.microdot.multipart import with_form_data
 import logging
 
 logging.debug("[API] Importing API routes...")
@@ -68,12 +70,13 @@ async def programs_list(request):
             "id": program.id,
             "title": program.title,
             "description": program.description,
+            "readonly": program.readonly,
         }
         for program in programs.get_all().values()
     ]
 
-    logging.debug("programs.list() called: ", result)
-    logging.debug("[API] Returning:", result)
+    logging.debug(f"programs.list() called: {result}")
+    logging.debug(f"[API] Returning: {result}")
     return result
 
 
@@ -156,40 +159,60 @@ async def programs_delete(request, program_id):
 @api_part.get("/audios")
 async def audios_list(request):
     logging.debug(f"[API] {request.method} {request.path} called")
-    builtin = [audio.to_dict() for audio in audios.get_all().values() if audio.readonly]
-    uploaded = [
-        audio.to_dict() for audio in audios.get_all().values() if not audio.readonly
-    ]
-    return {"builtin": builtin, "uploaded": uploaded}
+    audio = [audio.to_dict() for audio in audios.get_all().values()]
+    return {"audios": audio}
 
 
 @api_part.post("/audios")
+@with_form_data
 async def audios_upload(request):
     logging.debug(f"[API] {request.method} {request.path} called")
-    # Expecting multipart/form-data with file, title, codec
-    if request.files is None or "file" not in request.files:
+    logging.debug(
+        f"[API] Request files: {getattr(
+        request, 'files', None)}"
+    )
+    logging.debug(f"[API] Request form: {getattr(request, 'form', None)}")
+
+    if (
+        not hasattr(request, "files")
+        or request.files is None
+        or "file" not in request.files
+    ):
+        logging.debug("[API] No file uploaded in request")
         return {"error": "No file uploaded"}, 400
+
     file = request.files["file"]
     title = request.form.get("title")
     codec = request.form.get("codec")
+    logging.debug(
+        f"[API] Uploaded file: {file.filename}, title: {title}, codec: {codec}"
+    )
+
     if not title or not codec:
+        logging.debug("[API] Missing title or codec in form data")
         return {"error": "Missing title or codec"}, 400
 
-    # Save file to /resources/audio/
     filename = file.filename
     save_path = f"resources/audio/{filename}"
-    os.makedirs("resources/audio", exist_ok=True)
-    with open(save_path, "wb") as f:
-        f.write(file.read())
+    make_dirs("resources/audio")
 
-    audio = await audios.add_uploaded(title=title, filename=filename, codec=codec)
-    result = [
-        {
-            "id": audio.id,
-        }
-    ]
+    try:
+        file.save(save_path)
+        logging.debug(f"[API] File saved to {save_path}")
+    except Exception as e:
+        logging.debug(f"[API] Failed to save file: {e}")
+        return {"error": "Failed to save file"}, 500
 
-    return result, 201
+    try:
+        audio = await audios.add_uploaded(title=title, filename=filename, codec=codec)
+        logging.debug(f"[API] Audio uploaded successfully: {audio.to_dict()}")
+
+        result = {"id": audio.id}
+
+        return result, 201
+    except Exception as e:
+        logging.debug(f"[API] Failed to add uploaded audio: {e}")
+        return {"error": "Failed to add audio"}, 500
 
 
 @api_part.delete("/audios/<int:audio_id>/delete")

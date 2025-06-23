@@ -11,11 +11,8 @@ import logging
 
 logging.basicConfig(level=logging.DEBUG)
 
-print("main.py sys.path:", sys.path)
 logging.debug("main.py sys.path: %s", sys.path)
-
-print("platform: ", sys.platform)
-print("os.uname: ", os.uname())
+logging.debug(f"os.uname: { os.uname()}")
 
 from src import backend
 

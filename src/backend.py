@@ -9,7 +9,7 @@ from common.audio import is_supported_wav
 from common.utils import dir_exists, file_exists
 import network
 
-from microdot import Microdot, Response
+from microdot import Microdot, Response, Request
 from microdot.cors import CORS
 from microdot.microdot import MUTED_SOCKET_ERRORS
 from web.api import api_part
@@ -26,6 +26,8 @@ def create_app():
 
     MUTED_SOCKET_ERRORS.append(113)  # ECONNABORTED error
     Response.default_content_type = "application/json"
+    Request.max_content_length = 1024 * 1024  # 1 MB max request size
+
     app.mount(api_part, url_prefix="/api/v1")
     app.mount(sse_part, url_prefix="/sse/v1")
     app.mount(static_part, url_prefix="/")
@@ -47,16 +49,17 @@ async def main():
 
     app = create_app()
     # start the server in a background task
-    server = asyncio.create_task(app.start_server(port=8080, debug=True))
+    port = 8080
+    server = asyncio.create_task(app.start_server(port=port, debug=True))
     ip_address = network.WLAN(network.STA_IF).ifconfig()[0]
-    logging.debug(f"Server started on {ip_address}:8080")
+    logging.debug(f"Server started on {ip_address}:{port}")
 
     await server
 
 
 logging.debug(
-    "8bit_8khz_mono.wav is supported wav: ",
-    is_supported_wav("src/resources/audio/8bit_8khz_mono.wav"),
+    f"8bit_8khz_mono.wav is supported wav: {
+    is_supported_wav("src/resources/audio/8bit_8khz_mono.wav")}"
 )
 
 
