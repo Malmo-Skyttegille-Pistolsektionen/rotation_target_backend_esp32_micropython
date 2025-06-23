@@ -59,32 +59,46 @@ class Programs:
         print(f"[Programs] Total programs loaded: {len(self._programs)}")
 
     def add_uploaded(self, program_data: Dict[str, Any]) -> Program:
-        directory = "src/resources/programs"
+        directory = "resources/programs"
+        print(f"[add_uploaded] Checking if directory exists: {directory}")
 
         if not dir_exists(directory):
+            print(f"[add_uploaded] Directory does not exist. Creating: {directory}")
             make_dirs(directory)
+        else:
+            print(f"[add_uploaded] Directory exists: {directory}")
 
         # Find all used ids in the directory
         used_ids = set()
+        print(f"[add_uploaded] Scanning for used IDs in directory: {directory}")
         for fname in os.listdir(directory):
+            print(f"[add_uploaded] Found file: {fname}")
             if fname.endswith(".json"):
                 if fname[:-5].isdigit():  # Check if the filename is a number
                     id_str = fname[:-5]
                     used_ids.add(int(id_str))
+                    print(f"[add_uploaded] Found used id: {id_str}")
 
         # Find the next available id starting from 100
         next_id = 100
+        print(f"[add_uploaded] Searching for next available id starting from {next_id}")
         while next_id in used_ids:
+            print(f"[add_uploaded] id {next_id} is already used")
             next_id += 1
+        print(f"[add_uploaded] Next available id: {next_id}")
+
         program_data["id"] = next_id
         program_data["readonly"] = False
+
         # Write to file
         file = directory + "/" + f"{next_id}.json"
+        print(f"[add_uploaded] Writing program data to file: {file}")
         with open(file, "w") as f:
-            json.dump(program_data, f, indent=2)
+            json.dump(program_data, f)
         print(f"[Programs] Uploaded program id={next_id} to {file}")
 
         # Add to in-memory store
+        print(f"[add_uploaded] Adding program to in-memory store")
         return self.add(program_data, readonly=False)
 
     def delete(self, program_id: int) -> bool:

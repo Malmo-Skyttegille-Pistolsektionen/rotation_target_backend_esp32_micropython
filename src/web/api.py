@@ -83,6 +83,8 @@ async def programs_upload(request):
 
     try:
         program = programs.add_uploaded(program_data=data)
+        print(f"[API] HERE!!!!")
+
         result = [
             {
                 "id": program.id,
@@ -92,7 +94,7 @@ async def programs_upload(request):
         return result, 201
     except Exception as e:
         print(f"[API] Program upload failed: {e}")
-        return {"error": "Invalid program structure"}, 400
+        return {"ture"}, 400
 
 
 @api_part.get("/programs/<int:program_id>")
@@ -180,7 +182,7 @@ async def audios_upload(request):
     with open(save_path, "wb") as f:
         f.write(file.read())
 
-    audio = audios.add_uploaded(title=title, filename=filename, codec=codec)
+    audio = await audios.add_uploaded(title=title, filename=filename, codec=codec)
     result = [
         {
             "id": audio.id,

@@ -63,7 +63,7 @@ class Audios:
     def get_all(self) -> Dict[int, Audio]:
         return self._audios
 
-    def add_uploaded(self, title: str, filename: str) -> Audio:
+    async def add_uploaded(self, title: str, filename: str) -> Audio:
         # Find next available id (start at 100 for uploads)
         next_id = 100
         while next_id in self._audios:
@@ -79,7 +79,7 @@ class Audios:
 
         uploaded = [a.to_dict() for a in self._audios.values() if not a.readonly]
         with open(index_json_path, "w") as f:
-            json.dump(uploaded, f, indent=2)
+            json.dump(uploaded, f)
         return audio
 
     def delete_uploaded(self, audio_id: int) -> bool:
@@ -94,7 +94,7 @@ class Audios:
             uploaded_path = "resources/audio/uploaded.json"
             uploaded = [a.to_dict() for a in self._audios.values() if not a.readonly]
             with open(uploaded_path, "w") as f:
-                json.dump(uploaded, f, indent=2)
+                json.dump(uploaded, f)
             return True
         return False
 
