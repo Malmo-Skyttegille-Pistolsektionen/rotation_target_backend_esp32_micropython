@@ -82,8 +82,7 @@ async def programs_upload(request):
     data = request.json
 
     try:
-        program = programs.add_uploaded(program_data=data)
-        print(f"[API] HERE!!!!")
+        program = await programs.add_uploaded(program_data=data)
 
         result = [
             {
@@ -146,7 +145,7 @@ async def programs_delete(request, program_id):
     if not isinstance(program_id, int) or program_id < 0:
         return {"error": "Invalid ID"}, 400
 
-    deleted = programs.delete(program_id)
+    deleted = await programs.delete(program_id)
     if deleted:
         return {"message": "Program deleted successfully"}
     else:

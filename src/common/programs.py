@@ -60,7 +60,7 @@ class Programs:
 
         print(f"[Programs] Total programs loaded: {len(self._programs)}")
 
-    def add_uploaded(self, program_data: Dict[str, Any]) -> Program:
+    async def add_uploaded(self, program_data: Dict[str, Any]) -> Program:
         directory = "resources/programs"
         print(f"[add_uploaded] Checking if directory exists: {directory}")
 
@@ -108,7 +108,7 @@ class Programs:
 
         return program
 
-    def delete(self, program_id: int) -> bool:
+    async def delete(self, program_id: int) -> bool:
         program = self._programs.get(program_id)
         if program and not program.readonly:
             del self._programs[program_id]
