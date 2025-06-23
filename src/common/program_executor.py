@@ -54,10 +54,18 @@ class ProgramExecutor:
             },
         )
 
-        program_state.running_series_start = ticks_ms()
+        series_start = ticks_ms()
+        program_state.running_series_start = series_start
         chrono_task: asyncio.Task = asyncio.create_task(
-            self._emit_series_chrono(program_state.running_series_start, total_time_ms)
+            self._emit_series_chrono(series_start, total_time_ms)
         )
+
+        # Calculate absolute start time for each event
+        event_absolute_times = []
+        t = series_start
+        for dur in event_durations_ms:
+            event_absolute_times.append(t)
+            t += dur
 
         for idx in range(event_index, len(series.events)):
             event: Event = series.events[idx]
@@ -81,23 +89,15 @@ class ProgramExecutor:
                 elif event.command == "hide":
                     target.hide()
 
-            # Wait for this event's duration (in ms), but check for external stop frequently
-            event_start: int = ticks_ms()
-            event_duration_ms: int = event.duration * 1000
-            stop_time: int = event_start + event_duration_ms
+            # Wait until the absolute end time for this event
+            event_end_time = event_absolute_times[idx] + event_durations_ms[idx]
             while True:
-                now: int = ticks_ms()
-                if now >= stop_time:
+                now = ticks_ms()
+                remaining = ticks_diff(event_end_time, now)
+                if remaining <= 0:
                     break
-                # Check for external stop every 10ms
-                for _ in range(100):
-                    if program_state.running_series_start is None:
-                        logging.debug(
-                            "[ProgramExecutor] Series stopped externally during event."
-                        )
-                        chrono_task.cancel()
-                        return
-                    await asyncio.sleep_ms(10)
+                # Sleep for the smaller of 200ms or the remaining time
+                await asyncio.sleep(min(0.2, remaining / 1000))
 
             if program_state.running_series_start is None:
                 logging.debug("[ProgramExecutor] Series stopped externally.")
