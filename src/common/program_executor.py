@@ -3,7 +3,7 @@ from time import ticks_ms, ticks_diff
 from common.program import Program, Event, Series
 from common.common import EventType, program_state
 from common.programs import programs
-import target
+import common.target as target
 from web.sse import emit_sse_event
 import asyncio
 
@@ -40,6 +40,7 @@ class ProgramExecutor:
             return
 
         series = program.series[series_index]
+        # All durations in ms
         event_durations_ms = [e.duration * 1000 for e in series.events]
         total_time_ms = sum(event_durations_ms)
         print(
@@ -80,12 +81,14 @@ class ProgramExecutor:
                 elif event.command == "hide":
                     target.hide()
 
+            # Wait for this event's duration (in ms), but check for external stop frequently
             event_start = ticks_ms()
             event_duration_ms = event.duration * 1000
             while True:
                 elapsed_ms = ticks_diff(ticks_ms(), event_start)
                 if elapsed_ms >= event_duration_ms:
                     break
+                # Check for external stop every 200ms
                 for _ in range(5):
                     if program_state.running_series_start is None:
                         print(

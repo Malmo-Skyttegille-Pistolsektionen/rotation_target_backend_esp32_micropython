@@ -1,8 +1,8 @@
 import os
 from microdot import Microdot, Response
 from common.programs import programs
-from program_executor import program_executor
-from target import hide, show  # Import the singleton instance
+from common.program_executor import program_executor
+from common.target import hide, show  # Import the singleton instance
 from common.common import program_state
 from common.audios import audios  # Singleton instance of Audios
 
