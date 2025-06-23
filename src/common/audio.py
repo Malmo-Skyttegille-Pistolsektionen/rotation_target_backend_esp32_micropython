@@ -1,6 +1,6 @@
 # from machine import DAC, Pin
 import os
-from typing import List, Optional
+from typing import List
 
 
 DEFAULT_DAC_PIN: int = 25
@@ -9,10 +9,11 @@ DEFAULT_DAC_PIN: int = 25
 def is_supported_wav(filename: str) -> bool:
     """Check if WAV file is 8-bit, 8kHz, mono, PCM."""
     try:
+        print(f"Checking WAV file: {filename}")
         with open(filename, "rb") as f:
             header = f.read(44)
             if header[0:4] != b"RIFF" or header[8:12] != b"WAVE":
-                print("Not a valid WAV file.")
+                print("Not a valid WAV file:" + filename)
                 return False
 
             # https://docs.fileformat.com/audio/wav/
@@ -28,7 +29,9 @@ def is_supported_wav(filename: str) -> bool:
             ):
                 return True
             print(
-                f"Unsupported WAV format: format={audio_format}, channels={num_channels}, rate={sample_rate}, bits={bits_per_sample}"
+                "Unsupported WAV format: "
+                f"format={audio_format}, channels={num_channels}, "
+                f"rate={sample_rate}, bits={bits_per_sample}"
             )
             return False
     except Exception as e:
@@ -58,5 +61,3 @@ def list_wav_files(directory: str = "src/resources/audio") -> List[str]:
         if file.endswith(".wav"):
             wav_files.append(file)
     return wav_files
-
-

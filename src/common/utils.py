@@ -1,12 +1,17 @@
 import os
+from typing import Optional
 
-import stat
 
-
-def is_dir(path):
+def dir_exists(directory: str) -> bool:
     try:
-        mode = os.stat(path)[0]
-        return stat.S_ISDIR(mode)
+        return (os.stat(directory)[0] & 0o170000) == 0o040000
+    except OSError:
+        return False
+
+
+def file_exists(filename: str):
+    try:
+        return (os.stat(filename)[0] & 0o170000) == 0o100000
     except OSError:
         return False
 
@@ -25,5 +30,5 @@ def make_dirs(directory: str) -> None:
         if not part:
             continue
         path = path + "/" + part if path else part
-        if not is_dir(path):
+        if not dir_exists(path):
             os.mkdir(path)

@@ -4,7 +4,9 @@
 
 
 import asyncio
+from common.audios import audios
 from common.audio import is_supported_wav
+from common.utils import dir_exists, file_exists
 import network
 
 from microdot import Microdot, Response
@@ -37,6 +39,11 @@ async def main():
     for program in programs.get_all().values():
         print(f"  id={program.id}, title={program.title}")
 
+    audios.load_all()
+    print("[Backend] Loaded audios:")
+    for audio in audios.get_all().values():
+        print(f"  id={audio.id}, title={audio.title}")
+
     app = create_app()
     # start the server in a background task
     server = asyncio.create_task(app.start_server(port=8080, debug=True))
@@ -47,8 +54,8 @@ async def main():
 
 
 print(
-    "8bit_8khz_mono.wav is supported: ",
-    is_supported_wav("Playing test audio: src/resources/audio/8bit_8khz_mono.wav"),
+    "8bit_8khz_mono.wav is supported wav: ",
+    is_supported_wav("src/resources/audio/8bit_8khz_mono.wav"),
 )
 
 

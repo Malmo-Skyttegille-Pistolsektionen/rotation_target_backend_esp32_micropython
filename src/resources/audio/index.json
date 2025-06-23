@@ -1,0 +1,8 @@
+[
+  {
+    "id": 1,
+    "title": "8-bit 8kHz Mono Test",
+    "filename": "8bit_8khz_mono.wav",
+    "codec": "pcm_8bit_8khz_mono"
+  }
+]

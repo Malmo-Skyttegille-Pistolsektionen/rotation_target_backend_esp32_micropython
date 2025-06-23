@@ -1,6 +1,7 @@
-import os
 import json
-from typing import Dict, List, Optional, Any
+import os
+from typing import Any, Dict, List, Optional
+from common.utils import dir_exists, make_dirs
 
 
 class Audio:
@@ -27,24 +28,34 @@ class Audios:
 
     def load_all(self) -> None:
         # Load built-in audios
-        common_path = "src/resources/audio/readonly.json"
-        if os.path.exists(common_path):
-            with open(common_path) as f:
-                for entry in json.load(f):
-                    audio = Audio(
-                        entry["id"], entry["title"], entry["filename"], readonly=True
-                    )
-                    self._audios[audio.id] = audio
+        index_file = "src/resources/audio/index.json"
+        with open(index_file) as f:
+            print(f"[Audios] Loading shipped audio files from: {index_file}")
+
+            for entry in json.load(f):
+                audio = Audio(
+                    entry["id"], entry["title"], entry["filename"], readonly=True
+                )
+                self._add(audio)
 
         # Load uploaded audios
-        uploaded_path = "resources/audio/uploaded.json"
-        if os.path.exists(uploaded_path):
-            with open(uploaded_path) as f:
+        uploaded_path = "resources/audio"
+        if dir_exists(uploaded_path):
+            index_file = uploaded_path + "/" + "index.json"
+            with open(index_file) as f:
+                print(f"[Audios] Loading uploaded audio files from: {index_file}")
+
                 for entry in json.load(f):
                     audio = Audio(
                         entry["id"], entry["title"], entry["filename"], readonly=False
                     )
-                    self._audios[audio.id] = audio
+                    self._add(audio)
+
+    def _add(self, audio: Audio) -> None:
+        print(
+            f"Adding audio: id={audio.id}, title={audio.title}, filename={audio.filename}, readonly={audio.readonly}"
+        )
+        self._audios[audio.id] = audio
 
     def get(self, audio_id: int) -> Optional[Audio]:
         return self._audios.get(audio_id)
@@ -59,11 +70,15 @@ class Audios:
             next_id += 1
         audio = Audio(next_id, title, filename, readonly=False)
         self._audios[next_id] = audio
+
+        # Ensure the resources/audio directory exists
+        if not dir_exists("resources/audio"):
+            make_dirs("resources/audio")
         # Save to uploaded.json
-        uploaded_path = "resources/audio/uploaded.json"
-        os.makedirs(os.path.dirname(uploaded_path), exist_ok=True)
+        index_json_path = "resources/audio/index.json"
+
         uploaded = [a.to_dict() for a in self._audios.values() if not a.readonly]
-        with open(uploaded_path, "w") as f:
+        with open(index_json_path, "w") as f:
             json.dump(uploaded, f, indent=2)
         return audio
 

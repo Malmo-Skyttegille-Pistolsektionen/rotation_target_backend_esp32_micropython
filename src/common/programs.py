@@ -3,7 +3,7 @@ from common.program import Program
 import json
 import os
 
-from common.utils import is_dir, make_dirs
+from common.utils import dir_exists, make_dirs
 
 
 class Programs:
@@ -32,10 +32,10 @@ class Programs:
         # Load shipped programs (readonly)
         for fname in os.listdir(shipped_dir):
             if fname.endswith(".json") and fname[:-5].isdigit():
-                path = os.path.join(shipped_dir, fname)
+                file = shipped_dir + "/" + fname
                 try:
-                    print(f"[Programs] Loading shipped program file: {path}")
-                    with open(path) as f:
+                    print(f"[Programs] Loading shipped program file: {file}")
+                    with open(file) as f:
                         data = json.load(f)
                         readonly = True
                         self.add(data, readonly=readonly)
@@ -44,13 +44,13 @@ class Programs:
 
         user_dir = "resources/programs"
         # Load user-uploaded programs (not readonly)
-        if is_dir(user_dir):
+        if dir_exists(user_dir):
             for fname in os.listdir(user_dir):
                 if fname.endswith(".json") and fname[:-5].isdigit():
-                    path = os.path.join(user_dir, fname)
+                    file = user_dir + "/" + fname
                     try:
-                        print(f"[Programs] Loading uploaded program file: {path}")
-                        with open(path) as f:
+                        print(f"[Programs] Loading uploaded program file: {file}")
+                        with open(file) as f:
                             data = json.load(f)
                             self.add(data, readonly=False)
                     except OSError:
@@ -61,7 +61,7 @@ class Programs:
     def upload(self, program_data: Dict[str, Any]) -> Program:
         directory = "src/resources/programs"
 
-        if not is_dir(directory):
+        if not dir_exists(directory):
             make_dirs(directory)
 
         # Find all used ids in the directory

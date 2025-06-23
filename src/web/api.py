@@ -1,9 +1,10 @@
-import asyncio
+import os
 from microdot import Microdot, Response
 from common.programs import programs
 from program_executor import program_executor
 from target import hide, show  # Import the singleton instance
 from common.common import program_state
+from common.audios import audios  # Singleton instance of Audios
 
 print("[API] Importing API routes...")
 
@@ -17,7 +18,7 @@ async def status(request):
         "running": program_state.running_series_start is not None,
         "next_event": (
             {
-                "program_id": program_state.program_id,
+                "program_id": program_state.program.id,
                 "series_index": program_state.current_series_index,
                 "event_index": program_state.current_event_index
                 + 1,  # might not be correct if current_event_index is 0
@@ -142,3 +143,48 @@ async def programs_delete(request, program_id):
         return {"message": "Program deleted successfully"}
     else:
         return {"error": "Program not found"}, 404
+
+
+@api_part.get("/audios")
+async def audios_list(request):
+    print(f"[API] {request.method} {request.path} called")
+    builtin = [audio.to_dict() for audio in audios.get_all().values() if audio.readonly]
+    uploaded = [
+        audio.to_dict() for audio in audios.get_all().values() if not audio.readonly
+    ]
+    return {"builtin": builtin, "uploaded": uploaded}
+
+
+@api_part.post("/audios/upload")
+async def audios_upload(request):
+    print(f"[API] {request.method} {request.path} called")
+    # Expecting multipart/form-data with file, title, codec
+    if request.files is None or "file" not in request.files:
+        return {"error": "No file uploaded"}, 400
+    file = request.files["file"]
+    title = request.form.get("title")
+    codec = request.form.get("codec")
+    if not title or not codec:
+        return {"error": "Missing title or codec"}, 400
+
+    # Save file to /resources/audio/
+    filename = file.filename
+    save_path = f"resources/audio/{filename}"
+    os.makedirs("resources/audio", exist_ok=True)
+    with open(save_path, "wb") as f:
+        f.write(file.read())
+
+    audio = audios.add_uploaded(title=title, filename=filename, codec=codec)
+    return audio.to_dict(), 201
+
+
+@api_part.delete("/audios/<int:audio_id>/delete")
+async def audios_delete(request, audio_id):
+    print(f"[API] {request.method} {request.path} called")
+    if not isinstance(audio_id, int) or audio_id < 0:
+        return {"error": "Invalid ID"}, 400
+    deleted = audios.delete_uploaded(audio_id)
+    if deleted:
+        return {"message": "Audio deleted successfully"}
+    else:
+        return {"error": "Audio not found"}, 404
