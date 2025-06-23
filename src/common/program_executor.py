@@ -84,19 +84,20 @@ class ProgramExecutor:
             # Wait for this event's duration (in ms), but check for external stop frequently
             event_start: int = ticks_ms()
             event_duration_ms: int = event.duration * 1000
+            stop_time: int = event_start + event_duration_ms
             while True:
-                elapsed_ms: int = ticks_diff(ticks_ms(), event_start)
-                if elapsed_ms >= event_duration_ms:
+                now: int = ticks_ms()
+                if now >= stop_time:
                     break
-                # Check for external stop every 200ms
-                for _ in range(5):
+                # Check for external stop every 10ms
+                for _ in range(100):
                     if program_state.running_series_start is None:
                         logging.debug(
                             "[ProgramExecutor] Series stopped externally during event."
                         )
                         chrono_task.cancel()
                         return
-                    await asyncio.sleep(0.2)
+                    await asyncio.sleep_ms(10)
 
             if program_state.running_series_start is None:
                 logging.debug("[ProgramExecutor] Series stopped externally.")
