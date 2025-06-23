@@ -4,6 +4,8 @@ import json
 import os
 
 from common.utils import dir_exists, make_dirs
+from common.common import EventType
+from web.sse import emit_sse_event
 
 
 class Programs:
@@ -99,7 +101,12 @@ class Programs:
 
         # Add to in-memory store
         print(f"[add_uploaded] Adding program to in-memory store")
-        return self.add(program_data, readonly=False)
+        program = self.add(program_data, readonly=False)
+
+        # Emit SSE event
+        await emit_sse_event(EventType.PROGRAM_ADDED, {"program_id": program.id})
+
+        return program
 
     def delete(self, program_id: int) -> bool:
         program = self._programs.get(program_id)
@@ -110,6 +117,12 @@ class Programs:
             try:
                 os.remove(file)
                 print(f"[Programs] Deleted program id={program_id} from {file}")
+
+                # Emit SSE event
+                await emit_sse_event(
+                    EventType.PROGRAM_DELETED, {"program_id": program.id}
+                )
+
                 return True
             except OSError as e:
                 print(f"[Programs] Failed to delete file {file}: {e}")

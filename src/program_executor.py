@@ -40,7 +40,6 @@ class ProgramExecutor:
             return
 
         series = program.series[series_index]
-        # All durations in ms
         event_durations_ms = [e.duration * 1000 for e in series.events]
         total_time_ms = sum(event_durations_ms)
         print(
@@ -73,7 +72,7 @@ class ProgramExecutor:
 
             if event.command:
                 await emit_sse_event(
-                    "target_status",
+                    EventType.TARGET_STATUS,
                     {"status": "shown" if event.command == "show" else "hidden"},
                 )
                 if event.command == "show":
@@ -81,14 +80,12 @@ class ProgramExecutor:
                 elif event.command == "hide":
                     target.hide()
 
-            # Wait for this event's duration (in ms), but check for external stop frequently
             event_start = ticks_ms()
             event_duration_ms = event.duration * 1000
             while True:
                 elapsed_ms = ticks_diff(ticks_ms(), event_start)
                 if elapsed_ms >= event_duration_ms:
                     break
-                # Check for external stop every 200ms
                 for _ in range(5):
                     if program_state.running_series_start is None:
                         print(
@@ -104,7 +101,7 @@ class ProgramExecutor:
                 return
 
             await emit_sse_event(
-                "event_completed",
+                EventType.EVENT_COMPLETED,
                 {
                     "program_id": program.id,
                     "series_index": series_index,
@@ -127,7 +124,7 @@ class ProgramExecutor:
             program_state.current_event_index = 0
             program_state.running_series_start = None
             await emit_sse_event(
-                "series_next",
+                EventType.SERIES_NEXT,
                 {
                     "program_id": program.id,
                     "series_index": program_state.current_series_index,
@@ -135,7 +132,7 @@ class ProgramExecutor:
             )
         else:
             await emit_sse_event(
-                "program_completed",
+                EventType.PROGRAM_COMPLETED,
                 {
                     "program_id": program.id,
                 },
@@ -152,7 +149,7 @@ class ProgramExecutor:
             elapsed_ms = ticks_diff(ticks_ms(), start_time_ms)
             remaining_ms = max(0, total_time_ms - elapsed_ms)
             await emit_sse_event(
-                "chrono",
+                EventType.CHRONO,
                 {
                     "elapsed": elapsed_ms,
                     "remaining": remaining_ms,

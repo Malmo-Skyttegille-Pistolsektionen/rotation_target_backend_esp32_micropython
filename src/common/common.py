@@ -25,7 +25,8 @@ class EventType:
     EVENT_STARTED: str = "event_started"  #
     TARGET_STATUS: str = "target_status"  #
     CHRONO: str = "chrono"  #
-    PROGRAM_UPLOADED: str = "program_uploaded"
+    PROGRAM_ADDED: str = "program_added"
+    PROGRAM_DELETED: str = "program_deleted"
     AUDIO_ADDED: str = "audio_added"
     AUDIO_DELETED: str = "audio_deleted"
 

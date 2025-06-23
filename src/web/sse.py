@@ -32,3 +32,43 @@ async def handle_sse(request, sse):
     finally:
         connected_clients.discard(sse)
         print("[SSE] Client removed from connected_clients")
+
+
+# event: program_added
+# data: {"program_id":1}
+
+# event: program_deleted
+# data: {"program_id":1}
+
+# event: program_started
+# data: {"program_id":0}
+
+# event: program_completed
+# data: {"program_id":0}
+
+# event: series_started
+# data: {"program_id":0, "series_index":0}
+
+# event: series_stopped
+# data: {"program_id":0, "series_index":0, "event_index":1}
+
+# event: event_started
+# data: {"program_id":0, "series_index":0, "event_index":1}
+
+# event: series_completed
+# data: {"program_id":0, "series_index":0}
+
+# event: series_next
+# data: {"program_id":0, "series_index":0}
+
+# event: target_status
+# data: {"status":"shown"} # shown, hidden
+
+# event: audio_added
+# data: {"audio_id":1}
+
+# event: audio_deleted
+# data: {"audio_id":1}
+
+# event: chrono
+# data: {elapsed: 123, remaining: 456, total: 579}
