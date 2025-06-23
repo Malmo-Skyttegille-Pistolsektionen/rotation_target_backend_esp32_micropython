@@ -100,15 +100,6 @@ class ProgramExecutor:
                 chrono_task.cancel()
                 return
 
-            await emit_sse_event(
-                EventType.EVENT_COMPLETED,
-                {
-                    "program_id": program.id,
-                    "series_index": series_index,
-                    "event_index": idx,
-                },
-            )
-
         chrono_task.cancel()
         await emit_sse_event(
             EventType.SERIES_COMPLETED,

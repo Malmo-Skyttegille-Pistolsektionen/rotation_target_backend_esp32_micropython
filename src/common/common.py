@@ -23,6 +23,7 @@ class EventType:
     SERIES_STOPPED: str = "series_stopped"  #
     SERIES_NEXT: str = "series_next"  #
     EVENT_STARTED: str = "event_started"  #
+    EVENT_COMPLETED: str = "event_completed"  #
     TARGET_STATUS: str = "target_status"  #
     CHRONO: str = "chrono"  #
     PROGRAM_ADDED: str = "program_added"
