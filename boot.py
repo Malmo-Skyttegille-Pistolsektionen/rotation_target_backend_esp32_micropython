@@ -3,11 +3,7 @@ import network
 import sys
 from time import sleep
 
-# from wifi import PASSWORD, SSID
-
-# Wi-Fi credentials
-SSID = "geniuses"
-PASSWORD = "#1!#2.4Ever-"
+from wifi_credentials import PASSWORD, SSID
 
 
 # Connect to Wi-Fi

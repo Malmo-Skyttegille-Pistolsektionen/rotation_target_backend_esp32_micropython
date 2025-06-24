@@ -1,13 +1,15 @@
 from microdot import Microdot, send_file
 import logging
 
+from microdot.microdot import Response
+
 static_part = Microdot()
 
 logging.debug("[STATIC] Importing static routes...")
 
-MIME_TYPES = {
-    ".svg": "image/svg+xml",
-}
+# Set content type not set by microdot
+Response.types_map["svg"] = "image/svg+xml"
+Response.types_map["ico"] = "image/x-icon"
 
 
 # Static File Handlers
@@ -22,20 +24,6 @@ async def index(request):
 async def static_files(request, path):
     try:
         logging.debug(f"[Static] Request ({request.path} ): {request.path} ")
-
-        ext = None
-        if "." in path:
-            ext = "." + path.rsplit(".", 1)[1]
-
-        if ext in MIME_TYPES:
-            logging.debug(
-                f"[Static] Serving file (content_type={MIME_TYPES[ext]}): {path}"
-            )
-            return send_file(
-                "static/webapp/" + path, content_type=MIME_TYPES[ext], max_age=3600
-            )
-
-        logging.debug(f"[Static] Serving file: {path}")
-        return send_file(f"static/webapp/{path}", max_age=3600)
+        return send_file(f"static/webapp/{path}")
     except OSError:
         return {"error": "resource not found"}, 404

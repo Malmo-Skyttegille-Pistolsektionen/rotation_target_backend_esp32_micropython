@@ -31,7 +31,7 @@ class Audios:
         # Load built-in audios
         index_file = "src/resources/audio/index.json"
         with open(index_file) as f:
-            logging.debug(f"[Audios] Loading shipped audio files from: {index_file}")
+            logging.info(f"[Audios] Loading shipped audio files from: {index_file}")
 
             for entry in json.load(f):
                 audio = Audio(
@@ -44,7 +44,7 @@ class Audios:
         if dir_exists(uploaded_path):
             index_file = uploaded_path + "/" + "index.json"
             with open(index_file) as f:
-                logging.debug(
+                logging.info(
                     f"[Audios] Loading uploaded audio files from: {index_file}"
                 )
 

@@ -27,7 +27,7 @@ class ProgramExecutor:
         return True
 
     async def run_series(self) -> None:
-        logging.debug("[ProgramExecutor] Entered run_series()")
+        logging.info("[ProgramExecutor] Entered run_series()")
         program: Optional[Program] = program_state.program
         series_index: int = program_state.current_series_index
         event_index: int = program_state.current_event_index
@@ -112,7 +112,7 @@ class ProgramExecutor:
                 "series_index": series_index,
             },
         )
-        logging.debug("[ProgramExecutor] Series finished.")
+        logging.info("[ProgramExecutor] Series finished.")
 
         if series_index + 1 < len(program.series):
             program_state.current_series_index = series_index + 1

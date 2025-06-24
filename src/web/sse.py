@@ -25,7 +25,7 @@ async def emit_sse_event(event, data):
 @with_sse
 async def handle_sse(request, sse):
     host, port = request.client_addr
-    logging.debug(f"[SSE] Client connected from {host}:{port}")
+    logging.info(f"[SSE] Client connected from {host}:{port}")
     connected_clients.add(sse)
     try:
         while True:

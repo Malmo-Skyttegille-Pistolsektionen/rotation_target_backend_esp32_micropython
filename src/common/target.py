@@ -1,7 +1,10 @@
 from common.common import program_state
 from time import ticks_ms, ticks_diff
+from machine import Pin
 
-# Store the last call time (initialize to None)
+TARGET_PIN = 5
+target = Pin(TARGET_PIN, Pin.OUT)
+
 last_target_action_time = None
 
 
@@ -17,8 +20,10 @@ def _update_last_action_time():
 def show():
     program_state.target_status_shown = True
     _update_last_action_time()
+    target.value(1)  # Set pin high to close the connection (activate relay/MOSFET)
 
 
 def hide():
     program_state.target_status_shown = False
     _update_last_action_time()
+    target.value(0)  # Set pin low to open the connection (deactivate relay/MOSFET)

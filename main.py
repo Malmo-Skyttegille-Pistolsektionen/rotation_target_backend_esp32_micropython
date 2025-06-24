@@ -11,8 +11,14 @@ import logging
 
 logging.basicConfig(level=logging.DEBUG)
 
-logging.debug("main.py sys.path: %s", sys.path)
-logging.debug(f"os.uname: { os.uname()}")
+# logging.debug("main.py sys.path: %s", sys.path)
+# logging.debug(f"os.uname: { os.uname()}")
+
+logging.debug("Running backend...")
+
+from hwinfo import main as print_hwinfo
+
+print_hwinfo()
 
 from src import backend
 
@@ -29,6 +35,3 @@ async def run_backend():
         # this code will drop to a REPL. Place machine.reset() in a finally
         # block to always reset, instead.
         machine.reset()
-
-
-asyncio.run(run_backend())
