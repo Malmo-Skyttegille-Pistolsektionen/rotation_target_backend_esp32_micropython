@@ -73,5 +73,5 @@ async def handle_sse(request, sse):
 # event: audio_deleted
 # data: {"audio_id":1}
 
-# event: chrono
+# event: chrono ms
 # data: {elapsed: 123, remaining: 456, total: 579}

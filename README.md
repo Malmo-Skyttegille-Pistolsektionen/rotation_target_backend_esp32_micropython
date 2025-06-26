@@ -1,4 +1,3 @@
-# ESP32 MicroPython Target Control Project
 
 ## Overview
 
@@ -10,7 +9,38 @@ This project provides a backend and web interface for controlling a target syste
 
 ## Setup
 
+## Hardware Setup
+
+| ESP32 Pin | DB9 Pin | Function        | Notes                    |
+|-----------|---------|----------------|--------------------------|
+| GPIO5     | 2       | Target Control | Connect via SOT23 MOSFET |
+| GND       | 5       | Ground         | Common ground            |
+
+**Wiring Diagram:**
+
+- The circuit uses a [BC547B NPN Transistor](https://www.electrokit.com/bc547b-to-92-npn-45v-100ma) (TO-92 package) 
+
+[DB9 to ESP32 wiring with BC547B transistor](https://user-images.githubusercontent.com/docs/images/wiring - DB9.png)
+
+```
+ESP32 GPIO5 ----[1kΩ resistor]----|B  BC547B  C|---- DB9 Pin 2 (Target Control)
+  |            |
+     ESP32 GND -------|E
+   |
+  DB9 Pin 5 (Ground)
+```
+
+[View interactive wiring diagram](https://www.falstad.com/circuit/circuitjs.html?ctz=CQAgjCAMB0l3BWEBmAHAJmgdgGzoRmACzICcpkORIOESCkICApgLRhgBQA7iFuoxyRUfAU1xQeowUUb85YyJwBOIVFXE41GoqkaMw8Jb3XUiG0yF37OABzXJ0mh0-koo4cEfhTUj55YIEsbSoXoKNrxuQVpYyFoxkiZwAf6JIeFh-m4ZKYlxCcFSCKSuYnjUOVIVoW5VAC40-DToleWtHhAwCEJYREQIjpD4QehO3aQlpFik8VgEw2NejAAmzABmAIYArgA29dXCLdQlTjVKqjVXPcedRtU3V83n1R1XRy8Abkz9oQi-5xATicYGgOCQoPBHm6nAA5i4sq4EONJAAlbRmCw6fz6KyMJC4mH2U63EluZDQ5beYq-aKlUIhf7UGokl4AeyBEA0jFkpBEBOgXXAnA5zOoPMgfKYUEFnU4QA)
+
+
 ### 1. Clone the Repository
+
+Clone this repository to your local machine:
+
+```bash
+git clone https://github.com/jimisola/msg_rotation-target-backend.git
+cd msg_rotation-target-backend
+```
 
 ### 2. Install Requirements
 
@@ -90,6 +120,12 @@ The web server will be available on the ESP32's IP address (check your router or
 See `tasks.json` for full details.  
 You can customize or add tasks as needed for your workflow.
 
+## API Reference
+
+See [`docs/openapi.yaml`](docs/openapi.yaml) for the full API specification.
+
+You can view and interact with the API using [Swagger Editor](https://editor.swagger.io/) by uploading the `openapi.yaml` file.
+
 ## License
 
-MIT (or your chosen license)
+MIT
