@@ -11,5 +11,3 @@ I2S_ID = 0
 I2S_SAMPLE_RATE = 8000
 I2S_BITS = 16  # PCM5102A supports 16/24/32 bits, but WAV is 8-bit so we'll expand
 I2S_CHANNELS = 1  # Mono
-
-# Remove I2C config if not used for audio
