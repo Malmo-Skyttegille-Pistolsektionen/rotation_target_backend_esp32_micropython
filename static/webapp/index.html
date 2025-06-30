@@ -6,22 +6,22 @@
   <title>MSG Rotation Target</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <script src="/config.js"></script>
-  <script type="module" crossorigin src="/assets/index-CR_7rC0k.js"></script>
+  <script type="module" crossorigin src="/assets/index-DiCjoppy.js"></script>
   <link rel="stylesheet" crossorigin href="/assets/index-BlR5ogfx.css">
 </head>
 
 <body>
   <main>
     <div class="tabs">
-      <button id="program-tab-button" class="tab active">Programs</button>
+      <button id="run-tab-button" class="tab active">Run</button>
       <button id="audio-tab-button" class="tab">Audio</button>
-      <button id="upload-program-tab-button" class="tab">Upload Program</button>
+      <button id="programs-tab-button" class="tab">Programs</button>
     </div>
 
-    <!-- Programs Tab -->
-    <section id="program-section" class="tab-content">
-      <section class="program">
-        <div class="program-controls-row">
+    <!-- Run Tab -->
+    <section id="run-section" class="tab-content">
+      <section class="run-program">
+        <div class="run-controls-row">
           <select id="choose-program"></select>
           <select id="choose-serie" class="hidden"></select>
           <button id="show-json" class="primary hidden">Show JSON</button>
@@ -42,8 +42,8 @@
           <button id="toggle-btn" class="primary">Toggle Targets</button>
         </div>
 
-        <section id="programs-timeline-wrapper" class="visualization primary hidden">
-          <div id="programs-timeline"></div>
+        <section id="run-timeline-wrapper" class="visualization primary hidden">
+          <div id="run-program-timeline"></div>
         </section>
       </section>
     </section>
@@ -69,9 +69,9 @@
       </section>
     </section>
 
-    <!-- Upload Program -->
-    <section id="upload-program-section" class="tab-content hidden">
-      <section class="program-upload">
+    <!-- Programs -->
+    <section id="programs-section" class="tab-content hidden">
+      <section class="upload-program">
         <h2>Upload Program</h2>
         <form id="program-upload-form" class="form-row">
           <input type="file" id="program-file" accept=".json" required />

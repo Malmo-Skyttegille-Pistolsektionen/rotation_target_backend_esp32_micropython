@@ -1,10 +1,10 @@
 {
     "readonly": false,
-    "description": "Match with 10 second exposure time and 10 series",
+    "description": "Match with 6 second exposure time and 10 series",
     "series": [
         {
             "optional": false,
-            "name": "10s Series 1",
+            "name": "6s Series 1",
             "events": [
                 {
                     "duration": 60000,
@@ -19,7 +19,7 @@
                 },
                 {
                     "command": "show",
-                    "duration": 10000
+                    "duration": 6000
                 },
                 {
                     "command": "hide",
@@ -39,7 +39,7 @@
         },
         {
             "optional": false,
-            "name": "10s Series 2",
+            "name": "6s Series 2",
             "events": [
                 {
                     "duration": 60000,
@@ -54,7 +54,7 @@
                 },
                 {
                     "command": "show",
-                    "duration": 10000
+                    "duration": 6000
                 },
                 {
                     "command": "hide",
@@ -74,7 +74,7 @@
         },
         {
             "optional": false,
-            "name": "10s Series 3",
+            "name": "6s Series 3",
             "events": [
                 {
                     "duration": 60000,
@@ -89,7 +89,7 @@
                 },
                 {
                     "command": "show",
-                    "duration": 10000
+                    "duration": 6000
                 },
                 {
                     "command": "hide",
@@ -109,7 +109,7 @@
         },
         {
             "optional": false,
-            "name": "10s Series 4",
+            "name": "6s Series 4",
             "events": [
                 {
                     "duration": 60000,
@@ -124,7 +124,7 @@
                 },
                 {
                     "command": "show",
-                    "duration": 10000
+                    "duration": 6000
                 },
                 {
                     "command": "hide",
@@ -144,7 +144,7 @@
         },
         {
             "optional": true,
-            "name": "10s Series 5",
+            "name": "6s Series 5",
             "events": [
                 {
                     "duration": 60000,
@@ -159,7 +159,7 @@
                 },
                 {
                     "command": "show",
-                    "duration": 10000
+                    "duration": 6000
                 },
                 {
                     "command": "hide",
@@ -179,7 +179,7 @@
         },
         {
             "optional": true,
-            "name": "10s Series 6",
+            "name": "6s Series 6",
             "events": [
                 {
                     "duration": 60000,
@@ -194,7 +194,7 @@
                 },
                 {
                     "command": "show",
-                    "duration": 10000
+                    "duration": 6000
                 },
                 {
                     "command": "hide",
@@ -214,7 +214,7 @@
         },
         {
             "optional": true,
-            "name": "10s Series 7",
+            "name": "6s Series 7",
             "events": [
                 {
                     "duration": 60000,
@@ -229,7 +229,7 @@
                 },
                 {
                     "command": "show",
-                    "duration": 10000
+                    "duration": 6000
                 },
                 {
                     "command": "hide",
@@ -249,7 +249,7 @@
         },
         {
             "optional": true,
-            "name": "10s Series 8",
+            "name": "6s Series 8",
             "events": [
                 {
                     "duration": 60000,
@@ -264,7 +264,7 @@
                 },
                 {
                     "command": "show",
-                    "duration": 10000
+                    "duration": 6000
                 },
                 {
                     "command": "hide",
@@ -284,7 +284,7 @@
         },
         {
             "optional": true,
-            "name": "10s Series 9",
+            "name": "6s Series 9",
             "events": [
                 {
                     "duration": 60000,
@@ -299,7 +299,7 @@
                 },
                 {
                     "command": "show",
-                    "duration": 10000
+                    "duration": 6000
                 },
                 {
                     "command": "hide",
@@ -319,7 +319,7 @@
         },
         {
             "optional": true,
-            "name": "10s Series 10",
+            "name": "6s Series 10",
             "events": [
                 {
                     "duration": 60000,
@@ -334,7 +334,7 @@
                 },
                 {
                     "command": "show",
-                    "duration": 10000
+                    "duration": 6000
                 },
                 {
                     "command": "hide",
@@ -353,6 +353,6 @@
             ]
         }
     ],
-    "id": 102,
-    "title": "Militär Snabbmatch 10s"
+    "id": 105,
+    "title": "Militär Snabbmatch 6s"
 }

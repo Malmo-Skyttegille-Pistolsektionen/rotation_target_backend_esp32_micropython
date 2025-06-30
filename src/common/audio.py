@@ -2,7 +2,10 @@
 import os
 from typing import List
 import logging
-from machine import I2S, Pin
+from machine import Pin
+
+# from machine import I2S, Pin
+
 from config import (
     I2S_ID,
     I2S_BCK_PIN,
@@ -14,18 +17,18 @@ from config import (
 )
 
 
-# Use a global audio_out instance, initialize only once
-audio_out = I2S(
-    I2S_ID,
-    sck=Pin(I2S_BCK_PIN),
-    ws=Pin(I2S_WS_PIN),
-    sd=Pin(I2S_DATA_PIN),
-    mode=I2S.TX,
-    bits=I2S_BITS,
-    format=I2S.MONO if I2S_CHANNELS == 1 else I2S.STEREO,
-    rate=I2S_SAMPLE_RATE,
-    ibuf=2048,
-)
+# # Use a global audio_out instance, initialize only once
+# audio_out = I2S(
+#     I2S_ID,
+#     sck=Pin(I2S_BCK_PIN),
+#     ws=Pin(I2S_WS_PIN),
+#     sd=Pin(I2S_DATA_PIN),
+#     mode=I2S.TX,
+#     bits=I2S_BITS,
+#     format=I2S.MONO if I2S_CHANNELS == 1 else I2S.STEREO,
+#     rate=I2S_SAMPLE_RATE,
+#     ibuf=2048,
+# )
 
 
 def is_supported_wav(filename: str) -> bool:
@@ -80,11 +83,12 @@ def play_wav_pcm5102a(filename: str) -> None:
                     # Convert 8-bit unsigned (0-255) to 16-bit signed (-32768 to 32767)
                     sample = (b - 128) << 8
                     pcm16 += sample.to_bytes(2, "little", signed=True)
-                audio_out.write(pcm16)
+                # audio_out.write(pcm16)
     except Exception as e:
         logging.debug("Error playing WAV file:", e)
     finally:
-        audio_out.deinit()
+        # audio_out.deinit()
+        pass
 
 
 def list_wav_files(directory: str = "src/resources/audio") -> List[str]:

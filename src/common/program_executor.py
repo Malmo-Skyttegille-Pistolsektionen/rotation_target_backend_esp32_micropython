@@ -41,7 +41,7 @@ class ProgramExecutor:
             return
 
         series: Series = program.series[series_index]
-        event_durations_ms: list[int] = [e.duration * 1000 for e in series.events]
+        event_durations_ms: list[int] = [e.duration for e in series.events]
         total_time_ms: int = sum(event_durations_ms)
         logging.debug(
             f"[ProgramExecutor] Running series {series_index} with total time {total_time_ms} ms"
