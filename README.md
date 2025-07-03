@@ -5,7 +5,7 @@ This project provides a backend and web interface for controlling a target syste
 
 - **Backend:** MicroPython + Microdot (async web server)  
 - **Frontend:** Web app (static files)  
-- **Hardware:** ESP32, DB9 connector, SOT23/SOT223 MOSFET or relay  
+- **Hardware:** ESP32, DB9 connector, BC547B NPN Transistor and a 1kΩ resistor
 
 ## Setup
 
