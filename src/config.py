@@ -1,13 +1,10 @@
 # GPIO pin number used to control the target device (e.g., enable/disable)
-TARGET_PIN = 5
+TARGET_PIN = 6
 
 # I2S pin configuration for PCM5102A
-I2S_BCK_PIN = 26  # Bit Clock
-I2S_WS_PIN = 25  # Word Select (LRCK)
-I2S_DATA_PIN = 22  # Data Out
+I2S_BCK_PIN = 23  # Bit Clock
+I2S_DIN_PIN = 22  # Data In
+I2S_LCK_PIN = 21  # Word Select (LRCK)
 
 # Default I2S configuration
 I2S_ID = 0
-I2S_SAMPLE_RATE = 8000
-I2S_BITS = 16  # PCM5102A supports 16/24/32 bits, but WAV is 8-bit so we'll expand
-I2S_CHANNELS = 1  # Mono

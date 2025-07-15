@@ -14,11 +14,11 @@ logging.basicConfig(level=logging.DEBUG)
 # logging.debug("main.py sys.path: %s", sys.path)
 # logging.debug(f"os.uname: { os.uname()}")
 
-logging.debug("Running backend...")
+logging.debug("Starting backend...")
 
-from hwinfo import main as print_hwinfo
+from info import main as print_info
 
-print_hwinfo()
+print_info()
 
 from src import backend
 

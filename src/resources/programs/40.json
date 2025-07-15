@@ -1,76 +1,76 @@
 {
-    "readonly": false,
-    "description": "Each series starts hidden for 10s, then 3x show/hide cycles",
-    "series": [
+  "id": 40,
+  "title": "Fältträning",
+  "description": "Each series starts hidden for 10s, then 3x show/hide cycles",
+  "readonly": false,
+  "series": [
+    {
+      "events": [
         {
-            "events": [
-                {
-                    "command": "hide",
-                    "duration": 10000
-                },
-                {
-                    "command": "show",
-                    "duration": 3000
-                },
-                {
-                    "command": "hide",
-                    "duration": 3000
-                },
-                {
-                    "command": "show",
-                    "duration": 3000
-                },
-                {
-                    "command": "hide",
-                    "duration": 3000
-                },
-                {
-                    "command": "show",
-                    "duration": 3000
-                },
-                {
-                    "command": "hide",
-                    "duration": 3000
-                }
-            ],
-            "name": "Series 1 (x=3, y=3)",
-            "optional": false
+          "command": "hide",
+          "duration": 10000
         },
         {
-            "events": [
-                {
-                    "command": "hide",
-                    "duration": 10000
-                },
-                {
-                    "command": "show",
-                    "duration": 2000
-                },
-                {
-                    "command": "hide",
-                    "duration": 3000
-                },
-                {
-                    "command": "show",
-                    "duration": 2000
-                },
-                {
-                    "command": "hide",
-                    "duration": 3000
-                },
-                {
-                    "command": "show",
-                    "duration": 2000
-                },
-                {
-                    "command": "hide",
-                    "duration": 3000
-                }
-            ],
-            "name": "Series 2 (x=2, y=3)",
-            "optional": false
+          "command": "show",
+          "duration": 3000
+        },
+        {
+          "command": "hide",
+          "duration": 3000
+        },
+        {
+          "command": "show",
+          "duration": 3000
+        },
+        {
+          "command": "hide",
+          "duration": 3000
+        },
+        {
+          "command": "show",
+          "duration": 3000
+        },
+        {
+          "command": "hide",
+          "duration": 3000
         }
-    ],
-    "id": 40,
-    "title": "Fältträning"
-}a
+      ],
+      "name": "Series 1 (x=3, y=3)",
+      "optional": false
+    },
+    {
+      "events": [
+        {
+          "command": "hide",
+          "duration": 10000
+        },
+        {
+          "command": "show",
+          "duration": 2000
+        },
+        {
+          "command": "hide",
+          "duration": 3000
+        },
+        {
+          "command": "show",
+          "duration": 2000
+        },
+        {
+          "command": "hide",
+          "duration": 3000
+        },
+        {
+          "command": "show",
+          "duration": 2000
+        },
+        {
+          "command": "hide",
+          "duration": 3000
+        }
+      ],
+      "name": "Series 2 (x=2, y=3)",
+      "optional": false
+    }
+  ]
+}

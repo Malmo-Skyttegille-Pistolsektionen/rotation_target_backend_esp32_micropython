@@ -13,7 +13,6 @@ class SSE:
     An object of this class is sent to handler functions to manage the SSE
     connection.
     """
-
     def __init__(self):
         self.event = asyncio.Event()
         self.queue = []
@@ -35,17 +34,17 @@ class SSE:
             data = data.encode()
         elif not isinstance(data, bytes):
             data = str(data).encode()
-        data = b"data: " + data + b"\n\n"
+        data = b'data: ' + data + b'\n\n'
         if event_id:
-            data = b"id: " + event_id.encode() + b"\n" + data
+            data = b'id: ' + event_id.encode() + b'\n' + data
         if event:
-            data = b"event: " + event.encode() + b"\n" + data
+            data = b'event: ' + event.encode() + b'\n' + data
         self.queue.append(data)
         self.event.set()
 
 
 def sse_response(request, event_function, *args, **kwargs):
-    """Return a response object that initiates an event stream.fw
+    """Return a response object that initiates an event stream.
 
     :param request: the request object.
     :param event_function: an asynchronous function that will send events to
@@ -98,7 +97,7 @@ def sse_response(request, event_function, *args, **kwargs):
         async def aclose(self):
             task.cancel()
 
-    return sse_loop(), 200, {"Content-Type": "text/event-stream"}
+    return sse_loop(), 200, {'Content-Type': 'text/event-stream'}
 
 
 def with_sse(f):
@@ -120,7 +119,6 @@ def with_sse(f):
             # send a named event
             await sse.send('hello', event='greeting')
     """
-
     @wraps(f)
     async def sse_handler(request, *args, **kwargs):
         return sse_response(request, f, *args, **kwargs)

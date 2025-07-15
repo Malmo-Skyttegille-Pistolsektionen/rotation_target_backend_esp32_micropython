@@ -3,9 +3,9 @@ from common.utils import dir_exists, make_dirs
 from microdot import Microdot, Response
 from common.programs import programs
 from common.program_executor import program_executor
-from common.target import hide, show  # Import the singleton instance
+from common.target import hide, show
 from common.common import program_state
-from common.audios import audios  # Singleton instance of Audios
+from common.audios import audios
 from libs.microdot.multipart import with_form_data
 import logging
 
@@ -13,7 +13,6 @@ logging.debug("[API] Importing API routes...")
 
 api_part = Microdot()
 Response.default_content_type = "application/json"
-
 
 @api_part.get("/status")
 async def status(request):

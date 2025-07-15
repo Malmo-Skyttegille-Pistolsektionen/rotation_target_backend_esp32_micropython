@@ -1,358 +1,358 @@
 {
-    "readonly": false,
-    "description": "Match with 8 second exposure time and 10 series",
-    "series": [
+  "id": 3,
+  "title": "Militär Snabbmatch 8s",
+  "description": "Match with 8 second exposure time and 10 series",
+  "readonly": false,
+  "series": [
+    {
+      "optional": false,
+      "name": "8s Series 1",
+      "events": [
         {
-            "optional": false,
-            "name": "8s Series 1",
-            "events": [
-                {
-                    "duration": 60000,
-                    "audio_ids": [
-                        1
-                    ],
-                    "command": "show"
-                },
-                {
-                    "command": "hide",
-                    "duration": 7000
-                },
-                {
-                    "command": "show",
-                    "duration": 8000
-                },
-                {
-                    "command": "hide",
-                    "duration": 1000
-                },
-                {
-                    "audio_ids": [
-                        1
-                    ],
-                    "duration": 3000
-                },
-                {
-                    "command": "show",
-                    "duration": 1000
-                }
-            ]
+          "duration": 60000,
+          "audio_ids": [
+            1
+          ],
+          "command": "show"
         },
         {
-            "optional": false,
-            "name": "8s Series 2",
-            "events": [
-                {
-                    "duration": 60000,
-                    "audio_ids": [
-                        1
-                    ],
-                    "command": "show"
-                },
-                {
-                    "command": "hide",
-                    "duration": 7000
-                },
-                {
-                    "command": "show",
-                    "duration": 8000
-                },
-                {
-                    "command": "hide",
-                    "duration": 1000
-                },
-                {
-                    "audio_ids": [
-                        1
-                    ],
-                    "duration": 3000
-                },
-                {
-                    "command": "show",
-                    "duration": 1000
-                }
-            ]
+          "command": "hide",
+          "duration": 7000
         },
         {
-            "optional": false,
-            "name": "8s Series 3",
-            "events": [
-                {
-                    "duration": 60000,
-                    "audio_ids": [
-                        1
-                    ],
-                    "command": "show"
-                },
-                {
-                    "command": "hide",
-                    "duration": 7000
-                },
-                {
-                    "command": "show",
-                    "duration": 8000
-                },
-                {
-                    "command": "hide",
-                    "duration": 1000
-                },
-                {
-                    "audio_ids": [
-                        1
-                    ],
-                    "duration": 3000
-                },
-                {
-                    "command": "show",
-                    "duration": 1000
-                }
-            ]
+          "command": "show",
+          "duration": 8000
         },
         {
-            "optional": false,
-            "name": "8s Series 4",
-            "events": [
-                {
-                    "duration": 60000,
-                    "audio_ids": [
-                        1
-                    ],
-                    "command": "show"
-                },
-                {
-                    "command": "hide",
-                    "duration": 7000
-                },
-                {
-                    "command": "show",
-                    "duration": 8000
-                },
-                {
-                    "command": "hide",
-                    "duration": 1000
-                },
-                {
-                    "audio_ids": [
-                        1
-                    ],
-                    "duration": 3000
-                },
-                {
-                    "command": "show",
-                    "duration": 1000
-                }
-            ]
+          "command": "hide",
+          "duration": 1000
         },
         {
-            "optional": true,
-            "name": "8s Series 5",
-            "events": [
-                {
-                    "duration": 60000,
-                    "audio_ids": [
-                        1
-                    ],
-                    "command": "show"
-                },
-                {
-                    "command": "hide",
-                    "duration": 7000
-                },
-                {
-                    "command": "show",
-                    "duration": 8000
-                },
-                {
-                    "command": "hide",
-                    "duration": 1000
-                },
-                {
-                    "audio_ids": [
-                        1
-                    ],
-                    "duration": 3000
-                },
-                {
-                    "command": "show",
-                    "duration": 1000
-                }
-            ]
+          "audio_ids": [
+            1
+          ],
+          "duration": 3000
         },
         {
-            "optional": true,
-            "name": "8s Series 6",
-            "events": [
-                {
-                    "duration": 60000,
-                    "audio_ids": [
-                        1
-                    ],
-                    "command": "show"
-                },
-                {
-                    "command": "hide",
-                    "duration": 7000
-                },
-                {
-                    "command": "show",
-                    "duration": 8000
-                },
-                {
-                    "command": "hide",
-                    "duration": 1000
-                },
-                {
-                    "audio_ids": [
-                        1
-                    ],
-                    "duration": 3000
-                },
-                {
-                    "command": "show",
-                    "duration": 1000
-                }
-            ]
-        },
-        {
-            "optional": true,
-            "name": "8s Series 7",
-            "events": [
-                {
-                    "duration": 60000,
-                    "audio_ids": [
-                        1
-                    ],
-                    "command": "show"
-                },
-                {
-                    "command": "hide",
-                    "duration": 7000
-                },
-                {
-                    "command": "show",
-                    "duration": 8000
-                },
-                {
-                    "command": "hide",
-                    "duration": 1000
-                },
-                {
-                    "audio_ids": [
-                        1
-                    ],
-                    "duration": 3000
-                },
-                {
-                    "command": "show",
-                    "duration": 1000
-                }
-            ]
-        },
-        {
-            "optional": true,
-            "name": "8s Series 8",
-            "events": [
-                {
-                    "duration": 60000,
-                    "audio_ids": [
-                        1
-                    ],
-                    "command": "show"
-                },
-                {
-                    "command": "hide",
-                    "duration": 7000
-                },
-                {
-                    "command": "show",
-                    "duration": 8000
-                },
-                {
-                    "command": "hide",
-                    "duration": 1000
-                },
-                {
-                    "audio_ids": [
-                        1
-                    ],
-                    "duration": 3000
-                },
-                {
-                    "command": "show",
-                    "duration": 1000
-                }
-            ]
-        },
-        {
-            "optional": true,
-            "name": "8s Series 9",
-            "events": [
-                {
-                    "duration": 60000,
-                    "audio_ids": [
-                        1
-                    ],
-                    "command": "show"
-                },
-                {
-                    "command": "hide",
-                    "duration": 7000
-                },
-                {
-                    "command": "show",
-                    "duration": 8000
-                },
-                {
-                    "command": "hide",
-                    "duration": 1000
-                },
-                {
-                    "audio_ids": [
-                        1
-                    ],
-                    "duration": 3000
-                },
-                {
-                    "command": "show",
-                    "duration": 1000
-                }
-            ]
-        },
-        {
-            "optional": true,
-            "name": "8s Series 10",
-            "events": [
-                {
-                    "duration": 60000,
-                    "audio_ids": [
-                        1
-                    ],
-                    "command": "show"
-                },
-                {
-                    "command": "hide",
-                    "duration": 7000
-                },
-                {
-                    "command": "show",
-                    "duration": 8000
-                },
-                {
-                    "command": "hide",
-                    "duration": 1000
-                },
-                {
-                    "audio_ids": [
-                        1
-                    ],
-                    "duration": 3000
-                },
-                {
-                    "command": "show",
-                    "duration": 1000
-                }
-            ]
+          "command": "show",
+          "duration": 1000
         }
-    ],
-    "id": 3,
-    "title": "Militär Snabbmatch 8s"
+      ]
+    },
+    {
+      "optional": false,
+      "name": "8s Series 2",
+      "events": [
+        {
+          "duration": 60000,
+          "audio_ids": [
+            1
+          ],
+          "command": "show"
+        },
+        {
+          "command": "hide",
+          "duration": 7000
+        },
+        {
+          "command": "show",
+          "duration": 8000
+        },
+        {
+          "command": "hide",
+          "duration": 1000
+        },
+        {
+          "audio_ids": [
+            1
+          ],
+          "duration": 3000
+        },
+        {
+          "command": "show",
+          "duration": 1000
+        }
+      ]
+    },
+    {
+      "optional": false,
+      "name": "8s Series 3",
+      "events": [
+        {
+          "duration": 60000,
+          "audio_ids": [
+            1
+          ],
+          "command": "show"
+        },
+        {
+          "command": "hide",
+          "duration": 7000
+        },
+        {
+          "command": "show",
+          "duration": 8000
+        },
+        {
+          "command": "hide",
+          "duration": 1000
+        },
+        {
+          "audio_ids": [
+            1
+          ],
+          "duration": 3000
+        },
+        {
+          "command": "show",
+          "duration": 1000
+        }
+      ]
+    },
+    {
+      "optional": false,
+      "name": "8s Series 4",
+      "events": [
+        {
+          "duration": 60000,
+          "audio_ids": [
+            1
+          ],
+          "command": "show"
+        },
+        {
+          "command": "hide",
+          "duration": 7000
+        },
+        {
+          "command": "show",
+          "duration": 8000
+        },
+        {
+          "command": "hide",
+          "duration": 1000
+        },
+        {
+          "audio_ids": [
+            1
+          ],
+          "duration": 3000
+        },
+        {
+          "command": "show",
+          "duration": 1000
+        }
+      ]
+    },
+    {
+      "optional": true,
+      "name": "8s Series 5",
+      "events": [
+        {
+          "duration": 60000,
+          "audio_ids": [
+            1
+          ],
+          "command": "show"
+        },
+        {
+          "command": "hide",
+          "duration": 7000
+        },
+        {
+          "command": "show",
+          "duration": 8000
+        },
+        {
+          "command": "hide",
+          "duration": 1000
+        },
+        {
+          "audio_ids": [
+            1
+          ],
+          "duration": 3000
+        },
+        {
+          "command": "show",
+          "duration": 1000
+        }
+      ]
+    },
+    {
+      "optional": true,
+      "name": "8s Series 6",
+      "events": [
+        {
+          "duration": 60000,
+          "audio_ids": [
+            1
+          ],
+          "command": "show"
+        },
+        {
+          "command": "hide",
+          "duration": 7000
+        },
+        {
+          "command": "show",
+          "duration": 8000
+        },
+        {
+          "command": "hide",
+          "duration": 1000
+        },
+        {
+          "audio_ids": [
+            1
+          ],
+          "duration": 3000
+        },
+        {
+          "command": "show",
+          "duration": 1000
+        }
+      ]
+    },
+    {
+      "optional": true,
+      "name": "8s Series 7",
+      "events": [
+        {
+          "duration": 60000,
+          "audio_ids": [
+            1
+          ],
+          "command": "show"
+        },
+        {
+          "command": "hide",
+          "duration": 7000
+        },
+        {
+          "command": "show",
+          "duration": 8000
+        },
+        {
+          "command": "hide",
+          "duration": 1000
+        },
+        {
+          "audio_ids": [
+            1
+          ],
+          "duration": 3000
+        },
+        {
+          "command": "show",
+          "duration": 1000
+        }
+      ]
+    },
+    {
+      "optional": true,
+      "name": "8s Series 8",
+      "events": [
+        {
+          "duration": 60000,
+          "audio_ids": [
+            1
+          ],
+          "command": "show"
+        },
+        {
+          "command": "hide",
+          "duration": 7000
+        },
+        {
+          "command": "show",
+          "duration": 8000
+        },
+        {
+          "command": "hide",
+          "duration": 1000
+        },
+        {
+          "audio_ids": [
+            1
+          ],
+          "duration": 3000
+        },
+        {
+          "command": "show",
+          "duration": 1000
+        }
+      ]
+    },
+    {
+      "optional": true,
+      "name": "8s Series 9",
+      "events": [
+        {
+          "duration": 60000,
+          "audio_ids": [
+            1
+          ],
+          "command": "show"
+        },
+        {
+          "command": "hide",
+          "duration": 7000
+        },
+        {
+          "command": "show",
+          "duration": 8000
+        },
+        {
+          "command": "hide",
+          "duration": 1000
+        },
+        {
+          "audio_ids": [
+            1
+          ],
+          "duration": 3000
+        },
+        {
+          "command": "show",
+          "duration": 1000
+        }
+      ]
+    },
+    {
+      "optional": true,
+      "name": "8s Series 10",
+      "events": [
+        {
+          "duration": 60000,
+          "audio_ids": [
+            1
+          ],
+          "command": "show"
+        },
+        {
+          "command": "hide",
+          "duration": 7000
+        },
+        {
+          "command": "show",
+          "duration": 8000
+        },
+        {
+          "command": "hide",
+          "duration": 1000
+        },
+        {
+          "audio_ids": [
+            1
+          ],
+          "duration": 3000
+        },
+        {
+          "command": "show",
+          "duration": 1000
+        }
+      ]
+    }
+  ]
 }

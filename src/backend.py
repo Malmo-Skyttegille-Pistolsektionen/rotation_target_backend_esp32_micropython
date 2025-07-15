@@ -5,8 +5,7 @@
 
 import asyncio
 from common.audios import audios
-from common.audio import is_supported_wav
-from common.utils import dir_exists, file_exists
+from common.audio import is_supported_wav, play_wav_pcm5102a
 import network
 
 from microdot import Microdot, Response, Request
@@ -51,17 +50,31 @@ async def main():
     # start the server in a background task
     port = 8080
     server = asyncio.create_task(app.start_server(port=port, debug=True))
+    # server = asyncio.create_task(app.start_server(port=port))
     ip_address = network.WLAN(network.STA_IF).ifconfig()[0]
     logging.info(f"Server started on {ip_address}:{port}")
 
     await server
 
 
-logging.debug("Checking audio files support...")
-logging.debug(
-    f"8bit_8khz_mono.wav is supported wav: {
-    is_supported_wav("src/resources/audio/8bit_8khz_mono.wav")}"
-)
+# WAV_FILENAME = "src/resources/audio/allt.wav"
+# # WAV_FILENAME = "src/resources/audio/pcm1644s.wav"
 
+# logging.debug("Checking audio files support...")
+# logging.debug(
+#     f"{WAV_FILENAME} is supported wav: {
+#     is_supported_wav(WAV_FILENAME)}"
+# )
+
+# logging.info("Starting playback using play_wav_pcm5102a...")
+
+# start_time = time.ticks_ms()
+# play_wav_pcm5102a(WAV_FILENAME)
+# end_time = time.ticks_ms()
+# elapsed = time.ticks_diff(end_time, start_time)
+# logging.info(f"play_wav_pcm5102a executed in {elapsed} ms")
+
+# logging.info("Starting playback using play_wav_asyncio...")
+# asyncio.create_task(play_wav_asyncio(WAV_FILENAME))
 
 asyncio.run(main())

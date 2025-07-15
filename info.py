@@ -35,7 +35,12 @@ def print_network_info():
     wlan.active(True)
     if wlan.isconnected():
         ip_info = wlan.ifconfig()
+        mac = ":".join("{:02x}".format(b) for b in wlan.config("mac"))
+        ssid = wlan.config("essid")
         print("=== Network Info ===")
+        print(f"Hostname:   {network.hostname()}")
+        print(f"SSID:       {ssid}")
+        print(f"MAC addr:   {mac}")
         print(f"IP address: {ip_info[0]}")
         print(f"Netmask:    {ip_info[1]}")
         print(f"Gateway:    {ip_info[2]}")
@@ -44,13 +49,9 @@ def print_network_info():
     else:
         print("=== Network Info ===\nWi-Fi not connected.\n")
 
-
 def main():
     print("=== Hardware Info ===")
     print_system_info()
     print_memory_info()
     print_cpu_info()
     print_network_info()
-
-
-main()
