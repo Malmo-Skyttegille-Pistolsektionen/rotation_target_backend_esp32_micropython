@@ -190,15 +190,24 @@ class ProgramExecutor:
             logging.debug("[ProgramExecutor] No program loaded.")
             return False
 
-        if 0 <= series_index < len(program_state.program.series):
-            program_state.running_series_start = None
-            program_state.current_series_index = series_index
-            program_state.current_event_index = 0
-            logging.debug(f"[ProgramExecutor] Skipped to series {series_index}")
-            return True
+        if not (0 <= series_index < len(program_state.program.series)):
+            logging.debug(f"[ProgramExecutor] Invalid series index: {series_index}")
+            return False
 
-        logging.debug(f"[ProgramExecutor] Invalid series index: {series_index}")
-        return False
+        program_state.running_series_start = None
+        program_state.current_series_index = series_index
+        program_state.current_event_index = 0
+        logging.debug(f"[ProgramExecutor] Skipped to series {series_index}")
+
+        await emit_sse_event(
+            EventType.SERIES_NEXT,
+            {
+                "program_id": program_state.program.id,
+                "series_index": program_state.current_series_index,
+            },
+        )
+
+        return True
 
     async def load(self, program_id: int) -> bool:
         logging.debug(f"[ProgramExecutor] Entered load(program_id={program_id})")
