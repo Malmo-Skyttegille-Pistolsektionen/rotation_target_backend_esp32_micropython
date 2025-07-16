@@ -190,7 +190,7 @@ class ProgramExecutor:
             logging.debug("[ProgramExecutor] No program loaded.")
             return False
 
-        if not (0 <= series_index < len(program_state.program.series)):
+        if series_index < 0 or series_index >= len(program_state.program.series):
             logging.debug(f"[ProgramExecutor] Invalid series index: {series_index}")
             return False
 
