@@ -7,6 +7,7 @@ import asyncio
 from common.audios import audios
 from common.audio import is_supported_wav, play_wav_pcm5102a
 import network
+import time
 
 from microdot import Microdot, Response, Request
 from microdot.cors import CORS
@@ -58,7 +59,8 @@ async def main():
 
 
 # WAV_FILENAME = "src/resources/audio/allt.wav"
-# # WAV_FILENAME = "src/resources/audio/pcm1644s.wav"
+# WAV_FILENAME = "src/resources/audio/provserie.wav"
+# WAV_FILENAME = "src/resources/audio/pcm1644s.wav"
 
 # logging.debug("Checking audio files support...")
 # logging.debug(
