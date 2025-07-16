@@ -1,4 +1,5 @@
 # from machine import DAC, Pin
+import asyncio
 import os
 from typing import Dict, List
 import logging
@@ -55,15 +56,11 @@ def is_supported_wav(filename: str) -> Dict | None:
         return None
 
 
-def play_wav_pcm5102a(filename: str, volume: float = 1.0) -> None:
-    """
-    Play a WAV file using PCM5102A via I2S.
-    :param filename: Path to WAV file.
-    :param volume: Volume multiplier (0.0 to 1.0). Default is 1.0 (no change).
-    """
+async def play_wav_asyncio(filename: str, volume: float = 1.0) -> None:
     logging.debug(f"play_wav_pcm5102a called with filename={filename}, volume={volume}")
     wav_info: Dict[str, int] | None = is_supported_wav(filename)
     if not wav_info:
+        logging.error((f"Unsupported WAV file format: {filename}"))
         return
 
     logging.debug(
@@ -87,6 +84,9 @@ def play_wav_pcm5102a(filename: str, volume: float = 1.0) -> None:
             )
             logging.debug("I2S initialized for this playback")
 
+            # Initialize swriter for asyncio (keep this part)
+            swriter = asyncio.StreamWriter(audio_out)
+
             while True:
                 data = f.read(512)
                 if not data:
@@ -94,7 +94,7 @@ def play_wav_pcm5102a(filename: str, volume: float = 1.0) -> None:
                     break
                 if wav_info["num_channels"] == 2:
                     # Write stereo data directly
-                    audio_out.write(data)
+                    swriter.write(data)
                 else:
                     # For 16-bit mono to stereo
                     stereo_data = bytearray()
@@ -102,39 +102,65 @@ def play_wav_pcm5102a(filename: str, volume: float = 1.0) -> None:
                         sample = data[i : i + 2]
                         stereo_data += sample  # Left
                         stereo_data += sample  # Right
-                    audio_out.write(stereo_data)
-            logging.debug("Finished playing WAV file.")
-            audio_out.deinit()
+                    swriter.write(stereo_data)
+
+                await swriter.drain()
     except Exception as e:
         logging.debug(f"Error playing WAV file: {e}")
         sys.print_exception(e)
 
 
-# async def play_wav_asyncio(filename):
-#     with open(filename, "rb") as f:
-#         header = f.read(44)
-#         num_channels = int.from_bytes(header[22:24], "little")
-#         swriter = asyncio.StreamWriter(audio_out)
-#         while True:
-#             data = f.read(512)
-#             if not data:
-#                 break
-#             if num_channels == 2:
-#                 pcm16 = bytearray()
-#                 for i in range(0, len(data) - 3, 4):
-#                     left = int.from_bytes(data[i : i + 2], "little")
-#                     right = int.from_bytes(data[i + 2 : i + 4], "little")
-#                     mono = (left + right) // 2
-#                     pcm16 += mono.to_bytes(2, "little")
-#             else:
-#                 pcm16 = data
-#             swriter.write(pcm16)
-#             await swriter.drain()
+# def play_wav_synch(filename: str, volume: float = 1.0) -> None:
+#     """
+#     Play a WAV file using PCM5102A via I2S.
+#     :param filename: Path to WAV file.
+#     :param volume: Volume multiplier (0.0 to 1.0). Default is 1.0 (no change).
+#     """
+#     logging.debug(f"play_wav_pcm5102a called with filename={filename}, volume={volume}")
+#     wav_info: Dict[str, int] | None = is_supported_wav(filename)
+#     if not wav_info:
+#         logging.error((f"Unsupported WAV file format: {filename}"))
+#         return
 
+#     logging.debug(
+#         f"format={wav_info['audio_format']}, channels={wav_info['num_channels']}, bits={wav_info['bits_per_sample']}, sample_rate={wav_info['sample_rate']}"
+#     )
 
-def list_wav_files(directory: str = "src/resources/audio") -> List[str]:
-    wav_files = []
-    for file in os.listdir(directory):
-        if file.endswith(".wav"):
-            wav_files.append(file)
-    return wav_files
+#     try:
+#         with open(filename, "rb") as f:
+#             f.read(44)  # Skip header, already parsed
+
+#             audio_out = I2S(
+#                 I2S_ID,
+#                 sck=Pin(I2S_BCK_PIN),
+#                 ws=Pin(I2S_LCK_PIN),
+#                 sd=Pin(I2S_DIN_PIN),
+#                 mode=I2S.TX,
+#                 bits=wav_info["bits_per_sample"],
+#                 format=I2S.STEREO,  # always stereo for both channels, as each mono sample is duplicated to both left and right channels before writing to I2S
+#                 rate=wav_info["sample_rate"],
+#                 ibuf=2048,
+#             )
+#             logging.debug("I2S initialized for this playback")
+
+#             while True:
+#                 data = f.read(512)
+#                 if not data:
+#                     logging.debug("End of WAV file reached.")
+#                     break
+#                 if wav_info["num_channels"] == 2:
+#                     # Write stereo data directly
+#                     audio_out.write(data)
+#                 else:
+#                     # For 16-bit mono to stereo
+#                     stereo_data = bytearray()
+#                     for i in range(0, len(data) - 1, 2):
+#                         sample = data[i : i + 2]
+#                         stereo_data += sample  # Left
+#                         stereo_data += sample  # Right
+#                     audio_out.write(stereo_data)
+#             logging.debug("Finished playing WAV file.")
+#             audio_out.deinit()
+#     except Exception as e:
+#         logging.debug(f"Error playing WAV file: {e}")
+#         sys.print_exception(e)

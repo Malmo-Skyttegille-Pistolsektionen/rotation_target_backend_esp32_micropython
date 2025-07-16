@@ -79,6 +79,22 @@ class ProgramExecutor:
                 },
             )
 
+            # Start audio playback as a background task (sequential playback per event)
+            audio_task = None
+            if hasattr(event, "audio_ids") and event.audio_ids:
+
+                async def play_all_audios(audio_ids):
+                    for audio_id in audio_ids:
+                        audio = audios.get(audio_id)
+                        if audio:
+                            await play_wav_asyncio(audio.filename)
+                        else:
+                            logging.debug(
+                                f"Audio ID {audio_id} not found for event {idx}"
+                            )
+
+                audio_task = asyncio.create_task(play_all_audios(event.audio_ids))
+
             if event.command:
                 await emit_sse_event(
                     EventType.TARGET_STATUS,

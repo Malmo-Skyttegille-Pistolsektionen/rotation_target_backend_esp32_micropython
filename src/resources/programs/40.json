@@ -8,7 +8,12 @@
       "events": [
         {
           "command": "hide",
-          "duration": 10000
+          "duration": 10000,
+          "audio_ids": [
+            1,
+            2,
+            4
+          ]
         },
         {
           "command": "show",

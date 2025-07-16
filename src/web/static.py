@@ -27,3 +27,5 @@ async def static_files(request, path):
         return send_file(f"static/webapp/{path}")
     except OSError:
         return {"error": "resource not found"}, 404
+    finally:
+        logging.debug(f"[Static] Finished serving ({request.path} ): {request.path} ")

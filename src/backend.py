@@ -5,7 +5,7 @@
 
 import asyncio
 from common.audios import audios
-from common.audio import is_supported_wav, play_wav_pcm5102a
+from common.audio import is_supported_wav, play_wav_asyncio
 import network
 import time
 
@@ -58,9 +58,7 @@ async def main():
     await server
 
 
-# WAV_FILENAME = "src/resources/audio/allt.wav"
-# WAV_FILENAME = "src/resources/audio/provserie.wav"
-# WAV_FILENAME = "src/resources/audio/pcm1644s.wav"
+# WAV_FILENAME = "src/resources/audio/1.wav"
 
 # logging.debug("Checking audio files support...")
 # logging.debug(
@@ -68,15 +66,15 @@ async def main():
 #     is_supported_wav(WAV_FILENAME)}"
 # )
 
-# logging.info("Starting playback using play_wav_pcm5102a...")
+# logging.info("Starting playback using play_wav_asyncio...")
 
 # start_time = time.ticks_ms()
-# play_wav_pcm5102a(WAV_FILENAME)
+
+# asyncio.create_task(play_wav_asyncio(WAV_FILENAME))
+
 # end_time = time.ticks_ms()
 # elapsed = time.ticks_diff(end_time, start_time)
-# logging.info(f"play_wav_pcm5102a executed in {elapsed} ms")
+# logging.info(f"play_wav executed in {elapsed} ms")
 
-# logging.info("Starting playback using play_wav_asyncio...")
-# asyncio.create_task(play_wav_asyncio(WAV_FILENAME))
 
 asyncio.run(main())

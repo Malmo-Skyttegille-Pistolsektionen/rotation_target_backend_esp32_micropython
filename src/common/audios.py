@@ -1,7 +1,7 @@
 import json
 import os
 from typing import Any, Dict, Optional
-from common.utils import dir_exists, make_dirs
+from common.utils import dir_exists, file_exists, make_dirs
 import logging
 
 
@@ -28,31 +28,36 @@ class Audios:
         self._audios: Dict[int, Audio] = {}
 
     def load_all(self) -> None:
-        # Load built-in audios
-        index_file = "src/resources/audio/index.json"
-        with open(index_file) as f:
-            logging.info(f"[Audios] Loading shipped audio files from: {index_file}")
+        def _load_audios_from_file(index_file: str, readonly: bool) -> None:
+            if not file_exists(index_file):
+                logging.warning(f"[Audios] Audio index file not found: {index_file}")
+                return
+            with open(index_file) as f:
+                logging.info(f"[Audios] Loading audio files from: {index_file}")
+                entries = json.load(f)
+                # Support both dict and list formats
+                if isinstance(entries, dict):
+                    items = entries.items()
+                else:
+                    items = ((entry["id"], entry) for entry in entries)
+                for audio_id, entry in items:
+                    audio = Audio(
+                        int(audio_id),
+                        entry["title"],
+                        entry["filename"],
+                        readonly=readonly,
+                    )
+                    self._add(audio)
 
-            for entry in json.load(f):
-                audio = Audio(
-                    entry["id"], entry["title"], entry["filename"], readonly=True
-                )
-                self._add(audio)
+        # Load built-in audios
+        _load_audios_from_file("src/resources/audio/index.json", readonly=True)
 
         # Load uploaded audios
         uploaded_path = "resources/audio"
         if dir_exists(uploaded_path):
-            index_file = uploaded_path + "/" + "index.json"
-            with open(index_file) as f:
-                logging.info(
-                    f"[Audios] Loading uploaded audio files from: {index_file}"
-                )
-
-                for entry in json.load(f):
-                    audio = Audio(
-                        entry["id"], entry["title"], entry["filename"], readonly=False
-                    )
-                    self._add(audio)
+            _load_audios_from_file(
+                os.path.join(uploaded_path, "index.json"), readonly=False
+            )
 
     def _add(self, audio: Audio) -> None:
         logging.debug(
