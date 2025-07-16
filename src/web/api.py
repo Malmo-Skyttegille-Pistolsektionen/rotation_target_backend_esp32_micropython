@@ -14,6 +14,7 @@ logging.debug("[API] Importing API routes...")
 api_part = Microdot()
 Response.default_content_type = "application/json"
 
+
 @api_part.get("/status")
 async def status(request):
     response = {
@@ -153,6 +154,20 @@ async def programs_delete(request, program_id):
         return {"message": "Program deleted successfully"}
     else:
         return {"error": "Program not found"}, 404
+
+
+@api_part.post("/programs/series/<int:series_index>/skip_to")
+async def skip_to_series(request, series_index):
+    logging.debug(f"[API] {request.method} {request.path} called")
+
+    success = await program_executor.skip_to_series(series_index)
+    if not success:
+        return {"error": "No program loaded or invalid series index"}, 400
+
+    logging.info(
+        f"Skipped to series {series_index} in program {getattr(program_state.program, 'id', None)}"
+    )
+    return {"message": f"Skipped to series {series_index}"}
 
 
 @api_part.get("/audios")
