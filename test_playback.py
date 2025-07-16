@@ -44,9 +44,9 @@ def make_tone(rate, bits, frequency):
 if os.uname().machine.count("ESP32"):
 
     # ======= I2S CONFIGURATION =======
-    SCK_PIN = 23
-    WS_PIN = 21
-    SD_PIN = 22
+    SCK_PIN = 9  # 23
+    WS_PIN = 19  # 18, 19
+    SD_PIN = 18  # 22
     I2S_ID = 0
     BUFFER_LENGTH_IN_BYTES = 2000
     # ======= I2S CONFIGURATION =======
@@ -73,6 +73,8 @@ audio_out = I2S(
     rate=SAMPLE_RATE_IN_HZ,
     ibuf=BUFFER_LENGTH_IN_BYTES,
 )
+
+print("I2S initialized with the following parameters:" + str(audio_out))
 
 samples = make_tone(SAMPLE_RATE_IN_HZ, SAMPLE_SIZE_IN_BITS, TONE_FREQUENCY_IN_HZ)
 
