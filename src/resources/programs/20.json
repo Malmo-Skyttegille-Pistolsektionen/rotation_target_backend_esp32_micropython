@@ -5,45 +5,45 @@
   "readonly": false,
   "series": [
     {
-      "name": "Provserie 5min",
+      "name": "Provserie",
       "optional": false,
       "events": [
         {
-          "duration": 10000,
+          "duration": 5000,
           "audio_ids": [
-            1
+            50
           ]
         },
         {
           "duration": 57000,
           "audio_ids": [
-            1
+            26
           ]
         },
         {
           "duration": 3000,
           "audio_ids": [
-            1
+            31
           ]
         },
         {
           "duration": 297000,
           "audio_ids": [
-            1
+            33
           ]
         },
         {
           "duration": 3000,
           "audio_ids": [
-            1
+            35
           ]
         },
         {
           "duration": 1000,
           "audio_ids": [
-            1,
-            2,
-            4
+            37,
+            36,
+            39
           ]
         }
       ]
@@ -53,7 +53,7 @@
       "optional": false,
       "events": [
         {
-          "duration": 10000,
+          "duration": 5000,
           "audio_ids": [
             1
           ]
@@ -61,33 +61,33 @@
         {
           "duration": 57000,
           "audio_ids": [
-            1
+            26
           ]
         },
         {
           "duration": 3000,
           "audio_ids": [
-            1
+            31
           ]
         },
         {
           "duration": 297000,
           "audio_ids": [
-            1
+            33
           ]
         },
         {
           "duration": 3000,
           "audio_ids": [
-            1
+            35
           ]
         },
         {
           "duration": 1000,
           "audio_ids": [
-            1,
-            2,
-            4
+            37,
+            36,
+            39
           ]
         }
       ]
@@ -97,7 +97,7 @@
       "optional": false,
       "events": [
         {
-          "duration": 10000,
+          "duration": 5000,
           "audio_ids": [
             1
           ]
@@ -105,33 +105,33 @@
         {
           "duration": 57000,
           "audio_ids": [
-            1
+            26
           ]
         },
         {
           "duration": 3000,
           "audio_ids": [
-            1
+            31
           ]
         },
         {
           "duration": 297000,
           "audio_ids": [
-            1
+            33
           ]
         },
         {
           "duration": 3000,
           "audio_ids": [
-            1
+            35
           ]
         },
         {
           "duration": 1000,
           "audio_ids": [
-            1,
-            2,
-            4
+            37,
+            36,
+            39
           ]
         }
       ]
@@ -141,7 +141,7 @@
       "optional": false,
       "events": [
         {
-          "duration": 10000,
+          "duration": 5000,
           "audio_ids": [
             1
           ]
@@ -149,33 +149,33 @@
         {
           "duration": 57000,
           "audio_ids": [
-            1
+            26
           ]
         },
         {
           "duration": 3000,
           "audio_ids": [
-            1
+            31
           ]
         },
         {
           "duration": 297000,
           "audio_ids": [
-            1
+            33
           ]
         },
         {
           "duration": 3000,
           "audio_ids": [
-            1
+            35
           ]
         },
         {
           "duration": 1000,
           "audio_ids": [
-            1,
-            2,
-            4
+            37,
+            36,
+            39
           ]
         }
       ]
@@ -185,7 +185,7 @@
       "optional": false,
       "events": [
         {
-          "duration": 10000,
+          "duration": 5000,
           "audio_ids": [
             1
           ]
@@ -193,33 +193,33 @@
         {
           "duration": 57000,
           "audio_ids": [
-            1
+            26
           ]
         },
         {
           "duration": 3000,
           "audio_ids": [
-            1
+            31
           ]
         },
         {
           "duration": 297000,
           "audio_ids": [
-            1
+            33
           ]
         },
         {
           "duration": 3000,
           "audio_ids": [
-            1
+            35
           ]
         },
         {
           "duration": 1000,
           "audio_ids": [
-            1,
-            2,
-            4
+            37,
+            36,
+            39
           ]
         }
       ]
@@ -229,7 +229,7 @@
       "optional": false,
       "events": [
         {
-          "duration": 10000,
+          "duration": 5000,
           "audio_ids": [
             1
           ]
@@ -237,33 +237,33 @@
         {
           "duration": 57000,
           "audio_ids": [
-            1
+            26
           ]
         },
         {
           "duration": 3000,
           "audio_ids": [
-            1
+            31
           ]
         },
         {
           "duration": 297000,
           "audio_ids": [
-            1
+            33
           ]
         },
         {
           "duration": 3000,
           "audio_ids": [
-            1
+            35
           ]
         },
         {
           "duration": 1000,
           "audio_ids": [
-            1,
-            2,
-            4
+            37,
+            36,
+            39
           ]
         }
       ]
@@ -273,7 +273,7 @@
       "optional": false,
       "events": [
         {
-          "duration": 10000,
+          "duration": 5000,
           "audio_ids": [
             1
           ]
@@ -281,33 +281,33 @@
         {
           "duration": 57000,
           "audio_ids": [
-            1
+            26
           ]
         },
         {
           "duration": 3000,
           "audio_ids": [
-            1
+            31
           ]
         },
         {
           "duration": 297000,
           "audio_ids": [
-            1
+            33
           ]
         },
         {
           "duration": 3000,
           "audio_ids": [
-            1
+            35
           ]
         },
         {
           "duration": 1000,
           "audio_ids": [
-            1,
-            2,
-            4
+            37,
+            36,
+            39
           ]
         }
       ]
@@ -317,7 +317,7 @@
       "optional": false,
       "events": [
         {
-          "duration": 10000,
+          "duration": 5000,
           "audio_ids": [
             1
           ]
@@ -325,33 +325,33 @@
         {
           "duration": 57000,
           "audio_ids": [
-            1
+            26
           ]
         },
         {
           "duration": 3000,
           "audio_ids": [
-            1
+            31
           ]
         },
         {
           "duration": 297000,
           "audio_ids": [
-            1
+            33
           ]
         },
         {
           "duration": 3000,
           "audio_ids": [
-            1
+            35
           ]
         },
         {
           "duration": 1000,
           "audio_ids": [
-            1,
-            2,
-            4
+            37,
+            36,
+            39
           ]
         }
       ]
@@ -361,7 +361,7 @@
       "optional": true,
       "events": [
         {
-          "duration": 10000,
+          "duration": 5000,
           "audio_ids": [
             1
           ]
@@ -369,33 +369,33 @@
         {
           "duration": 57000,
           "audio_ids": [
-            1
+            26
           ]
         },
         {
           "duration": 3000,
           "audio_ids": [
-            1
+            31
           ]
         },
         {
           "duration": 297000,
           "audio_ids": [
-            1
+            33
           ]
         },
         {
           "duration": 3000,
           "audio_ids": [
-            1
+            35
           ]
         },
         {
           "duration": 1000,
           "audio_ids": [
-            1,
-            2,
-            4
+            37,
+            36,
+            39
           ]
         }
       ]
@@ -405,7 +405,7 @@
       "optional": true,
       "events": [
         {
-          "duration": 10000,
+          "duration": 5000,
           "audio_ids": [
             1
           ]
@@ -413,33 +413,33 @@
         {
           "duration": 57000,
           "audio_ids": [
-            1
+            26
           ]
         },
         {
           "duration": 3000,
           "audio_ids": [
-            1
+            31
           ]
         },
         {
           "duration": 297000,
           "audio_ids": [
-            1
+            33
           ]
         },
         {
           "duration": 3000,
           "audio_ids": [
-            1
+            35
           ]
         },
         {
           "duration": 1000,
           "audio_ids": [
-            1,
-            2,
-            4
+            37,
+            36,
+            39
           ]
         }
       ]
@@ -449,7 +449,7 @@
       "optional": true,
       "events": [
         {
-          "duration": 10000,
+          "duration": 5000,
           "audio_ids": [
             1
           ]
@@ -457,33 +457,33 @@
         {
           "duration": 57000,
           "audio_ids": [
-            1
+            26
           ]
         },
         {
           "duration": 3000,
           "audio_ids": [
-            1
+            31
           ]
         },
         {
           "duration": 297000,
           "audio_ids": [
-            1
+            33
           ]
         },
         {
           "duration": 3000,
           "audio_ids": [
-            1
+            35
           ]
         },
         {
           "duration": 1000,
           "audio_ids": [
-            1,
-            2,
-            4
+            37,
+            36,
+            39
           ]
         }
       ]
