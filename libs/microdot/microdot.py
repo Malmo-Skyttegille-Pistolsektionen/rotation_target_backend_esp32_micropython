@@ -852,38 +852,28 @@ class Response:
         filenames provided by the user without validating and sanitizing them
         first.
         """
-        print(
-            f"send_file called with filename={filename}, status_code={status_code}, content_type={content_type}, stream={stream}, max_age={max_age}, compressed={compressed}, file_extension={file_extension}"
-        )
         if content_type is None:
             if compressed and filename.endswith(".gz"):
                 ext = filename[:-3].split(".")[-1]
             else:
                 ext = filename.split(".")[-1]
-            print(f"Determined file extension: {ext}")
-
             if ext in Response.types_map:
                 content_type = Response.types_map[ext]
             else:
                 content_type = "application/octet-stream"
-            print(f"Determined content_type: {content_type}")
-
         headers = {"Content-Type": content_type}
 
         if max_age is None:
             max_age = cls.default_send_file_max_age
         if max_age is not None:
             headers["Cache-Control"] = "max-age={}".format(max_age)
-            print(f"Set Cache-Control header: {headers['Cache-Control']}")
 
         if compressed:
             headers["Content-Encoding"] = (
                 compressed if isinstance(compressed, str) else "gzip"
             )
-            print(f"Set Content-Encoding header: {headers['Content-Encoding']}")
 
         f = stream or open(filename + file_extension, "rb")
-        print(f"File object created: {f}")
         return cls(body=f, status_code=status_code, headers=headers)
 
 
