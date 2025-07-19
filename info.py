@@ -3,6 +3,9 @@ import gc
 import machine
 import esp
 import network
+import esp32
+
+from micropython import mem_info
 
 
 def print_system_info():
@@ -18,8 +21,16 @@ def print_system_info():
 
 def print_memory_info():
     print("=== Memory Info ===")
-    print(f"Heap free:  {gc.mem_free()} bytes")
-    print(f"Heap used:  {gc.mem_alloc()} bytes")
+    print(f"Mem free:  {gc.mem_free()} bytes")
+    print(f"Mem allocated:  {gc.mem_alloc()} bytes")
+    # PSRAM status
+    try:
+        psram_status = "Available" if esp32.ULP() is not None else "Not available"
+    except:
+        psram_status = "Not detected"
+    print(f"PSRAM: {psram_status}")
+
+    # print(f"Mem info: {mem_info(False)}")
     print()
 
 
@@ -49,8 +60,8 @@ def print_network_info():
     else:
         print("=== Network Info ===\nWi-Fi not connected.\n")
 
+
 def main():
-    print("=== Hardware Info ===")
     print_system_info()
     print_memory_info()
     print_cpu_info()

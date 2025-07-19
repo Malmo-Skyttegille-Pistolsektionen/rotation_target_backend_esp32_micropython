@@ -51,7 +51,6 @@ async def main():
     # start the server in a background task
     port = 8080
     server = asyncio.create_task(app.start_server(port=port, debug=True))
-    # server = asyncio.create_task(app.start_server(port=port))
     ip_address = network.WLAN(network.STA_IF).ifconfig()[0]
     logging.info(f"Server started on {ip_address}:{port}")
 
@@ -75,6 +74,5 @@ async def main():
 # end_time = time.ticks_ms()
 # elapsed = time.ticks_diff(end_time, start_time)
 # logging.info(f"play_wav executed in {elapsed} ms")
-
 
 asyncio.run(main())

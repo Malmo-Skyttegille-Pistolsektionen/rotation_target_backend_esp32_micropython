@@ -11,6 +11,10 @@ import logging
 
 logging.basicConfig(level=logging.DEBUG)
 
+from micropython import alloc_emergency_exception_buf
+
+alloc_emergency_exception_buf(200)
+
 # logging.debug("main.py sys.path: %s", sys.path)
 # logging.debug(f"os.uname: { os.uname()}")
 
