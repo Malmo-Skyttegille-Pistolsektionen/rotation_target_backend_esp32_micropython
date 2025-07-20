@@ -74,5 +74,3 @@ async def main():
 # end_time = time.ticks_ms()
 # elapsed = time.ticks_diff(end_time, start_time)
 # logging.info(f"play_wav executed in {elapsed} ms")
-
-asyncio.run(main())

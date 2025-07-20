@@ -14,8 +14,8 @@
 import os
 import math
 import struct
-from machine import I2S
-from machine import Pin
+import config
+from machine import I2S, Pin
 import sys
 
 
@@ -44,10 +44,10 @@ def make_tone(rate, bits, frequency):
 if os.uname().machine.count("ESP32"):
 
     # ======= I2S CONFIGURATION =======
-    SCK_PIN = 9  # 23
-    WS_PIN = 19  # 18, 19
-    SD_PIN = 18  # 22
-    I2S_ID = 0
+    SCK_PIN = config.I2S_BCK_PIN
+    SD_PIN = config.I2S_DIN_PIN
+    WS_PIN = config.I2S_LCK_PIN
+    I2S_ID = config.I2S_ID
     BUFFER_LENGTH_IN_BYTES = 2000
     # ======= I2S CONFIGURATION =======
 

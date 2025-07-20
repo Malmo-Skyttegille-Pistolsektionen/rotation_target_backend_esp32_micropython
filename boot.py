@@ -1,9 +1,14 @@
 import os
+import machine
 import network
+
 import sys
 from time import sleep
 
 from wifi_credentials import PASSWORD, SSID
+
+# BAUDRATE = 921600
+# machine.UART(0, baudrate=BAUDRATE)
 
 
 # Connect to Wi-Fi
