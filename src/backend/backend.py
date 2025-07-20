@@ -42,7 +42,7 @@ async def main():
 
     app = create_app()
     # start the server in a background task
-    port = 8080
+    port = 80
     server = asyncio.create_task(app.start_server(port=port))
     ip_address = network.WLAN(network.STA_IF).ifconfig()[0]
     logging.info(f"[Backend] Server started on {ip_address}:{port}")

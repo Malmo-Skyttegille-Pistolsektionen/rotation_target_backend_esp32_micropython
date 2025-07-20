@@ -23,11 +23,11 @@ def is_supported_wav(filename: str) -> Dict | None:
     Returns a dict with audio properties if supported, else None.
     """
     try:
-        logging.debug(f"Checking WAV file: {filename}")
+        logging.trace(f"[Audio IO] Checking if WAV file is supported: {filename}")
         with open(filename, "rb") as f:
             header = f.read(44)
             if header[0:4] != b"RIFF" or header[8:12] != b"WAVE":
-                logging.debug("Not a valid WAV file:" + filename)
+                logging.debug(f"[Audio IO] Not a valid WAV file: {filename}")
                 return None
 
             audio_format = int.from_bytes(header[20:22], "little")
@@ -46,24 +46,26 @@ def is_supported_wav(filename: str) -> Dict | None:
                     "bits_per_sample": bits_per_sample,
                 }
             logging.info(
-                "Unsupported WAV format: "
+                f"[Audio IO] Unsupported WAV format: "
                 f"format={audio_format}, channels={num_channels}, bits={bits_per_sample}, sample_rate={sample_rate} "
             )
             return None
     except Exception as e:
-        logging.debug(f"Error reading WAV file: {e}")
+        logging.error(f"[Audio IO] Error reading WAV file: {e}")
         return None
 
 
 async def play_wav_asyncio(filename: str, volume: float = 1.0) -> None:
-    logging.debug(f"play_wav_pcm5102a called with filename={filename}, volume={volume}")
+    logging.trace(
+        f"[Audio IO] Play_wav_asyncio called with filename={filename}, volume={volume}"
+    )
     wav_info: Dict[str, int] | None = is_supported_wav(filename)
     if not wav_info:
-        logging.error((f"Unsupported WAV file format: {filename}"))
+        logging.error((f"[Audio IO] Unsupported WAV file format: {filename}"))
         return
 
     logging.debug(
-        f"format={wav_info['audio_format']}, channels={wav_info['num_channels']}, bits={wav_info['bits_per_sample']}, sample_rate={wav_info['sample_rate']}"
+        f"[Audio IO] format={wav_info['audio_format']}, channels={wav_info['num_channels']}, bits={wav_info['bits_per_sample']}, sample_rate={wav_info['sample_rate']}"
     )
 
     try:
@@ -81,7 +83,7 @@ async def play_wav_asyncio(filename: str, volume: float = 1.0) -> None:
                 rate=wav_info["sample_rate"],
                 ibuf=2048,
             )
-            logging.debug("I2S initialized for this playback")
+            logging.debug("[Audio IO] I2S initialized for this playback")
 
             # Initialize swriter for asyncio (keep this part)
             swriter = asyncio.StreamWriter(audio_out)
@@ -89,7 +91,7 @@ async def play_wav_asyncio(filename: str, volume: float = 1.0) -> None:
             while True:
                 data = f.read(512)
                 if not data:
-                    logging.debug("End of WAV file reached.")
+                    logging.debug(f"[Audio IO] Playback completed of WAV file: {filename}")
                     break
                 if wav_info["num_channels"] == 2:
                     # Write stereo data directly
@@ -105,7 +107,7 @@ async def play_wav_asyncio(filename: str, volume: float = 1.0) -> None:
 
                 await swriter.drain()
     except Exception as e:
-        logging.debug(f"Error playing WAV file: {e}")
+        logging.error(f"[Audio IO] Error playing WAV file: {e}")
         sys.print_exception(e)
 
 

@@ -1,7 +1,7 @@
 import json
 import os
 from typing import Any, Dict, Optional
-from backend.common.io_utils import dir_exists, file_exists, make_dirs
+from backend.common.io_utils import dir_exists, file_exists, make_dirs, path_join
 import logging
 
 from backend.dataclasses.audio import Audio
@@ -11,37 +11,41 @@ class Audios:
     def __init__(self) -> None:
         self._audios: Dict[int, Audio] = {}
 
+    def _load_audios_from_file(self, path_to_audios_json: str, readonly: bool) -> None:
+        filename = path_join(path_to_audios_json, "audios.json")
+
+        if not file_exists(filename):
+            logging.warning(f"[Audios] Audio index file not found: {filename}")
+            return
+
+        with open(filename) as f:
+            logging.info(f"[Audios] Loading from audio index file: {filename}")
+            entries = json.load(f)
+
+            # Support both dict and list formats
+            if isinstance(entries, dict):
+                items = entries.items()
+            else:
+                items = ((entry["id"], entry) for entry in entries)
+
+            for audio_id, entry in items:
+                audio = Audio(
+                    int(audio_id),
+                    entry["title"],
+                    path_join(path_to_audios_json, entry["filename"]),
+                    readonly=readonly,
+                )
+                self._add(audio)
+
     def load_all(self) -> None:
-        def _load_audios_from_file(index_file: str, readonly: bool) -> None:
-            if not file_exists(index_file):
-                logging.warning(f"[Audios] Audio index file not found: {index_file}")
-                return
-            with open(index_file) as f:
-                logging.info(f"[Audios] Loading audio files from: {index_file}")
-                entries = json.load(f)
-                # Support both dict and list formats
-                if isinstance(entries, dict):
-                    items = entries.items()
-                else:
-                    items = ((entry["id"], entry) for entry in entries)
-                for audio_id, entry in items:
-                    audio = Audio(
-                        int(audio_id),
-                        entry["title"],
-                        entry["filename"],
-                        readonly=readonly,
-                    )
-                    self._add(audio)
 
         # Load built-in audios
-        _load_audios_from_file("src/resources/audio/index.json", readonly=True)
+        self._load_audios_from_file("src/resources/audio", readonly=True)
 
         # Load uploaded audios
         uploaded_path = "resources/audio"
         if dir_exists(uploaded_path):
-            _load_audios_from_file(
-                os.path.join(uploaded_path, "index.json"), readonly=False
-            )
+            self._load_audios_from_file(os.path.join(uploaded_path), readonly=False)
 
         logging.info(f"[Audios] Total audios loaded: {len(self._audios)}")
 

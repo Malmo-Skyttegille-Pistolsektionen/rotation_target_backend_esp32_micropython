@@ -5,7 +5,7 @@ from time import ticks_ms, ticks_diff
 from backend.common.event_type import EventType
 from backend.dataclasses.program import Program, Series, Event
 from backend.io.audio import play_wav_asyncio
-from backend.io.targets import targets as target
+import backend.io.targets as targets
 from backend.repositories.audios import audios
 from backend.repositories.programs import programs
 from backend.repositories.program_state import program_state
@@ -93,7 +93,7 @@ class ProgramExecutor:
                             await play_wav_asyncio(audio.filename)
                         else:
                             logging.debug(
-                                f"Audio ID {audio_id} not found for event {idx}"
+                                f"[ProgramExecutor] Audio ID {audio_id} not found for event {idx}"
                             )
 
                 audio_task = asyncio.create_task(play_all_audios(event.audio_ids))
@@ -104,9 +104,9 @@ class ProgramExecutor:
                     {"status": "shown" if event.command == "show" else "hidden"},
                 )
                 if event.command == "show":
-                    target.show()
+                    targets.show()
                 elif event.command == "hide":
-                    target.hide()
+                    targets.hide()
 
             # Wait until the absolute end time for this event
             event_end_time = event_absolute_times[idx] + event_durations_ms[idx]

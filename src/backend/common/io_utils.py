@@ -31,3 +31,7 @@ def make_dirs(directory: str) -> None:
         path = path + "/" + part if path else part
         if not dir_exists(path):
             os.mkdir(path)
+
+
+def path_join(*parts):
+    return "/".join(part.strip("/") for part in parts if part)
