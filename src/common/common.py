@@ -30,6 +30,7 @@ class EventType:
     PROGRAM_DELETED: str = "program_deleted"
     AUDIO_ADDED: str = "audio_added"
     AUDIO_DELETED: str = "audio_deleted"
+    BACKEND_ISSUE: str = "backend_issue"
 
 
 # Create a single, shared instance
