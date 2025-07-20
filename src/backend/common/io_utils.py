@@ -1,5 +1,4 @@
 import os
-from typing import Optional
 
 
 def dir_exists(directory: str) -> bool:

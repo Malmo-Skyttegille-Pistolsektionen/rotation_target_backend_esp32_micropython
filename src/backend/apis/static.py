@@ -24,7 +24,7 @@ async def index(request):
 async def static_files(request, path):
     try:
         logging.debug(f"[Static] Serving ({request.path} ): {request.path} ")
-        return send_file(f"static/webapp/{path}")
+        return send_file(f"src/static/webapp/{path}")
     except OSError:
         return {"error": "resource not found"}, 404
     finally:

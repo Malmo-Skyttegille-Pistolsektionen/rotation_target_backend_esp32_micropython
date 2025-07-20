@@ -1,13 +1,12 @@
 # from machine import DAC, Pin
 import asyncio
-import os
 from typing import Dict, List
 import logging
 
 from machine import I2S, Pin
 import sys
 
-from config import (
+from backend.config import (
     I2S_ID,
     I2S_BCK_PIN,
     I2S_LCK_PIN,

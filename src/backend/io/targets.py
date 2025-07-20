@@ -1,7 +1,7 @@
 from backend.repositories import program_state
 from time import ticks_ms, ticks_diff
 from machine import Pin
-from config import TARGET_PIN
+from backend.config import TARGET_PIN
 
 
 targets = Pin(TARGET_PIN, Pin.OUT)

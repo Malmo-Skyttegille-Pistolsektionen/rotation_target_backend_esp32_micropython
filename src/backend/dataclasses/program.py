@@ -1,6 +1,5 @@
 from typing import List, Optional, Dict, Any
 
-
 class Event:
     def __init__(
         self,

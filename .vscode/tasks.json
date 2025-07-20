@@ -117,7 +117,7 @@
                 "cp",
                 "-r",
                 "src/backend",
-                ":"
+                ":src"
             ],
             "problemMatcher": [],
             "presentation": {
@@ -135,7 +135,7 @@
                 "cp",
                 "-r",
                 "src/resource",
-                ":"
+                ":src"
             ],
             "problemMatcher": [],
             "presentation": {
@@ -153,7 +153,7 @@
                 "cp",
                 "-r",
                 "src/static",
-                ":"
+                ":src"
             ],
             "problemMatcher": [],
             "presentation": {

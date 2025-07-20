@@ -1,4 +1,6 @@
 from typing import Optional
+import asyncio
+import logging
 from time import ticks_ms, ticks_diff
 from backend.common.event_type import EventType
 from backend.dataclasses.program import Program, Series, Event
@@ -7,9 +9,7 @@ from backend.io.targets import targets as target
 from backend.repositories.audios import audios
 from backend.repositories.programs import programs
 from backend.repositories.program_state import program_state
-from apis.sse import emit_sse_event
-import asyncio
-import logging
+from backend.apis.sse import emit_sse_event
 
 
 class ProgramExecutor:

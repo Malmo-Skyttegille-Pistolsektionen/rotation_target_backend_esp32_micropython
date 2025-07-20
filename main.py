@@ -2,17 +2,18 @@ import machine
 import sys
 import asyncio
 import os
-from backend import main as backend
-
+from info import main as print_info
+from micropython import alloc_emergency_exception_buf
 
 sys.path.insert(0, "/libs")
 sys.path.insert(0, "/src")
 
 import logging
 
+from backend import backend
+
 logging.basicConfig(level=logging.DEBUG)
 
-from micropython import alloc_emergency_exception_buf
 
 alloc_emergency_exception_buf(200)
 
@@ -21,7 +22,6 @@ alloc_emergency_exception_buf(200)
 
 logging.debug("Starting backend...")
 
-from info import main as print_info
 
 print_info()
 
@@ -34,6 +34,6 @@ except Exception as e:
 finally:
     # Following a normal Exception or main() exiting, reset the board.
     # Following a non-Exception error such as KeyboardInterrupt (Ctrl-C),
-    # this code will drop to a REPL. Place machine.reset() in a finally
+    # this code will drop to a REPL.dist/assets dist/assets/index-BUx743Ix.css dist/assets/index-YTchXzvl.js dist/icons dist/favicon.ico dist/index.html dist/msg_logo.png Place machine.reset() in a finally
     # block to always reset, instead.
     machine.reset()

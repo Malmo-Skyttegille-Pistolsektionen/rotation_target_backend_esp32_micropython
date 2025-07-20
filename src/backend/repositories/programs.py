@@ -1,17 +1,16 @@
 from typing import Dict, Optional, Any
-from dataclasses.program import Program
 import json
 import os
-
-from common.io_utils import dir_exists, make_dirs
-from backend.common.event_type import EventType
-import json
-import os
-
-from common.io_utils import dir_exists, make_dirs
-from backend.common.event_type import EventType
-from apis.sse import emit_sse_event
 import logging
+import json
+
+from backend.common.io_utils import dir_exists, make_dirs
+from backend.common.event_type import EventType
+
+from backend.common.io_utils import dir_exists, make_dirs
+from backend.common.event_type import EventType
+from backend.apis.sse import emit_sse_event
+from backend.dataclasses.program import Program
 
 
 class Programs:
@@ -24,10 +23,6 @@ class Programs:
         program = Program.from_dict(program_data)
         id = int(program.id)
         self._programs[id] = program
-
-
-from apis.sse import emit_sse_event
-import logging
 
 
 class Programs:

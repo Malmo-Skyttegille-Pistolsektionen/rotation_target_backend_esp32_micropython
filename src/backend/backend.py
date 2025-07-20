@@ -4,18 +4,19 @@
 
 
 import asyncio
-from backend.repositories.audios import audios
+
 
 import network
+import logging
 
 from microdot import Microdot, Response, Request
 from microdot.cors import CORS
 from microdot.microdot import MUTED_SOCKET_ERRORS
-from apis.api import api_part
-from apis.sse import sse_part
-from apis.static import static_part
+from backend.apis.api import api_part
+from backend.apis.sse import sse_part
+from backend.apis.static import static_part
 from backend.repositories.programs import programs
-import logging
+from backend.repositories.audios import audios
 
 
 # Initialize Microdot app
@@ -49,7 +50,7 @@ async def main():
     app = create_app()
     # start the server in a background task
     port = 8080
-    server = asyncio.create_task(app.start_server(port=port, debug=True))
+    server = asyncio.create_task(app.start_server(port=port))
     ip_address = network.WLAN(network.STA_IF).ifconfig()[0]
     logging.info(f"Server started on {ip_address}:{port}")
 
