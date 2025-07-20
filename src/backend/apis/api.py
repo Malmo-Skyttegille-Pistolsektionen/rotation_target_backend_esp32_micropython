@@ -1,11 +1,12 @@
 import os
-from common.utils import dir_exists, make_dirs
+from backend.common.io_utils import dir_exists, make_dirs
 from microdot import Microdot, Response
-from common.programs import programs
-from common.program_executor import program_executor
-from common.target import hide, show
-from common.common import program_state
-from common.audios import audios
+from backend.repositories.programs import programs
+from backend.executor.program_executor import program_executor
+from backend.io.targets import hide, show
+from backend.repositories import program_state
+from backend.repositories.audios import audios
+from backend.version import VERSION
 from libs.microdot.multipart import with_form_data
 import logging
 
@@ -13,6 +14,15 @@ logging.debug("[API] Importing API routes...")
 
 api_part = Microdot()
 Response.default_content_type = "application/json"
+
+
+@api_part.get("/version")
+async def get_version(request):
+    return {
+        "major": VERSION.MAJOR,
+        "minor": VERSION.MINOR,
+        "patch": VERSION.PATCH,
+    }
 
 
 @api_part.get("/status")

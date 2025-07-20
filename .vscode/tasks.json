@@ -1,6 +1,7 @@
 {
     "version": "2.0.0",
     "tasks": [
+        // Wipe tasks first
         {
             "label": "Wipe ESP32 flash",
             "type": "shell",
@@ -18,6 +19,58 @@
                 "reveal": "always"
             }
         },
+        {
+            "label": "Wipe src/backend on ESP32",
+            "type": "shell",
+            "command": "mpremote",
+            "args": [
+                "connect",
+                "${input:esp32Port}",
+                "fs",
+                "rm",
+                "-r",
+                "src/backend"
+            ],
+            "problemMatcher": [],
+            "presentation": {
+                "reveal": "always"
+            }
+        },
+        {
+            "label": "Wipe src/resource on ESP32",
+            "type": "shell",
+            "command": "mpremote",
+            "args": [
+                "connect",
+                "${input:esp32Port}",
+                "fs",
+                "rm",
+                "-r",
+                "src/resource"
+            ],
+            "problemMatcher": [],
+            "presentation": {
+                "reveal": "always"
+            }
+        },
+        {
+            "label": "Wipe static/webapp on ESP32",
+            "type": "shell",
+            "command": "mpremote",
+            "args": [
+                "connect",
+                "${input:esp32Port}",
+                "fs",
+                "rm",
+                "-r",
+                "static/webapp"
+            ],
+            "problemMatcher": [],
+            "presentation": {
+                "reveal": "always"
+            }
+        },
+        // Upload tasks next
         {
             "label": "Upload /*.py to ESP32",
             "type": "shell",
@@ -51,6 +104,60 @@
             "problemMatcher": [],
             "presentation": {
                 "reveal": "always"
+            }
+        },
+        {
+            "label": "Upload src/backend to ESP32",
+            "type": "shell",
+            "command": "mpremote",
+            "args": [
+                "connect",
+                "${input:esp32Port}",
+                "fs",
+                "cp",
+                "-r",
+                "src/backend",
+                ":"
+            ],
+            "problemMatcher": [],
+            "presentation": {
+                "reveal": "always"
+            }
+        },
+        {
+            "label": "Upload src/resource to ESP32",
+            "type": "shell",
+            "command": "mpremote",
+            "args": [
+                "connect",
+                "${input:esp32Port}",
+                "fs",
+                "cp",
+                "-r",
+                "src/resource",
+                ":"
+            ],
+            "problemMatcher": [],
+            "presentation": {
+                "reveal": "always"
+            }
+        },
+        {
+            "label": "Upload src/static to ESP32",
+            "type": "shell",
+            "command": "mpremote",
+            "args": [
+                "connect",
+                "${input:esp32Port}",
+                "fs",
+                "cp",
+                "-r",
+                "src/static",
+                ":"
+            ],
+            "problemMatcher": [],
+            "presentation": {
+                "reveal": "always"
             },
             "group": {
                 "kind": "build",
@@ -75,24 +182,7 @@
                 "reveal": "always"
             }
         },
-        {
-            "label": "Upload static to ESP32",
-            "type": "shell",
-            "command": "mpremote",
-            "args": [
-                "connect",
-                "${input:esp32Port}",
-                "fs",
-                "cp",
-                "-r",
-                "static",
-                ":"
-            ],
-            "problemMatcher": [],
-            "presentation": {
-                "reveal": "always"
-            }
-        },
+        // Compound tasks
         {
             "label": "Upload all project folders to ESP32",
             "dependsOn": [
@@ -101,7 +191,7 @@
                 "Upload libs to ESP32",
                 "Upload static to ESP32"
             ],
-            "dependsOrder": "sequence",
+            "dependsOrder": "sequence"
         },
         {
             "label": "Wipe and Upload All",

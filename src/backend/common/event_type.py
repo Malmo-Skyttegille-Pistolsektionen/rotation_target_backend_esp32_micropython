@@ -1,20 +1,3 @@
-# Program state
-from typing import Optional
-
-from common.program import Program
-
-
-class ProgramState:
-    def __init__(self):
-        self.running_series_start: Optional[int] = (
-            None  # Timestamp when the series started, or None if not running
-        )
-        self.program: Optional[Program] = None
-        self.current_series_index: Optional[int] = None
-        self.current_event_index: Optional[int] = None
-        self.target_status_shown: bool = False
-
-
 class EventType:
     PROGRAM_STARTED: str = "program_started"  #
     PROGRAM_COMPLETED: str = "program_completed"  #
@@ -31,7 +14,3 @@ class EventType:
     AUDIO_ADDED: str = "audio_added"
     AUDIO_DELETED: str = "audio_deleted"
     BACKEND_ISSUE: str = "backend_issue"
-
-
-# Create a single, shared instance
-program_state = ProgramState()

@@ -1,26 +1,10 @@
 import json
 import os
 from typing import Any, Dict, Optional
-from common.utils import dir_exists, file_exists, make_dirs
+from backend.common.io_utils import dir_exists, file_exists, make_dirs
 import logging
 
-
-class Audio:
-    def __init__(
-        self, id: int, title: str, filename: str, readonly: bool = False
-    ) -> None:
-        self.id = id
-        self.title = title
-        self.filename = filename
-        self.readonly = readonly
-
-    def to_dict(self) -> Dict[str, Any]:
-        return {
-            "id": self.id,
-            "title": self.title,
-            "filename": self.filename,
-            "readonly": self.readonly,
-        }
+from backend.dataclasses.audio import Audio
 
 
 class Audios:

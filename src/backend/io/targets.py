@@ -1,10 +1,10 @@
-from common.common import program_state
+from backend.repositories import program_state
 from time import ticks_ms, ticks_diff
 from machine import Pin
 from config import TARGET_PIN
 
 
-target = Pin(TARGET_PIN, Pin.OUT)
+targets = Pin(TARGET_PIN, Pin.OUT)
 
 last_target_action_time = None
 

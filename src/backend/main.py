@@ -4,18 +4,17 @@
 
 
 import asyncio
-from common.audios import audios
-from common.audio import is_supported_wav, play_wav_asyncio
+from backend.repositories.audios import audios
+
 import network
-import time
 
 from microdot import Microdot, Response, Request
 from microdot.cors import CORS
 from microdot.microdot import MUTED_SOCKET_ERRORS
-from web.api import api_part
-from web.sse import sse_part
-from web.static import static_part
-from common.programs import programs
+from apis.api import api_part
+from apis.sse import sse_part
+from apis.static import static_part
+from backend.repositories.programs import programs
 import logging
 
 
@@ -58,6 +57,10 @@ async def main():
 
 
 # WAV_FILENAME = "src/resources/audio/1.wav"
+
+# from backend.dataclasses.audio import is_supported_wav, play_wav_asyncio
+# import time
+
 
 # logging.debug("Checking audio files support...")
 # logging.debug(

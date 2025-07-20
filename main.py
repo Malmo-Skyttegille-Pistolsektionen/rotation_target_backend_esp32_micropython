@@ -2,6 +2,7 @@ import machine
 import sys
 import asyncio
 import os
+from backend import main as backend
 
 
 sys.path.insert(0, "/libs")
@@ -23,8 +24,6 @@ logging.debug("Starting backend...")
 from info import main as print_info
 
 print_info()
-
-from src import backend
 
 
 try:

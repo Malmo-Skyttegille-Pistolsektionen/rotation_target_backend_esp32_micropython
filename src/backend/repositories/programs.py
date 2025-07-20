@@ -1,11 +1,32 @@
 from typing import Dict, Optional, Any
-from common.program import Program
+from dataclasses.program import Program
 import json
 import os
 
-from common.utils import dir_exists, make_dirs
-from common.common import EventType
-from web.sse import emit_sse_event
+from common.io_utils import dir_exists, make_dirs
+from backend.common.event_type import EventType
+import json
+import os
+
+from common.io_utils import dir_exists, make_dirs
+from backend.common.event_type import EventType
+from apis.sse import emit_sse_event
+import logging
+
+
+class Programs:
+    def __init__(self) -> None:
+        self._programs: Dict[int, Program] = {}
+
+    def add(self, program_data: Dict[str, Any], readonly: bool = False) -> Program:
+        program_data = dict(program_data)  # Copy to avoid mutating input
+        program_data["readonly"] = readonly
+        program = Program.from_dict(program_data)
+        id = int(program.id)
+        self._programs[id] = program
+
+
+from apis.sse import emit_sse_event
 import logging
 
 
