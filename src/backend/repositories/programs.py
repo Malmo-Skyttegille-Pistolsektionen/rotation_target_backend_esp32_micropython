@@ -77,7 +77,7 @@ class Programs:
                     except OSError:
                         continue
 
-        logging.debug(f"[Programs] Total programs loaded: {len(self._programs)}")
+        logging.info(f"[Programs] Total programs loaded: {len(self._programs)}")
 
     async def add_uploaded(self, program_data: Dict[str, Any]) -> Program:
         directory = "resources/programs"

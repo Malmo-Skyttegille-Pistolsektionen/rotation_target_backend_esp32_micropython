@@ -10,20 +10,17 @@ sys.path.insert(0, "/src")
 
 import logging
 
-from backend import backend
-
+# do not change order
 logging.basicConfig(level=logging.DEBUG)
+
+from backend import backend
 
 
 alloc_emergency_exception_buf(200)
 
-# logging.debug("main.py sys.path: %s", sys.path)
-# logging.debug(f"os.uname: { os.uname()}")
 
-logging.debug("Starting backend...")
-
-
-print_info()
+if logging.getLogger().isEnabledFor(logging.DEBUG):
+    print_info()
 
 
 try:

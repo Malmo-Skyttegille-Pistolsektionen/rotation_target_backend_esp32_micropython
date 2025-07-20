@@ -85,8 +85,6 @@ async def programs_list(request):
         for program in programs.get_all().values()
     ]
 
-    logging.debug(f"programs.list() called: {result}")
-    logging.debug(f"[API] Returning: {result}")
     return result
 
 

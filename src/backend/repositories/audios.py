@@ -43,9 +43,11 @@ class Audios:
                 os.path.join(uploaded_path, "index.json"), readonly=False
             )
 
+        logging.info(f"[Audios] Total audios loaded: {len(self._audios)}")
+
     def _add(self, audio: Audio) -> None:
-        logging.debug(
-            f"Adding audio: id={audio.id}, title={audio.title}, filename={audio.filename}, readonly={audio.readonly}"
+        logging.trace(
+            f"[Audios] Adding audio: id={audio.id}, title={audio.title}, filename={audio.filename}, readonly={audio.readonly}"
         )
         self._audios[audio.id] = audio
 

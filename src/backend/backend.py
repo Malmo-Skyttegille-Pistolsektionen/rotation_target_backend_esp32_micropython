@@ -38,21 +38,14 @@ def create_app():
 async def main():
     programs.load_all()  # Load all programs at startup
 
-    logging.info("[Backend] Loaded programs:")
-    for program in programs.get_all().values():
-        logging.info(f"  id={program.id}, title={program.title}")
-
-    audios.load_all()
-    logging.info("[Backend] Loaded audios:")
-    for audio in audios.get_all().values():
-        logging.info(f"  id={audio.id}, title={audio.title}")
+    audios.load_all()  # Load all audios at startup
 
     app = create_app()
     # start the server in a background task
     port = 8080
     server = asyncio.create_task(app.start_server(port=port))
     ip_address = network.WLAN(network.STA_IF).ifconfig()[0]
-    logging.info(f"Server started on {ip_address}:{port}")
+    logging.info(f"[Backend] Server started on {ip_address}:{port}")
 
     await server
 

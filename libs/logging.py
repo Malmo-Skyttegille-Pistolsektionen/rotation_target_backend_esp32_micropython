@@ -8,6 +8,7 @@ ERROR = const(40)
 WARNING = const(30)
 INFO = const(20)
 DEBUG = const(10)
+TRACE = const(5)
 NOTSET = const(0)
 
 _DEFAULT_LEVEL = const(WARNING)
@@ -18,6 +19,7 @@ _level_dict = {
     WARNING: "WARNING",
     INFO: "INFO",
     DEBUG: "DEBUG",
+    TRACE: "TRACE",
     NOTSET: "NOTSET",
 }
 
@@ -134,6 +136,9 @@ class Logger:
             for h in handlers:
                 h.emit(self.record)
 
+    def trace(self, msg, *args):
+        self.log(TRACE, msg, *args)
+
     def debug(self, msg, *args):
         self.log(DEBUG, msg, *args)
 
@@ -180,6 +185,10 @@ def getLogger(name=None):
 
 def log(level, msg, *args):
     getLogger().log(level, msg, *args)
+
+
+def trace(msg, *args):
+    getLogger().trace(msg, *args)
 
 
 def debug(msg, *args):
