@@ -17,14 +17,14 @@ Response.types_map["ico"] = "image/x-icon"
 async def index(request):
     logging.debug("[Static] Serving index.html")
 
-    return send_file("static/webapp/index.html", max_age=3600)
+    return send_file("src/static/webapp/index.html", max_age=3600)
 
 
 @static_part.get(url_pattern="/<path:path>")
 async def static_files(request, path):
     try:
         logging.debug(f"[Static] Serving ({request.path} ): {request.path} ")
-        return send_file(f"static/webapp/{path}")
+        return send_file(f"src/static/webapp/{path}")
     except OSError:
         return {"error": "resource not found"}, 404
     finally:
