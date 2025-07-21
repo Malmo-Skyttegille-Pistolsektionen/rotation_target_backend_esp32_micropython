@@ -11,6 +11,7 @@ class EventType:
     CHRONO: str = "chrono"  #
     PROGRAM_ADDED: str = "program_added"
     PROGRAM_DELETED: str = "program_deleted"
+    PROGRAM_UPDATED: str = "program_updated"§
     AUDIO_ADDED: str = "audio_added"
     AUDIO_DELETED: str = "audio_deleted"
     BACKEND_ISSUE: str = "backend_issue"
