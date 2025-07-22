@@ -2,7 +2,7 @@
   "id": 20,
   "title": "Precision",
   "description": "Precision 1 + 7 ( + 3 )",
-  "readonly": false,
+  "readonly": true,
   "series": [
     {
       "name": "Provserie",
@@ -42,7 +42,6 @@
           "duration": 1000,
           "audio_ids": [
             37,
-            36,
             39
           ]
         }
@@ -86,7 +85,6 @@
           "duration": 1000,
           "audio_ids": [
             37,
-            36,
             39
           ]
         }
@@ -130,7 +128,6 @@
           "duration": 1000,
           "audio_ids": [
             37,
-            36,
             39
           ]
         }
@@ -174,7 +171,6 @@
           "duration": 1000,
           "audio_ids": [
             37,
-            36,
             39
           ]
         }
@@ -218,7 +214,6 @@
           "duration": 1000,
           "audio_ids": [
             37,
-            36,
             39
           ]
         }
@@ -262,7 +257,6 @@
           "duration": 1000,
           "audio_ids": [
             37,
-            36,
             39
           ]
         }
@@ -306,7 +300,6 @@
           "duration": 1000,
           "audio_ids": [
             37,
-            36,
             39
           ]
         }
@@ -350,7 +343,6 @@
           "duration": 1000,
           "audio_ids": [
             37,
-            36,
             39
           ]
         }
@@ -394,7 +386,6 @@
           "duration": 1000,
           "audio_ids": [
             37,
-            36,
             39
           ]
         }
@@ -438,7 +429,6 @@
           "duration": 1000,
           "audio_ids": [
             37,
-            36,
             39
           ]
         }
@@ -482,7 +472,6 @@
           "duration": 1000,
           "audio_ids": [
             37,
-            36,
             39
           ]
         }

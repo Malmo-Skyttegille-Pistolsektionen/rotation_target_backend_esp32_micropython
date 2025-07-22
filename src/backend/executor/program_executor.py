@@ -85,6 +85,9 @@ class ProgramExecutor:
             # Start audio playback as a background task (sequential playback per event)
             audio_task = None
             if hasattr(event, "audio_ids") and event.audio_ids:
+                logging.debug(
+                    f"[ProgramExecutor] Starting audio playback for event {idx}"
+                )
 
                 async def play_all_audios(audio_ids):
                     for audio_id in audio_ids:

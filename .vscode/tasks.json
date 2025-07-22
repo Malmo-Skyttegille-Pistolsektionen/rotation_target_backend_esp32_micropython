@@ -37,7 +37,7 @@
             }
         },
         {
-            "label": "Wipe src/resource on ESP32",
+            "label": "Wipe src/resources on ESP32",
             "type": "shell",
             "command": "mpremote",
             "args": [
@@ -46,7 +46,7 @@
                 "fs",
                 "rm",
                 "-r",
-                "src/resource"
+                "src/resources"
             ],
             "problemMatcher": [],
             "presentation": {
@@ -125,7 +125,7 @@
             }
         },
         {
-            "label": "Upload src/resource to ESP32",
+            "label": "Upload src/resources to ESP32",
             "type": "shell",
             "command": "mpremote",
             "args": [
@@ -134,7 +134,7 @@
                 "fs",
                 "cp",
                 "-r",
-                "src/resource",
+                "src/resources",
                 ":src"
             ],
             "problemMatcher": [],

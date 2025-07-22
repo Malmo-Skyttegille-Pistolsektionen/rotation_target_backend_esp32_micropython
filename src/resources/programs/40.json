@@ -8,7 +8,10 @@
       "events": [
         {
           "command": "hide",
-          "duration": 10000
+          "duration": 10000,
+          "audio_ids": [
+            31
+          ]
         },
         {
           "command": "show",
@@ -42,7 +45,10 @@
       "events": [
         {
           "command": "hide",
-          "duration": 10000
+          "duration": 10000,
+          "audio_ids": [
+            31
+          ]
         },
         {
           "command": "show",
