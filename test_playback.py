@@ -14,9 +14,11 @@
 import os
 import math
 import struct
-import config
 from machine import I2S, Pin
 import sys
+
+sys.path.insert(0, "/src/backend")
+import config
 
 
 def make_tone(rate, bits, frequency):
@@ -43,10 +45,12 @@ def make_tone(rate, bits, frequency):
 
 if os.uname().machine.count("ESP32"):
 
+    print("Setting up I2S for ESP32")
+
     # ======= I2S CONFIGURATION =======
-    SCK_PIN = config.I2S_BCK_PIN
-    SD_PIN = config.I2S_DIN_PIN
-    WS_PIN = config.I2S_LCK_PIN
+    SCK_PIN = 45  # config.I2S_BCK_PIN
+    SD_PIN = 48  # config.I2S_DIN_PIN
+    WS_PIN = 47  # config.I2S_LCK_PIN
     I2S_ID = config.I2S_ID
     BUFFER_LENGTH_IN_BYTES = 2000
     # ======= I2S CONFIGURATION =======
@@ -74,7 +78,7 @@ audio_out = I2S(
     ibuf=BUFFER_LENGTH_IN_BYTES,
 )
 
-print("I2S initialized with the following parameters:" + str(audio_out))
+print("I2S initialized with the following parameters X:" + str(audio_out))
 
 samples = make_tone(SAMPLE_RATE_IN_HZ, SAMPLE_SIZE_IN_BITS, TONE_FREQUENCY_IN_HZ)
 

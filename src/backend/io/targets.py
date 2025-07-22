@@ -1,5 +1,5 @@
 import logging
-from backend.repositories import program_state
+from backend.repositories.program_state import program_state
 from time import ticks_ms, ticks_diff
 from machine import Pin
 from backend.config import TARGET_PIN
@@ -15,7 +15,9 @@ def _update_last_action_time():
     now = ticks_ms()
     if last_target_action_time is not None:
         elapsed = ticks_diff(now, last_target_action_time)
-        logging.debug(f"[Target IO] Time since last target action: {elapsed} ms")
+        logging.debug(
+            f"[Target IO] Time since last target action: {elapsed} ms (program state now: {program_state.target_status_shown})"
+        )
     last_target_action_time = now
 
 

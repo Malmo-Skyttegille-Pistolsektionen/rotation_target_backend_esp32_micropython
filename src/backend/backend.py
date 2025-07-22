@@ -17,6 +17,7 @@ from backend.apis.sse import sse_part
 from backend.apis.static import static_part
 from backend.repositories.programs import programs
 from backend.repositories.audios import audios
+from backend.common.rgb_led import rgb_led
 
 
 # Initialize Microdot app
@@ -46,6 +47,7 @@ async def main():
     server = asyncio.create_task(app.start_server(port=port))
     ip_address = network.WLAN(network.STA_IF).ifconfig()[0]
     logging.info(f"[Backend] Server started on {ip_address}:{port}")
+    rgb_led.set_green()
 
     await server
 

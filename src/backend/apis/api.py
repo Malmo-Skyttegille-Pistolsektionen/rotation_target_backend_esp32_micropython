@@ -9,6 +9,7 @@ from backend.repositories.audios import audios
 from backend.version import VERSION
 from libs.microdot.multipart import with_form_data
 import logging
+from backend.io.audio import play_wav_asyncio
 
 logging.debug("[API] Importing API routes...")
 
@@ -247,3 +248,18 @@ async def audios_delete(request, audio_id):
         return {"message": "Audio deleted successfully"}
     else:
         return {"error": "Audio not found"}, 404
+
+
+@api_part.post("/audios/<int:audio_id>/play")
+async def audios_play(request, audio_id):
+    logging.debug(f"[API] {request.method} {request.path} called")
+    audio = audios.get(audio_id)
+    if not audio:
+        return {"error": "Audio not found"}, 404
+
+    try:
+        await play_wav_asyncio(audio.filename)
+        return {"message": "Audio playback started"}
+    except Exception as e:
+        logging.error(f"[API] Failed to play audio: {e}")
+        return {"error": "Failed to play audio"}, 500

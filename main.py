@@ -9,6 +9,7 @@ sys.path.insert(0, "/libs")
 sys.path.insert(0, "/src")
 
 import logging
+from backend.common.rgb_led import rgb_led
 
 # do not change order
 logging.basicConfig(level=logging.DEBUG)
@@ -24,9 +25,11 @@ if logging.getLogger().isEnabledFor(logging.DEBUG):
 
 
 try:
+    # rgb_led.set_red()
     asyncio.run(backend.main())
 except Exception as e:
     print("Fatal error in main:")
+    rgb_led.set_red()
     sys.print_exception(e)
 finally:
     # Following a normal Exception or main() exiting, reset the board.

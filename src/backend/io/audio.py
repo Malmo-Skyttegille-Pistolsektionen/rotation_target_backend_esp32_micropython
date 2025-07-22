@@ -3,6 +3,7 @@ import asyncio
 from typing import Dict, List
 import logging
 
+from backend.common.io_utils import file_exists
 from machine import I2S, Pin
 import sys
 
@@ -19,6 +20,10 @@ audio_out = None  # global, but not initialized yet
 
 
 def is_supported_wav(filename: str) -> Dict | None:
+    if not file_exists(filename):
+        logging.error(f"[Audio IO] WAV file does not exist: {filename}")
+        raise FileNotFoundError(f"WAV file does not exist: {filename}")
+
     """Check if WAV file is PCM, 16-bit, mono or stereo, any sample rate.
     Returns a dict with audio properties if supported, else None.
     """
@@ -59,6 +64,11 @@ async def play_wav_asyncio(filename: str, volume: float = 1.0) -> None:
     logging.trace(
         f"[Audio IO] Play_wav_asyncio called with filename={filename}, volume={volume}"
     )
+
+    if not file_exists(filename):
+        logging.error(f"[Audio IO] WAV file does not exist: {filename}")
+        raise FileNotFoundError(f"WAV file does not exist: {filename}")
+
     wav_info: Dict[str, int] | None = is_supported_wav(filename)
     if not wav_info:
         logging.error((f"[Audio IO] Unsupported WAV file format: {filename}"))
@@ -91,7 +101,9 @@ async def play_wav_asyncio(filename: str, volume: float = 1.0) -> None:
             while True:
                 data = f.read(512)
                 if not data:
-                    logging.debug(f"[Audio IO] Playback completed of WAV file: {filename}")
+                    logging.debug(
+                        f"[Audio IO] Playback completed of WAV file: {filename}"
+                    )
                     break
                 if wav_info["num_channels"] == 2:
                     # Write stereo data directly
