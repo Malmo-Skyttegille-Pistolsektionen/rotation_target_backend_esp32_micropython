@@ -8,6 +8,8 @@ logging.debug("[SSE] Importing SSE routes...")
 sse_part = Microdot()
 connected_clients = set()
 
+HEARTBEAT_INTERVAL = 15  # seconds
+
 
 async def emit_sse_event(event, data):
     logging.debug(
@@ -17,7 +19,7 @@ async def emit_sse_event(event, data):
         try:
             await sse.send(data, event=event)
         except Exception as e:
-            logging.debug(f"[SSE] Removing disconnected client: {e}")
+            logging.warning(f"[SSE] Removing disconnected client due to error: {e}")
             connected_clients.discard(sse)
 
 
@@ -26,14 +28,22 @@ async def emit_sse_event(event, data):
 async def handle_sse(request, sse):
     host, port = request.client_addr
     logging.info(
-        f"[SSE] Client connected from {host}:{port} ({len(connected_clients)} clients)"
+        f"[SSE] Client connected from {host}:{port} ({len(connected_clients)+1} clients)"
     )
     connected_clients.add(sse)
+    heartbeat_id = 1
     try:
         while True:
-            await asyncio.sleep(60)  # Keep connection alive
+            await sse.send(
+                {"id": heartbeat_id}, event="heartbeat"
+            )  # Send heartbeat event with counter
+            logging.info(f"[SSE] Heartbeat id={heartbeat_id} sent to {host}:{port}")
+            heartbeat_id += 1
+            await asyncio.sleep(HEARTBEAT_INTERVAL)
     except asyncio.CancelledError:
-        logging.debug("[SSE] Client disconnected (CancelledError)")
+        logging.info(f"[SSE] Client {host}:{port} disconnected (CancelledError)")
     finally:
         connected_clients.discard(sse)
-        logging.debug("[SSE] Client removed from connected_clients")
+        logging.info(
+            f"[SSE] Client {host}:{port} removed from connected_clients ({len(connected_clients)} clients left)"
+        )
