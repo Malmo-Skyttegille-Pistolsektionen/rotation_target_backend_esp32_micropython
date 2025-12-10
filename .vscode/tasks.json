@@ -1,0 +1,213 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        // Wipe tasks first
+        {
+            "label": "Wipe ESP32 flash",
+            "type": "shell",
+            "command": "mpremote",
+            "args": [
+                "connect",
+                "${input:esp32Port}",
+                "fs",
+                "rm",
+                "-r",
+                "."
+            ],
+            "problemMatcher": [],
+            "presentation": {
+                "reveal": "always"
+            }
+        },
+        {
+            "label": "Wipe src/backend on ESP32",
+            "type": "shell",
+            "command": "mpremote",
+            "args": [
+                "connect",
+                "${input:esp32Port}",
+                "fs",
+                "rm",
+                "-r",
+                "src/backend"
+            ],
+            "problemMatcher": [],
+            "presentation": {
+                "reveal": "always"
+            }
+        },
+        {
+            "label": "Wipe src/resources on ESP32",
+            "type": "shell",
+            "command": "mpremote",
+            "args": [
+                "connect",
+                "${input:esp32Port}",
+                "fs",
+                "rm",
+                "-r",
+                "src/resources"
+            ],
+            "problemMatcher": [],
+            "presentation": {
+                "reveal": "always"
+            }
+        },
+        {
+            "label": "Wipe static/webapp on ESP32",
+            "type": "shell",
+            "command": "mpremote",
+            "args": [
+                "connect",
+                "${input:esp32Port}",
+                "fs",
+                "rm",
+                "-r",
+                "static/webapp"
+            ],
+            "problemMatcher": [],
+            "presentation": {
+                "reveal": "always"
+            }
+        },
+        // Upload tasks next
+        {
+            "label": "Upload /*.py to ESP32",
+            "type": "shell",
+            "command": "mpremote",
+            "args": [
+                "connect",
+                "${input:esp32Port}",
+                "fs",
+                "cp",
+                "*.py",
+                ":"
+            ],
+            "problemMatcher": [],
+            "presentation": {
+                "reveal": "always"
+            }
+        },
+        {
+            "label": "Upload src to ESP32",
+            "type": "shell",
+            "command": "mpremote",
+            "args": [
+                "connect",
+                "${input:esp32Port}",
+                "fs",
+                "cp",
+                "-r",
+                "src",
+                ":"
+            ],
+            "problemMatcher": [],
+            "presentation": {
+                "reveal": "always"
+            }
+        },
+        {
+            "label": "Upload src/backend to ESP32",
+            "type": "shell",
+            "command": "mpremote",
+            "args": [
+                "connect",
+                "${input:esp32Port}",
+                "fs",
+                "cp",
+                "-r",
+                "src/backend",
+                ":src"
+            ],
+            "problemMatcher": [],
+            "presentation": {
+                "reveal": "always"
+            }
+        },
+        {
+            "label": "Upload src/resources to ESP32",
+            "type": "shell",
+            "command": "mpremote",
+            "args": [
+                "connect",
+                "${input:esp32Port}",
+                "fs",
+                "cp",
+                "-r",
+                "src/resources",
+                ":src"
+            ],
+            "problemMatcher": [],
+            "presentation": {
+                "reveal": "always"
+            }
+        },
+        {
+            "label": "Upload src/static to ESP32",
+            "type": "shell",
+            "command": "mpremote",
+            "args": [
+                "connect",
+                "${input:esp32Port}",
+                "fs",
+                "cp",
+                "-r",
+                "src/static",
+                ":src"
+            ],
+            "problemMatcher": [],
+            "presentation": {
+                "reveal": "always"
+            },
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
+        },
+        {
+            "label": "Upload libs to ESP32",
+            "type": "shell",
+            "command": "mpremote",
+            "args": [
+                "connect",
+                "${input:esp32Port}",
+                "fs",
+                "cp",
+                "-r",
+                "libs",
+                ":"
+            ],
+            "problemMatcher": [],
+            "presentation": {
+                "reveal": "always"
+            }
+        },
+        // Compound tasks
+        {
+            "label": "Upload all project folders to ESP32",
+            "dependsOn": [
+                "Upload /*.py to ESP32",
+                "Upload src to ESP32",
+                "Upload libs to ESP32",
+                "Upload static to ESP32"
+            ],
+            "dependsOrder": "sequence"
+        },
+        {
+            "label": "Wipe and Upload All",
+            "dependsOn": [
+                "Wipe ESP32 flash",
+                "Upload all project folders to ESP32"
+            ],
+            "dependsOrder": "sequence"
+        }
+    ],
+    "inputs": [
+        {
+            "id": "esp32Port",
+            "type": "promptString",
+            "description": "Enter ESP32 device path",
+            "default": "/dev/ttyUSB0"
+        }
+    ]
+}
